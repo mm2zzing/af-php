@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/ft/!svn/ver/192/src/trunk/server/web/app_server/application/libraries/apdt/plugins/auth/storage
+END
+auth_storage_error.php
+K 25
+svn:wc:ra_dav:version-url
+V 123
+/svn/ft/!svn/ver/170/src/trunk/server/web/app_server/application/libraries/apdt/plugins/auth/storage/auth_storage_error.php
+END
+auth_storage.php
+K 25
+svn:wc:ra_dav:version-url
+V 117
+/svn/ft/!svn/ver/192/src/trunk/server/web/app_server/application/libraries/apdt/plugins/auth/storage/auth_storage.php
+END

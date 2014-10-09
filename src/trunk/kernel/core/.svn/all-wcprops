@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/svn/ft/!svn/ver/186/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core
+END
+object_converter.php
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/svn/ft/!svn/ver/182/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core/object_converter.php
+END
+kernel.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/ft/!svn/ver/175/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core/kernel.php
+END
+entry.php
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/ft/!svn/ver/185/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core/entry.php
+END
+node.php
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/ft/!svn/ver/201/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core/node.php
+END
+loader.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/ft/!svn/ver/186/src/trunk/server/web/app_server/application/libraries/apdt/kernel/core/loader.php
+END

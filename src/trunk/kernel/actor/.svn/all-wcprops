@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/svn/ft/!svn/ver/195/src/trunk/server/web/app_server/application/libraries/apdt/kernel/actor
+END
+actor_accepter.php
+K 25
+svn:wc:ra_dav:version-url
+V 111
+/svn/ft/!svn/ver/218/src/trunk/server/web/app_server/application/libraries/apdt/kernel/actor/actor_accepter.php
+END
+component.php
+K 25
+svn:wc:ra_dav:version-url
+V 106
+/svn/ft/!svn/ver/174/src/trunk/server/web/app_server/application/libraries/apdt/kernel/actor/component.php
+END
+remote_actor.php
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svn/ft/!svn/ver/207/src/trunk/server/web/app_server/application/libraries/apdt/kernel/actor/remote_actor.php
+END
+actor.php
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/svn/ft/!svn/ver/174/src/trunk/server/web/app_server/application/libraries/apdt/kernel/actor/actor.php
+END
