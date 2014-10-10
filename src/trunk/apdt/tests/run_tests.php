@@ -45,13 +45,13 @@ class Run_Tests extends Entry {
     $test->run($test_result);
     $test = new Event_Test('test_deserialize');
     $test->run($test_result);
-
     $test = new Event_Test('test_add_event_listener');
     $test->run($test_result);
     $test = new Event_Test('test_remove_event_listener');
     $test->run($test_result);
     $test = new Event_Test('test_dispatch_event');
     $test->run($test_result);
+
     echo $test_result->summary() . PHP_EOL;
   }
 

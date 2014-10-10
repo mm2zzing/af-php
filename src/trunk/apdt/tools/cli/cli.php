@@ -1,7 +1,6 @@
 <?php
-$current_path = dirname(__FILE__);
-require_once ($current_path . '/../../kernel/core/loader.php');
-Loader::get_instance()->include_module('tools/cli/command_line_runner');
+require_once dirname(__FILE__) . '/../../kernel/core/bootstrap.php';
+require_once 'apdt/tools/cli/command_line_runner.php';
 
 $REQUIRE_PARAMTER_COUNT = 2;
 if (count($argv) < $REQUIRE_PARAMTER_COUNT + 1) {

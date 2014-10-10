@@ -12,7 +12,7 @@ class Event_Database {
     // @TODO REMOVE
     $this->add_event('Event', 'Event');
     $this->add_event('Proxy_Event', 'Proxy_Event');
-    $this->add_event('Proxy_Event', 'Proxy_Event');
+    $this->add_event('Dummy_Event', 'Dummy_Event');
     $this->add_event('Req_Get_User', '\ft\sys\presenters\auth_presenter\events\Req_Get_User');
     $this->add_event('Res_Get_User', '\ft\sys\presenters\auth_presenter\events\Res_Get_User');
     $this->add_event('Req_Register_Device', '\ft\sys\presenters\auth_presenter\events\Req_Register_Device');
