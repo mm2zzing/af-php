@@ -29,7 +29,8 @@ class Auth extends Component {
   }
 
   /**
-   * 일반 회원 가입
+   * 일반 회원 가입. User_DTO를 상속받은 경우 추가정보는 update_user 메서드를
+   * 통해 갱신한다.
    *
    * @return User 유저 객체
    */

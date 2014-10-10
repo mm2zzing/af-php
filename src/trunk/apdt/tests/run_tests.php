@@ -21,6 +21,7 @@ class Run_Tests extends Entry {
     $this->run_object_converter_test();
     $this->run_mongodb_test();
     $this->run_auth_test();
+    $this->run_prereg_test();
   }
 
   private function run_test_case_test() {
@@ -125,6 +126,17 @@ class Run_Tests extends Entry {
     $test = new Auth_Test('test_unregister');
     $test->run($test_result);
     $test = new Auth_Test('test_unregister_login');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_prereg_test() {
+    $this->loader->include_module('tests/plugins/prereg/prereg_test');
+
+    $test_result = new Test_Result('prereg_test');
+
+    $test = new Prereg_Test('test_register');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
