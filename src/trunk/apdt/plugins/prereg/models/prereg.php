@@ -68,7 +68,6 @@ class Prereg extends Component {
   public function get_prereg_user($user_wheres) {
     try {
       $users = $this->storage->get_prereg_users($user_wheres);
-      print_r($users);
       if (0 == count($users))
         return new Null_Prereg_User();
       $user_dto = new $this->user_dto_class_name;

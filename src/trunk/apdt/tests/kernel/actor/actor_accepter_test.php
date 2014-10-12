@@ -50,7 +50,9 @@ class Actor_Accepter_Test extends Test_Case {
       // @TODO 상대방 actor에게 보내는 메시지 문자열이 맞는지 확인하는 테스트케이스 추가. send함수를 쓸 경우 sender/receiver가 뒤바꾼다.
       //$remote_actor->send($event);
     });
+    
     $this->actor_accepter->recv($this->create_event_string());
+
     $this->assert(0 == strcmp($sender_path, '/sys/end_point'), 'sender path is /sys/end_point');
     $this->assert(0 == strcmp($receiver_path, '/temp/actor1'), 'receiver path is /temp/actor1');
   }
@@ -62,6 +64,7 @@ class Actor_Accepter_Test extends Test_Case {
   }
 
   public function tear_down() {
+    Kernel::get_instance()->delete_object('/temp/actor1');
   }
 
   private function create_listener() {

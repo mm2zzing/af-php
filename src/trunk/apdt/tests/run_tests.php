@@ -22,6 +22,7 @@ class Run_Tests extends Entry {
     $this->run_mongodb_test();
     $this->run_auth_test();
     $this->run_prereg_test();
+    $this->run_prereg_manager_test();
   }
 
   private function run_test_case_test() {
@@ -138,9 +139,23 @@ class Run_Tests extends Entry {
 
     $test = new Prereg_Test('test_register');
     $test->run($test_result);
+    $test = new Prereg_Test('test_register_with_values');
+    $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
   }
+
+  private function run_prereg_manager_test() {
+    $this->loader->include_module('tests/plugins/prereg/prereg_manager_test');
+
+    $test_result = new Test_Result('prereg_manager_test');
+
+    $test = new Prereg_Manager_Test('test_get_prereg_users');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
 
   private function run_mongodb_test() {
     $this->loader->include_module('tests/plugins/db/mongodb/mongodb_test');

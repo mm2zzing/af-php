@@ -102,5 +102,6 @@ class Mongodb_Test extends Test_Case {
 
   public function tear_down() {
     $this->connecter->close();
+    Kernel::get_instance()->delete_object('/sys/db/mongo');
   }
 }

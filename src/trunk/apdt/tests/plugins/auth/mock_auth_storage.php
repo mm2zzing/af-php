@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/plugins/auth/storage/auth_storage.php';
+require_once 'apdt/plugins/auth/models/storage/auth_storage.php';
 require_once 'apdt/plugins/auth/dto/user_dto.php';
 
 class Mock_Auth_Storage extends Auth_Storage {

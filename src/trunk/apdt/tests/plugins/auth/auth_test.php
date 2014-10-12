@@ -1,6 +1,6 @@
 <?php
 require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/plugins/auth/auth.php';
+require_once 'apdt/plugins/auth/models/auth.php';
 require_once 'apdt/plugins/auth/accessors/user.php';
 require_once 'apdt/plugins/auth/dto/user_dto.php';
 require_once 'apdt/tests/plugins/auth/mock_auth_storage.php';
@@ -141,6 +141,7 @@ class Auth_Test extends Test_Case {
   }
 
   public function tear_down() {
+    Kernel::get_instance()->delete_object('/sys/auth');
     $this->auth = null;
   }
 }

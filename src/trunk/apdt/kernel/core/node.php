@@ -3,9 +3,11 @@ require_once 'apdt/kernel/event/event_dispatcher.php';
 
 class Node extends Event_Dispatcher {
   private $name;
+  private $path;
 
-  public function __construct($name) {
+  public function __construct($name, $path) {
     $this->name = $name;
+    $this->path = $path;
   }
 
   public function get_name() {
@@ -13,6 +15,20 @@ class Node extends Event_Dispatcher {
   }
 
   public function get_path() {
-    return '/test/' . $this->name;
+    return $this->path;
+  }
+
+  public function is_null() {
+    return false;
+  }
+}
+
+class Null_Node extends Node {
+  public function __construct() {
+    parent::__construct('null', '/null');
+  }
+
+  public function is_null() {
+    return true;
   }
 }

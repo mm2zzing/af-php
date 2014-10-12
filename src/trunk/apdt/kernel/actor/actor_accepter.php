@@ -23,7 +23,15 @@ class Actor_Accepter extends Component {
       $target_event->connect(new Remote_Actor($this, 
                                               $proxy_event->get_sender_path(), 
                                               $proxy_event->get_receiver_path()));
-      $this->get_parent()->dispatch_event($target_event);
+      $receiver_path = $proxy_event->get_receiver_path();
+      if (strlen($receiver_path) > 0) {
+        $node = Kernel::get_instance()->find_object($receiver_path);
+        if (null == $node)
+          throw new Event_Error("target object is null");
+        $node->dispatch_event($target_event);
+      }
+      else 
+        $this->get_parent()->dispatch_event($target_event);
     }
     catch (Event_Error $e) {
       throw new Actor_Error($e->getMessage());
