@@ -1,9 +1,9 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/plugins/auth/models/auth.php';
-require_once 'apdt/plugins/auth/accessors/user.php';
-require_once 'apdt/plugins/auth/dto/user_dto.php';
-require_once 'apdt/tests/plugins/auth/mock_auth_storage.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/plugins/auth/models/auth.php';
+require_once 'apdos/plugins/auth/accessors/user.php';
+require_once 'apdos/plugins/auth/dto/user_dto.php';
+require_once 'apdos/tests/plugins/auth/mock_auth_storage.php';
 
 class Auth_Test extends Test_Case {
   const REGISTER_ID = 'testid';

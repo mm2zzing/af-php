@@ -1,9 +1,9 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/kernel/actor/actor.php';
-require_once 'apdt/kernel/actor/actor_accepter.php';
-require_once 'apdt/kernel/core/kernel.php';
-require_once 'apdt/tests/kernel/event/dummy_event.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/kernel/actor/actor.php';
+require_once 'apdos/kernel/actor/actor_accepter.php';
+require_once 'apdos/kernel/core/kernel.php';
+require_once 'apdos/tests/kernel/event/dummy_event.php';
 
 class Actor_Accepter_Test extends Test_Case {
   public $receive_dummy_event = false;

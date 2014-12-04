@@ -1,8 +1,8 @@
 <?php
-require_once 'apdt/kernel/core/loader.php';
-require_once 'apdt/kernel/core/kernel.php';
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/plugins/db_connecters/mongodb/mongodb_connecter.php';
+require_once 'apdos/kernel/core/loader.php';
+require_once 'apdos/kernel/core/kernel.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/plugins/db_connecters/mongodb/mongodb_connecter.php';
 
 class Mongodb_Test extends Test_Case {
   private $connecter;
@@ -96,7 +96,7 @@ class Mongodb_Test extends Test_Case {
     $actor = Kernel::get_instance()->new_object('Actor', '/sys/db/mongo');
     $this->connecter = $actor->add_component('Mongodb_Connecter');
     $this->connecter->connect('mongodb://localhost:27017');
-    $this->connecter->select_database('apdt_test');
+    $this->connecter->select_database('apdos_test');
     $this->connecter->drop_collection('ft');
   }
 

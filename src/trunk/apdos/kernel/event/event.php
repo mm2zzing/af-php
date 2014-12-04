@@ -1,7 +1,7 @@
 <?php
-require_once 'apdt/kernel/core/object_converter.php';
-require_once 'apdt/kernel/event/errors/event_error.php';
-require_once 'apdt/kernel/event/event_database.php';
+require_once 'apdos/kernel/core/object_converter.php';
+require_once 'apdos/kernel/event/errors/event_error.php';
+require_once 'apdos/kernel/event/event_database.php';
 
 class Event {
   protected $name;

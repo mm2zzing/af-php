@@ -1,8 +1,8 @@
 <?php
-namespace kernel\core;
+namespace apdos\kernel\core;
 
-require_once 'apdt/kernel/core/node.php';
-require_once 'apdt/kernel/core/error/node_is_exist_error.php';
+require_once 'apdos/kernel/core/node.php';
+require_once 'apdos/kernel/core/error/node_is_exist_error.php';
 
 
 /**

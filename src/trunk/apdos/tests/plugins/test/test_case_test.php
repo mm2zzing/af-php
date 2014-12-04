@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/tests/plugins/test/was_run.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/tests/plugins/test/was_run.php';
 
 class Test_Case_Test extends Test_Case {
   public function __construct($method_name) {

@@ -1,8 +1,8 @@
 <?php
-require_once 'apdt/kernel/actor/component.php';
-require_once 'apdt/plugins/prereg/dto/prereg_user_dto.php';
-require_once 'apdt/plugins/prereg/accessors/prereg_user.php';
-require_once 'apdt/plugins/prereg/errors/prereg_error.php';
+require_once 'apdos/kernel/actor/component.php';
+require_once 'apdos/plugins/prereg/dto/prereg_user_dto.php';
+require_once 'apdos/plugins/prereg/accessors/prereg_user.php';
+require_once 'apdos/plugins/prereg/errors/prereg_error.php';
 
 class Prereg_Manager extends Component {
   private $storage;

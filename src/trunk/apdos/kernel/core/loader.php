@@ -1,4 +1,16 @@
 <?php
+/**
+ * @class Loader
+ * 
+ * @brief Loader는 APODS의 소스 파일 모듈을 로드하는 클래스이다.
+ *        AutoLoader는 PRS규약에 따라 정의해야 하는데 Loader클래스는 AutoLoader의 역할이
+ *        아닌 명시적으로 모듈을 로드하는 기능이기 때문에 규약에 맞출 필요는 없다.
+ *        Composer는 클래스가 아닌 것들을 로드하는 방법을 제공하지 않으므로 클래스외의 다른 모듈은
+ *        Loader 클래스를 이용하여 로드하게 된다.
+ *        
+ *        @TODO apdos 폴더 제거하고 full path로 로드하도록 변경하기.       
+ * @author Lee Hyeon-gi
+ */
 class Loader {
   public function __construct() {
   }

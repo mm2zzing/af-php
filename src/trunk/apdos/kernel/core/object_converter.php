@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\core;
+
 class Object_Converter {
   public static function to_array($target) {
     if (is_object($target)) {
@@ -6,7 +8,7 @@ class Object_Converter {
     }
 
     if (is_array($target)) {
-      return array_map('Object_Converter::to_array', $target);
+      return array_map('ObjectConverter::to_array', $target);
     }
     else
       return $target;
@@ -14,7 +16,7 @@ class Object_Converter {
 
   public static function to_object($target) {
     if (is_array($target)) {
-      return (object)array_map('Object_Converter::to_object', $target);
+      return (object)array_map('ObjectConverter::to_object', $target);
     }
     else
       return $target;

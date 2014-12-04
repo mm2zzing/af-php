@@ -1,9 +1,9 @@
 <?php
-require_once 'apdt/kernel/actor/component.php';
-require_once 'apdt/kernel/actor/events/proxy_event.php';
-require_once 'apdt/kernel/actor/remote_actor.php';
-require_once 'apdt/kernel/event/errors/event_error.php';
-require_once 'apdt/kernel/actor/errors/actor_error.php';
+require_once 'apdos/kernel/actor/component.php';
+require_once 'apdos/kernel/actor/events/proxy_event.php';
+require_once 'apdos/kernel/actor/remote_actor.php';
+require_once 'apdos/kernel/event/errors/event_error.php';
+require_once 'apdos/kernel/actor/errors/actor_error.php';
 
 /**
  * @class Actor_Accepter

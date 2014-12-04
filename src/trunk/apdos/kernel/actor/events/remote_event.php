@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/kernel/event/event.php';
-require_once 'apdt/kernel/actor/remote_actor.php';
+require_once 'apdos/kernel/event/event.php';
+require_once 'apdos/kernel/actor/remote_actor.php';
 
 /**
  * @class Remote_Event

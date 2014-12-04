@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/kernel/actor/component.php';
+require_once 'apdos/kernel/actor/component.php';
 
 class Prereg_Storage extends Component {
   /**

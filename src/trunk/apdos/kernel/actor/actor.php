@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/kernel/core/node.php';
-require_once 'apdt/kernel/actor/component.php';
+require_once 'apdos/kernel/core/node.php';
+require_once 'apdos/kernel/actor/component.php';
 
 class Actor extends Node {
   private $components = array();

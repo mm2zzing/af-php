@@ -1,10 +1,10 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/kernel/core/kernel.php';
-require_once 'apdt/kernel/event/event.php';
-require_once 'apdt/kernel/event/event_dispatcher.php';
-require_once 'apdt/kernel/event/listener.php';
-require_once 'apdt/tests/kernel/event/dummy_event.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/kernel/core/kernel.php';
+require_once 'apdos/kernel/event/event.php';
+require_once 'apdos/kernel/event/event_dispatcher.php';
+require_once 'apdos/kernel/event/listener.php';
+require_once 'apdos/tests/kernel/event/dummy_event.php';
 
 class Event_Test extends Test_Case {
   public static $DUMMY_EVENT_SERIALIZE_STRING = "{\"type\":\"Dummy_Event\",\"name\":\"dummy_event_name1\",\"data\":{\"var1\":1,\"var2\":\"1\"}}";

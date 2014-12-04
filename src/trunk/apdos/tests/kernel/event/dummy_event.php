@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/kernel/actor/events/remote_event.php';
+require_once 'apdos/kernel/actor/events/remote_event.php';
 
 class Dummy_Event extends Remote_Event {
   public static $DUMMY_EVENT_NAME1 = "dummy_event_name1";

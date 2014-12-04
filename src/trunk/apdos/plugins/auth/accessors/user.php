@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/plugins/auth/dto/user_dto.php';
+require_once 'apdos/plugins/auth/dto/user_dto.php';
 
 class User {
   private $user_dto;

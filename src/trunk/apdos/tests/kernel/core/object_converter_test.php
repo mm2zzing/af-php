@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/kernel/core/object_converter.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/kernel/core/object_converter.php';
 
 class Object_Converter_Test extends Test_Case {
   public function test_object_to_array() {

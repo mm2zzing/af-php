@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/kernel/event/event_dispatcher.php';
+require_once 'apdos/kernel/event/event_dispatcher.php';
 
 class Node extends Event_Dispatcher {
   private $name;

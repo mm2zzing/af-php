@@ -2,7 +2,7 @@
 /**
  * @class Run_Test
  *
- * @brief apdt 모듈 테스트 실행 프로그램
+ * @brief apdos 모듈 테스트 실행 프로그램
  * @author Lee Hyeon-gi
  */
 class Run_Tests extends Entry {

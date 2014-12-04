@@ -1,8 +1,8 @@
 <?php
-require_once 'apdt/kernel/actor/component.php';
-require_once 'apdt/plugins/auth/dto/user_dto.php';
-require_once 'apdt/plugins/auth/accessors/user.php';
-require_once 'apdt/plugins/auth/errors/auth_error.php';
+require_once 'apdos/kernel/actor/component.php';
+require_once 'apdos/plugins/auth/dto/user_dto.php';
+require_once 'apdos/plugins/auth/accessors/user.php';
+require_once 'apdos/plugins/auth/errors/auth_error.php';
 
 /**
  * @class Auth

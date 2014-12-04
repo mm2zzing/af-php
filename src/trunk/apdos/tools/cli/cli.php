@@ -1,6 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../../kernel/core/bootstrap.php';
-require_once 'apdt/tools/cli/command_line_runner.php';
+require_once 'apdos/tools/cli/command_line_runner.php';
 
 $REQUIRE_PARAMTER_COUNT = 2;
 if (count($argv) < $REQUIRE_PARAMTER_COUNT + 1) {

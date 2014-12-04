@@ -1,16 +1,16 @@
 <?php
-require_once 'apdt/plugins/auth/presenters/events/req_register_device.php';
-require_once 'apdt/plugins/auth/presenters/events/res_register_device.php';
-require_once 'apdt/plugins/auth/presenters/events/req_register_guest.php';
-require_once 'apdt/plugins/auth/presenters/events/res_register_guest.php';
-require_once 'apdt/plugins/auth/presenters/events/req_register.php';
-require_once 'apdt/plugins/auth/presenters/events/res_register.php';
-require_once 'apdt/plugins/auth/presenters/events/req_unregister.php';
-require_once 'apdt/plugins/auth/presenters/events/res_unregister.php';
-require_once 'apdt/plugins/auth/presenters/events/req_login.php';
-require_once 'apdt/plugins/auth/presenters/events/res_login.php';
-require_once 'apdt/plugins/auth/presenters/events/req_get_user.php';
-require_once 'apdt/plugins/auth/presenters/events/res_get_user.php';
+require_once 'apdos/plugins/auth/presenters/events/req_register_device.php';
+require_once 'apdos/plugins/auth/presenters/events/res_register_device.php';
+require_once 'apdos/plugins/auth/presenters/events/req_register_guest.php';
+require_once 'apdos/plugins/auth/presenters/events/res_register_guest.php';
+require_once 'apdos/plugins/auth/presenters/events/req_register.php';
+require_once 'apdos/plugins/auth/presenters/events/res_register.php';
+require_once 'apdos/plugins/auth/presenters/events/req_unregister.php';
+require_once 'apdos/plugins/auth/presenters/events/res_unregister.php';
+require_once 'apdos/plugins/auth/presenters/events/req_login.php';
+require_once 'apdos/plugins/auth/presenters/events/res_login.php';
+require_once 'apdos/plugins/auth/presenters/events/req_get_user.php';
+require_once 'apdos/plugins/auth/presenters/events/res_get_user.php';
 
 use \ft\sys\presenters\auth_presenter\events\Res_Get_User as Res_Get_User;
 use \ft\sys\presenters\auth_presenter\events\Req_Get_User as Req_Get_User;

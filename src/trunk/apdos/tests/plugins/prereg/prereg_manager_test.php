@@ -1,10 +1,10 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/plugins/prereg/models/prereg_manager.php';
-require_once 'apdt/plugins/prereg/accessors/prereg_user.php';
-require_once 'apdt/plugins/prereg/dto/prereg_user_dto.php';
-require_once 'apdt/tests/plugins/prereg/mock_prereg_manager_storage.php';
-require_once 'apdt/tests/plugins/prereg/afreeca_prereg_user_dto.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/plugins/prereg/models/prereg_manager.php';
+require_once 'apdos/plugins/prereg/accessors/prereg_user.php';
+require_once 'apdos/plugins/prereg/dto/prereg_user_dto.php';
+require_once 'apdos/tests/plugins/prereg/mock_prereg_manager_storage.php';
+require_once 'apdos/tests/plugins/prereg/afreeca_prereg_user_dto.php';
 
 class Prereg_Manager_Test extends Test_Case {
   const REGISTER_EMAIL = 'test@mail.com';

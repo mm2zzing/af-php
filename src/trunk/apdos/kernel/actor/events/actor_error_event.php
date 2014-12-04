@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/kernel/event/event.php';
+require_once 'apdos/kernel/event/event.php';
 
 class Actor_Error_Event extends Event {
   public static $ACTOR_ERROR_EVENT = 'actor_error_event';

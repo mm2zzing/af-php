@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/plugins/prereg/dto/prereg_user_dto.php';
+require_once 'apdos/plugins/prereg/dto/prereg_user_dto.php';
 
 class Prereg_User {
   private $pre_user_dto;

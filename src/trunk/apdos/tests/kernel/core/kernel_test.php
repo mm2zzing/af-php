@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/plugins/test/test_case.php';
-require_once 'apdt/kernel/core/kernel.php';
+require_once 'apdos/plugins/test/test_case.php';
+require_once 'apdos/kernel/core/kernel.php';
 
 class Kernel_Test extends Test_Case {
   public function __construct($method_name) {

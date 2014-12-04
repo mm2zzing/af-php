@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/kernel/event/event.php';
-require_once 'apdt/kernel/event/errors/event_error.php';
+require_once 'apdos/kernel/event/event.php';
+require_once 'apdos/kernel/event/errors/event_error.php';
 
 /**
  * @class Proxy_Event

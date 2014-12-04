@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/plugins/prereg/models/storage/prereg_storage.php';
-require_once 'apdt/plugins/prereg/dto/prereg_user_dto.php';
+require_once 'apdos/plugins/prereg/models/storage/prereg_storage.php';
+require_once 'apdos/plugins/prereg/dto/prereg_user_dto.php';
 
 class Mock_Prereg_Storage extends Prereg_Storage {
   private $stub_user;

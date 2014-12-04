@@ -1,6 +1,6 @@
 <?php
-require_once 'apdt/kernel/actor/component.php';
-require_once 'apdt/plugins/db_connecters/mongodb/write_concern.php';
+require_once 'apdos/kernel/actor/component.php';
+require_once 'apdos/plugins/db_connecters/mongodb/write_concern.php';
 
 /**
  * @class Mongodb_Connecter

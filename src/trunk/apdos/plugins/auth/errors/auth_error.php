@@ -1,5 +1,5 @@
 <?php
-require_once 'apdt/kernel/error/apdt_error.php';
+require_once 'apdos/kernel/error/apdos_error.php';
 
 class Auth_Error extends Apdt_Error {
   public function __construct($message) {
