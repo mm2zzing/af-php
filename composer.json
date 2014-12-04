@@ -1,5 +1,5 @@
 {
-  "name:"apdos-php",
+  "name":"apdos-php",
   "type":"library",
   "version":"0.0.1",
   "description":"apdos php version",
@@ -23,6 +23,5 @@
     "branch-alias": {
       "dev-master":"0.0.1"
     }
-  },
-  "minimum-stability":"dev"
+  }
 }
