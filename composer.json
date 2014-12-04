@@ -1,6 +1,13 @@
 {
   "name:"apdos-php",
   "type":"library",
+  "description":"apdos php version",
+  "keywords": [
+    "apdos"
+  ],
+  "homepage":"",
+  "require": {
+  },
   "license:"MIT",
   "authors":[
     {
@@ -8,6 +15,9 @@
       "email":"maaya.lee@gmail.com"
     }
   ],
+  "autoload": {
+    "psr-0": {"":"src/trunk"}
+  },
   "extra": {
     "branch-alias": {
       "dev-master":"0.0.1"
