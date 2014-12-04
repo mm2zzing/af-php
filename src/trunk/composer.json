@@ -7,5 +7,10 @@
       "name":"Lee, Hyeon-gi",
       "email":"maaya.lee@gmail.com"
     }
-  ]
+  ],
+  "extra": {
+    "branch-alias": {
+      "dev-master":"0.0.1"
+    }
+  }
 }

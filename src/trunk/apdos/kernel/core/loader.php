@@ -9,7 +9,7 @@ class Loader {
   }
 
   /**
-   * require_once시에 apdt의 모듈을 간편하게 불러올 수 있도록 
+   * require_once시에 apdos의 모듈을 간편하게 불러올 수 있도록 
    * include_path를 추가한다.
    */
   private function add_include_path() {
@@ -32,7 +32,7 @@ class Loader {
    * @param module_path 모듈의 Path
    */
   public function include_module($module_path) {
-    require_once (string) 'apdt/' . strtolower($module_path) . '.php';
+    require_once (string) 'apdos/' . strtolower($module_path) . '.php';
   }
 
   public function include_modules($module_parent_path, $modules) {
@@ -42,7 +42,7 @@ class Loader {
   }
 
   private function load_module($module_path) {
-    require_once (string) 'apdt/' .  $module_path . '.php';
+    require_once (string) 'apdos/' .  $module_path . '.php';
   }
 
   public static function get_instance() {
