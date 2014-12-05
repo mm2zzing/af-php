@@ -2,14 +2,14 @@
 require_once 'apdos/plugins/prereg/dto/prereg_user_dto.php';
 
 class Prereg_User {
-  private $pre_user_dto;
+  private $prereg_user_dto;
 
-  public function __construct($pre_user_dto) {
-    $this->pre_user_dto = $pre_user_dto;
+  public function __construct($prereg_user_dto) {
+    $this->prereg_user_dto = $prereg_user_dto;
   }
 
-  public function get_pre_user_dto() {
-    return $this->pre_user_dto;
+  public function get_prereg_user_dto() {
+    return $this->prereg_user_dto;
   }
 
   public function is_null() {

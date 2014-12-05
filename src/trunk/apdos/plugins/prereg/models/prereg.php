@@ -26,6 +26,7 @@ class Prereg extends Component {
     $user = new $this->user_dto_class_name;
     $user->email = $email;
     $this->read_values($user, $values);
+    $this->update_prereg_user_dto($user);
     $this->register_user($user);
     return $this->get_prereg_user(array('email'=>$email));
   }
@@ -37,9 +38,11 @@ class Prereg extends Component {
     $user = new $this->user_dto_class_name;
     $user->phonenumber = $phonenumber;
     $this->read_values($user, $values);
+    $this->update_prereg_user_dto($user);
     $this->register_user($user);
     return $this->get_prereg_user(array('phonenumber'=>$phonenumber));
   }
+
 
   private function read_values($user, $values) {
     foreach ($values as $key=>$value) {
@@ -78,6 +81,14 @@ class Prereg extends Component {
       throw new Prereg_Error($e->getMessage());
     }
     return new Null_Prereg_User();
+  }
+
+  private function update_prereg_user_dto($user) {
+    if (isset($_SERVER['REMOTE_ADDR']))
+      $user->prereg_ip = $_SERVER['REMOTE_ADDR'];
+    else
+      $user->prereg_ip = '<unknown system>';
+    $user->prereg_date = date('Y-m-d H:i:s');
   }
 
 }

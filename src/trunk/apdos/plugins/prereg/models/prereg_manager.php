@@ -32,7 +32,7 @@ class Prereg_Manager extends Component {
       $result = array();
       foreach ($users as $user) {
         $user_dto = new $this->user_dto_class_name;
-        $user_dto->deserialize($users[0]);
+        $user_dto->deserialize($user);
         array_push($result, new Prereg_User($user_dto));
       }
       return $result;
