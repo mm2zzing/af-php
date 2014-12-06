@@ -16,6 +16,6 @@
     }
   ],
   "autoload": {
-    "psr-0": {"":"src/trunk"}
+    "psr-4": {"":"src/trunk"}
   }
 }
