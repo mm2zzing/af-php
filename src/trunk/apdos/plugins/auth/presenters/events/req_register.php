@@ -1,5 +1,7 @@
 <?php
-Loader::get_instance()->include_module('kernel/event/event');
+namespace apdos\plugins\auth\presenters\events;
+
+Loader::get_instance()->include_module('apdos/kernel/event/event');
 
 class Req_Register extends Remote_Event {
   public static $REQ_REGISTER = "req_register";

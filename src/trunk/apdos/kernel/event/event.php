@@ -1,7 +1,9 @@
 <?php
-require_once 'apdos/kernel/core/object_converter.php';
-require_once 'apdos/kernel/event/errors/event_error.php';
-require_once 'apdos/kernel/event/event_database.php';
+namespace apdos\kernel\event;
+
+use apdos\kernel\core\Object_Converter;
+use apdos\kernel\event\errors\event_error;
+use apdos\kernel\event\event_database;
 
 class Event {
   protected $name;
@@ -78,6 +80,8 @@ class Event {
         break;
     }
     $event_type = Event_Database::get_instance()->get_class_name($json_data['type']);
+    if (!class_exists($event_type))
+      throw new \Exception($event_type . ' is not exist');
     $object = new $event_type();
     $object->init_with_data($json_data['name'], $json_data['data']);
     return $object;

@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\event;
+
 /**
  * @class Event_Database
  *
@@ -11,12 +13,12 @@ class Event_Database {
   public function __construct() {
     // @TODO REMOVE
     $this->add_event('Event', 'Event');
-    $this->add_event('Proxy_Event', 'Proxy_Event');
-    $this->add_event('Dummy_Event', 'Dummy_Event');
-    $this->add_event('Req_Get_User', '\ft\sys\presenters\auth_presenter\events\Req_Get_User');
-    $this->add_event('Res_Get_User', '\ft\sys\presenters\auth_presenter\events\Res_Get_User');
-    $this->add_event('Req_Register_Device', '\ft\sys\presenters\auth_presenter\events\Req_Register_Device');
-    $this->add_event('Res_Register_Device', '\ft\sys\presenters\auth_presenter\events\Res_Register_Device');
+    $this->add_event('Proxy_Event', 'apdos\kernel\actor\events\Proxy_Event');
+    $this->add_event('Dummy_Event', 'apdos\tests\kernel\event\Dummy_Event');
+    $this->add_event('Req_Get_User', 'apdos\plugins\auth\presenters\events\events\Req_Get_User');
+    $this->add_event('Res_Get_User', 'apdos\plugins\auth\presenters\events\events\Res_Get_User');
+    $this->add_event('Req_Register_Device', 'apdos\plugins\auth\presenters\events\events\Req_Register_Device');
+    $this->add_event('Res_Register_Device', 'apdos\plugins\auth\presenters\events\events\Res_Register_Device');
   }
 
   /**

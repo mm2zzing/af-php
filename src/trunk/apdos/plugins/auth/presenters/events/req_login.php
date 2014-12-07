@@ -1,5 +1,7 @@
 <?php
-Loader::get_instance()->include_module('kernel/actor/events/remote_event');
+namespace apdos\plugins\auth\presenters\events;
+
+Loader::get_instance()->include_module('apdos/kernel/actor/events/remote_event');
 
 class Req_Login extends Remote_Event {
   public static $REQ_LOGIN = "req_login";

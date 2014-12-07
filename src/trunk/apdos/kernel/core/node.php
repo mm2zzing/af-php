@@ -1,5 +1,7 @@
 <?php
-require_once 'apdos/kernel/event/event_dispatcher.php';
+namespace apdos\kernel\core;
+
+use apdos\kernel\event\event_dispatcher;
 
 class Node extends Event_Dispatcher {
   private $name;
@@ -20,15 +22,5 @@ class Node extends Event_Dispatcher {
 
   public function is_null() {
     return false;
-  }
-}
-
-class Null_Node extends Node {
-  public function __construct() {
-    parent::__construct('null', '/null');
-  }
-
-  public function is_null() {
-    return true;
   }
 }

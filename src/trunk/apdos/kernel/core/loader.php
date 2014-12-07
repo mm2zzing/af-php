@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\core;
+
 /**
  * @class Loader
  * 
@@ -7,8 +9,7 @@
  *        아닌 명시적으로 모듈을 로드하는 기능이기 때문에 규약에 맞출 필요는 없다.
  *        Composer는 클래스가 아닌 것들을 로드하는 방법을 제공하지 않으므로 클래스외의 다른 모듈은
  *        Loader 클래스를 이용하여 로드하게 된다.
- *        
- *        @TODO apdos 폴더 제거하고 full path로 로드하도록 변경하기.       
+
  * @author Lee Hyeon-gi
  */
 class Loader {
@@ -32,7 +33,7 @@ class Loader {
   }
 
   private function load_system() {
-    $this->include_module('kernel/core/entry');
+    $this->include_module('apdos/kernel/core/entry');
   }
 
   /**
@@ -44,7 +45,8 @@ class Loader {
    * @param module_path 모듈의 Path
    */
   public function include_module($module_path) {
-    require_once (string) 'apdos/' . strtolower($module_path) . '.php';
+    $module_path = str_replace('\\', '/', $module_path);
+    require_once (string) strtolower($module_path) . '.php';
   }
 
   public function include_modules($module_parent_path, $modules) {
@@ -54,7 +56,7 @@ class Loader {
   }
 
   private function load_module($module_path) {
-    require_once (string) 'apdos/' .  $module_path . '.php';
+    require_once (string) $module_path . '.php';
   }
 
   public static function get_instance() {

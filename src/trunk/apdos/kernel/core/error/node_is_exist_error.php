@@ -1,5 +1,7 @@
 <?php
-require_once 'apdos/kernel/error/apdos_error.php';
+namespace apdos\kernel\core\error;
+
+use apdos\kernel\error\apdos_error;
 
 class Node_Is_Exist_Error extends Apdt_Error {
   public function __construct($message) {

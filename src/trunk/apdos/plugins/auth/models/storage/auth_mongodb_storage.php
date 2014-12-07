@@ -1,9 +1,11 @@
 <?php
-Loader::get_instance()->include_module('plugins/auth/models/storage/auth_storage');
-Loader::get_instance()->include_module('plugins/auth/dto/user_dto');
-Loader::get_instance()->include_module('plugins/db_connecters/mongodb/mongodb_connecter');
-Loader::get_instance()->include_module('plugins/db_connecters/mongodb/write_concern');
-Loader::get_instance()->include_module('kernel/core/object_converter');
+namespace apdos\plugins\auth\models\storage;
+
+Loader::get_instance()->include_module('apdos/plugins/auth/models/storage/auth_storage');
+Loader::get_instance()->include_module('apdos/plugins/auth/dto/user_dto');
+Loader::get_instance()->include_module('apdos/plugins/db_connecters/mongodb/mongodb_connecter');
+Loader::get_instance()->include_module('apdos/plugins/db_connecters/mongodb/write_concern');
+Loader::get_instance()->include_module('apdos/kernel/core/object_converter');
 
 class Auth_Mongodb_Storage extends Auth_Storage {
   private $connecter;

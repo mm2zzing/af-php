@@ -1,7 +1,7 @@
 <?php
-namespace ft\sys\presenters\auth_presenter\events;
+namespace apdos\plugins\auth\presenters\events;
 
-\Loader::get_instance()->include_module('kernel/actor/events/remote_event');
+\Loader::get_instance()->include_module('apdos/kernel/actor/events/remote_event');
 
 class Res_Register_Device extends \Remote_Event {
   public static $RES_REGISTER_DEVICE = "res_register_device";

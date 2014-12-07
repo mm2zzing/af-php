@@ -1,6 +1,9 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/tests/plugins/test/was_run.php';
+namespace apdos\tests\plugins\test;
+
+use apdos\plugins\test\test_case;
+use apdos\plugins\test\test_result;
+use apdos\tests\plugins\test\was_run;
 
 class Test_Case_Test extends Test_Case {
   public function __construct($method_name) {

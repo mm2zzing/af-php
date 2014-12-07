@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\core;
+
 class Entry {
   protected $loader;
 

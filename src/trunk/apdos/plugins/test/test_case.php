@@ -1,4 +1,5 @@
 <?php
+namespace apdos\plugins\test;
 //require_once 'MockObjectGenerator.php';
 
 class Test_Case {
@@ -16,7 +17,7 @@ class Test_Case {
 
   protected function assert($expression, $msg) {
     if (!$expression) {
-      throw new Exception('test failed: ' . $msg);
+      throw new \Exception('test failed: ' . $msg);
     }
   }
 
@@ -34,7 +35,7 @@ class Test_Case {
     try {
       call_user_func(array($this, $this->test_method_name));
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       $result->add_failed_count();
       $message = $e->getMessage();
       $stack = $e->getTraceAsString();

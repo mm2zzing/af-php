@@ -1,7 +1,8 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/kernel/core/kernel.php';
-require_once 'apdos/kernel/actor/actor.php';
+namespace apdos\tests\kernel\actor;
+
+use apdos\plugins\test\test_case;
+use apdos\kernel\core\kernel;
 
 class Actor_Test extends Test_Case {
   private $kernel;
@@ -16,23 +17,23 @@ class Actor_Test extends Test_Case {
   }
 
   public function test_add_component() {
-    $find_component = $this->actor->get_component('Component');
+    $find_component = $this->actor->get_component('apdos\kernel\actor\Component');
     $this->assert(true == $find_component->is_null(), 'find component is null');
-    $component = $this->actor->add_component('Component');
-    $find_component = $this->actor->get_component('Component');
+    $component = $this->actor->add_component('apdos\kernel\actor\Component');
+    $find_component = $this->actor->get_component('apdos\kernel\actor\Component');
     $this->assert(false == $find_component->is_null(), 'find component is not null');
   }
 
   public function test_remove_component() {
-    $this->actor->add_component('Component');
-    $this->actor->remove_component('Component');
-    $component = $this->actor->get_component('Component');
+    $this->actor->add_component('apdos\kernel\actor\Component');
+    $this->actor->remove_component('apdos\kernel\actor\Component');
+    $component = $this->actor->get_component('apdos\kernel\actor\Component');
     $this->assert(true == $component->is_null(), 'component is null');
   }
 
   public function set_up() {
     $this->kernel = new Kernel();
-    $this->actor = $this->kernel->new_object('Actor', '/temp/actor1');
+    $this->actor = $this->kernel->new_object('apdos\kernel\actor\Actor', '/temp/actor1');
   }
 
   public function tear_down() {

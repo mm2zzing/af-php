@@ -1,21 +1,18 @@
 <?php
-require_once 'apdos/plugins/auth/presenters/events/req_register_device.php';
-require_once 'apdos/plugins/auth/presenters/events/res_register_device.php';
-require_once 'apdos/plugins/auth/presenters/events/req_register_guest.php';
-require_once 'apdos/plugins/auth/presenters/events/res_register_guest.php';
-require_once 'apdos/plugins/auth/presenters/events/req_register.php';
-require_once 'apdos/plugins/auth/presenters/events/res_register.php';
-require_once 'apdos/plugins/auth/presenters/events/req_unregister.php';
-require_once 'apdos/plugins/auth/presenters/events/res_unregister.php';
-require_once 'apdos/plugins/auth/presenters/events/req_login.php';
-require_once 'apdos/plugins/auth/presenters/events/res_login.php';
-require_once 'apdos/plugins/auth/presenters/events/req_get_user.php';
-require_once 'apdos/plugins/auth/presenters/events/res_get_user.php';
+namespace apdos\plugins\auth\presenters;
 
-use \ft\sys\presenters\auth_presenter\events\Res_Get_User as Res_Get_User;
-use \ft\sys\presenters\auth_presenter\events\Req_Get_User as Req_Get_User;
-use \ft\sys\presenters\auth_presenter\events\Req_Register_Device as Req_Register_Device;
-use \ft\sys\presenters\auth_presenter\events\Res_Register_Device as Res_Register_Device;
+use apdos\plugins\auth\presenters\events\req_register_device;
+use apdos\plugins\auth\presenters\events\res_register_device;
+use apdos\plugins\auth\presenters\events\req_register_guest;
+use apdos\plugins\auth\presenters\events\res_register_guest;
+use apdos\plugins\auth\presenters\events\req_register;
+use apdos\plugins\auth\presenters\events\res_register;
+use apdos\plugins\auth\presenters\events\req_unregister;
+use apdos\plugins\auth\presenters\events\res_unregister;
+use apdos\plugins\auth\presenters\events\req_login;
+use apdos\plugins\auth\presenters\events\res_login;
+use apdos\plugins\auth\presenters\events\req_get_user;
+use apdos\plugins\auth\presenters\events\res_get_user;
 
 /**
  * @class Auth_Controller

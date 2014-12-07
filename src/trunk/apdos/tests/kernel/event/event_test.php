@@ -1,10 +1,12 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/kernel/core/kernel.php';
-require_once 'apdos/kernel/event/event.php';
-require_once 'apdos/kernel/event/event_dispatcher.php';
-require_once 'apdos/kernel/event/listener.php';
-require_once 'apdos/tests/kernel/event/dummy_event.php';
+namespace apdos\tests\kernel\event;
+
+use apdos\plugins\test\test_case;
+use apdos\kernel\core\kernel;
+use apdos\kernel\event\event;
+use apdos\kernel\event\event_dispatcher;
+use apdos\kernel\event\listener;
+use apdos\tests\kernel\event\dummy_event;
 
 class Event_Test extends Test_Case {
   public static $DUMMY_EVENT_SERIALIZE_STRING = "{\"type\":\"Dummy_Event\",\"name\":\"dummy_event_name1\",\"data\":{\"var1\":1,\"var2\":\"1\"}}";
@@ -26,7 +28,7 @@ class Event_Test extends Test_Case {
 
   public function test_deserialize() {
     $event = Event::deserialize(self::$DUMMY_EVENT_SERIALIZE_STRING);
-    $this->assert(0 == strcmp('Dummy_Event', get_class($event)), "event type is Dummy_Event");
+    $this->assert(0 == strcmp('apdos\tests\kernel\event\Dummy_Event', get_class($event)), "event type is Dummy_Event");
     $this->assert(1 == $event->get_var1(), "var1 is 1");
     $this->assert(0 == strcmp("1", $event->get_var2()), "var2 is 1");
   }

@@ -1,7 +1,7 @@
 <?php
-namespace ft\sys\presenters\auth_presenter\events;
+namespace apdos\plugins\auth\presenters\events;
 
-\Loader::get_instance()->include_module('kernel/actor/events/remote_event');
+\Loader::get_instance()->include_module('apdos/kernel/actor/events/remote_event');
 
 class Req_Get_User extends \Remote_Event {
   public static $REQ_GET_USER = "req_get_user";

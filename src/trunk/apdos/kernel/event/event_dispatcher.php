@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\event;
+
 class Event_Dispatcher {
   private $event_listeners = array();
 

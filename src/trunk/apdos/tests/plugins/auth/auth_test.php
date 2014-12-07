@@ -1,9 +1,18 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/plugins/auth/models/auth.php';
-require_once 'apdos/plugins/auth/accessors/user.php';
-require_once 'apdos/plugins/auth/dto/user_dto.php';
-require_once 'apdos/tests/plugins/auth/mock_auth_storage.php';
+namespace apdos\tests\plugins\auth;
+
+use apdos\plugins\test\test_case;
+use apdos\plugins\auth\models\auth;
+use apdos\plugins\auth\accessors\User;
+use apdos\plugins\auth\dto\User_DTO;
+use apdos\tests\plugins\auth\Mock_Auth_Storage;
+use apdos\kernel\core\Kernel;
+use apdos\plugins\auth\errors\Auth_Error;
+use apdos\plugins\auth\errors\Auth_Id_Is_None;
+use apdos\plugins\auth\errors\Auth_Is_Unregistered;
+use apdos\plugins\auth\errors\Auth_Password_Is_Wrong;
+use apdos\plugins\auth\errors\Auth_Uuid_Is_None;
+
 
 class Auth_Test extends Test_Case {
   const REGISTER_ID = 'testid';
@@ -134,10 +143,10 @@ class Auth_Test extends Test_Case {
   }
 
   public function set_up() {
-    $actor = Kernel::get_instance()->new_object('Actor', '/sys/auth');
-    $this->auth = $actor->add_component('Auth');
-    $storage = $actor->add_component('Mock_Auth_Storage');
-    $this->auth->start($storage, 'User_DTO');
+    $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/auth');
+    $this->auth = $actor->add_component('apdos\plugins\auth\models\Auth');
+    $storage = $actor->add_component('apdos\tests\plugins\auth\Mock_Auth_Storage');
+    $this->auth->start($storage, 'apdos\plugins\auth\dto\User_DTO');
   }
 
   public function tear_down() {

@@ -1,6 +1,8 @@
 <?php
-require_once 'apdos/kernel/event/event.php';
-require_once 'apdos/kernel/actor/remote_actor.php';
+namespace apdos\kernel\actor\events;
+
+use apdos\kernel\event\event;
+use apdos\kernel\actor\remote_actor;
 
 /**
  * @class Remote_Event

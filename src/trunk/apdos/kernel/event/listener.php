@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\event;
+
 class Listener {
   private $object;
   private $object_method;

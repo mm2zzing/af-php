@@ -1,4 +1,6 @@
 <?php
+namespace apdos\plugins\test;
+
 class Test_Result {
   private $test_case_name;
   private $run_count;

@@ -1,9 +1,12 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/kernel/actor/actor.php';
-require_once 'apdos/kernel/actor/actor_accepter.php';
-require_once 'apdos/kernel/core/kernel.php';
-require_once 'apdos/tests/kernel/event/dummy_event.php';
+namespace apdos\tests\kernel\actor;
+
+use apdos\plugins\test\test_case;
+use apdos\kernel\actor\actor;
+use apdos\kernel\actor\Actor_Accepter;
+use apdos\kernel\core\kernel;
+use apdos\kernel\actor\errors\Actor_Error;
+use apdos\tests\kernel\event\dummy_event;
 
 class Actor_Accepter_Test extends Test_Case {
   public $receive_dummy_event = false;
@@ -58,9 +61,9 @@ class Actor_Accepter_Test extends Test_Case {
   }
 
   public function set_up() {
-    $this->actor = Kernel::get_instance()->new_object('Actor', '/temp/actor1');
+    $this->actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/temp/actor1');
     $this->actor->add_event_listener(Dummy_Event::$DUMMY_EVENT_NAME1, $this->create_listener());
-    $this->actor_accepter = $this->actor->add_component('Actor_Accepter');
+    $this->actor_accepter = $this->actor->add_component('apdos\kernel\actor\Actor_Accepter');
   }
 
   public function tear_down() {

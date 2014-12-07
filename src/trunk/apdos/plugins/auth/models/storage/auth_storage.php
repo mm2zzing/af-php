@@ -1,5 +1,7 @@
 <?php
-require_once 'apdos/kernel/actor/component.php';
+namespace apdos\plugins\auth\models\storage;
+
+use apdos\kernel\actor\component;
 
 class Auth_Storage extends Component {
   /**

@@ -1,5 +1,7 @@
 <?php
-require_once 'apdos/kernel/actor/component.php';
+namespace apdos\plugins\prereg\models\storage;
+
+use apdos\kernel\actor\component;
 
 class Prereg_Storage extends Component {
   /**

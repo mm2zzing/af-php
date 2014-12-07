@@ -1,6 +1,8 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/kernel/core/kernel.php';
+namespace apdos\tests\kernel\core;
+
+use apdos\plugins\test\test_case;
+use apdos\kernel\core\Kernel;
 
 class Kernel_Test extends Test_Case {
   public function __construct($method_name) {
@@ -9,7 +11,7 @@ class Kernel_Test extends Test_Case {
 
   public function test_create() {
     $kernel = new Kernel();
-    $node_class = 'Node';
+    $node_class = 'apdos\kernel\core\Node';
     $node_path = '/temp/node1';
     $node = $kernel->new_object($node_class, $node_path);
 

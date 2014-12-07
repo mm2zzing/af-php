@@ -1,10 +1,12 @@
 <?php
-require_once 'apdos/plugins/test/test_case.php';
-require_once 'apdos/kernel/core/object_converter.php';
+namespace apdos\tests\kernel\core;
+
+use apdos\plugins\test\test_case;
+use apdos\kernel\core\object_converter;
 
 class Object_Converter_Test extends Test_Case {
   public function test_object_to_array() {
-    $object = new stdClass();
+    $object = new \stdClass();
     $object->var1 = 0;
     $object->var2 = "test";
 

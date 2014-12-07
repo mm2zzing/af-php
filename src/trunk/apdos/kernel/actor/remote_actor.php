@@ -1,4 +1,6 @@
 <?php
+namespace apdos\kernel\actor;
+
 class Remote_Actor {
   private $actor_accepter;
   private $sender_path;
