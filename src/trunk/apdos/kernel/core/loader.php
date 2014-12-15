@@ -1,4 +1,6 @@
 <?php
+// @TODO apdos-php-launcher로 이동
+
 namespace apdos\kernel\core;
 
 /**
