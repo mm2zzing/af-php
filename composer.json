@@ -1,0 +1,21 @@
+{
+  "name":"apdos-php",
+  "version":"0.0.1",
+  "description":"apdos php version",
+  "keywords": [
+    "apdos"
+  ],
+  "homepage":"",
+  "require": {
+  },
+  "license":"MIT",
+  "authors":[
+    {
+      "name":"Lee, Hyeon-gi",
+      "email":"maaya.lee@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {"":"src/trunk"}
+  }
+}
