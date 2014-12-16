@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_NI7nAIUXEeSpVog-mv0UVA" name="NewModel">
+  <ownedComment xmi:id="_fIu_AIUYEeSpVog-mv0UVA" annotatedElement="_NI7nAIUXEeSpVog-mv0UVA _mPdmkIUXEeSpVog-mv0UVA">
+    <body>queue-daemon은 여러개를 띄워도 무방. php-app-server에서 동기화가 필요한 코드는 알아서 보호</body>
+  </ownedComment>
+  <ownedComment xmi:id="_iL14wIUaEeSpVog-mv0UVA" annotatedElement="_NI7nAIUXEeSpVog-mv0UVA _7opVMIUYEeSpVog-mv0UVA _zSPgYIUXEeSpVog-mv0UVA">
+    <body>router가 필요한 경우는 로그인시에 db 접속등으로 부하가 생기는 경우등의 이유가 필요하면 만든다. 일차적으로 데이터 분산을 정적으로 하면 필요업어진다</body>
+  </ownedComment>
+  <packagedElement xmi:type="uml:Node" xmi:id="_RfKAYIUXEeSpVog-mv0UVA" name="client"/>
+  <packagedElement xmi:type="uml:Node" xmi:id="_fLcKMIUXEeSpVog-mv0UVA" name="app-servers">
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_YWjWAIUXEeSpVog-mv0UVA" name="php-app-server1"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_dFMPYIUXEeSpVog-mv0UVA" name="php-app-server2"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_eGpFUIUXEeSpVog-mv0UVA" name="php-app-server3"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_kOUOMIUXEeSpVog-mv0UVA" name="http 요청" client="_RfKAYIUXEeSpVog-mv0UVA" supplier="_fLcKMIUXEeSpVog-mv0UVA"/>
+  <packagedElement xmi:type="uml:Node" xmi:id="_mPdmkIUXEeSpVog-mv0UVA" name="queue-servers">
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_07Oa8IUYEeSpVog-mv0UVA" name="php-queue-daemon2"/>
+    <nestedNode xmi:id="_qrbbkIUXEeSpVog-mv0UVA" name="php-queue-daemon1"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_zSPgYIUXEeSpVog-mv0UVA" name="dcache-servers">
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_yXLmUIUXEeSpVog-mv0UVA" name="cached1"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_y1Ax0IUXEeSpVog-mv0UVA" name="cached2"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_tW0q0IUXEeSpVog-mv0UVA" name="cached3"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_591OoIUXEeSpVog-mv0UVA" client="_fLcKMIUXEeSpVog-mv0UVA" supplier="_zSPgYIUXEeSpVog-mv0UVA"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_RalM8IUYEeSpVog-mv0UVA" name="이벤트를 1개씩 꺼내온다" client="_mPdmkIUXEeSpVog-mv0UVA" supplier="_zSPgYIUXEeSpVog-mv0UVA"/>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_SjjnMIUYEeSpVog-mv0UVA" name="해당 이벤트를 처리하는데 필요한 php listener를 호출하는url을 실행" client="_mPdmkIUXEeSpVog-mv0UVA" supplier="_fLcKMIUXEeSpVog-mv0UVA"/>
+  <packagedElement xmi:type="uml:Node" xmi:id="_7opVMIUYEeSpVog-mv0UVA" name="transaction-servers">
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_-3XT8IUYEeSpVog-mv0UVA" name="transaction-server1"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_Avn2EIUZEeSpVog-mv0UVA" name="transaction-server2"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_CvomAIUZEeSpVog-mv0UVA" name="php 코드 동기화를 위한 락 취득" client="_fLcKMIUXEeSpVog-mv0UVA" supplier="_7opVMIUYEeSpVog-mv0UVA"/>
+  <packagedElement xmi:type="uml:Node" xmi:id="_ZOoioIUZEeSpVog-mv0UVA" name="dchat-servers">
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_cM7fwIUZEeSpVog-mv0UVA" name="chatd1"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_eGZi0IUZEeSpVog-mv0UVA" name="chatd2"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_fMj5oIUZEeSpVog-mv0UVA" name="chatd3"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_g85O0IUZEeSpVog-mv0UVA" name="crouter1"/>
+    <nestedClassifier xmi:type="uml:Node" xmi:id="_vseosIUZEeSpVog-mv0UVA" name="crouter2"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Dependency" xmi:id="_KfLPIIUaEeSpVog-mv0UVA" client="_RfKAYIUXEeSpVog-mv0UVA" supplier="_ZOoioIUZEeSpVog-mv0UVA"/>
+</uml:Model>
