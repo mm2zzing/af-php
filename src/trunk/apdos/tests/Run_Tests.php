@@ -14,6 +14,8 @@ use apdos\tests\plugins\db\mongodb\mongodb_test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\auth_test;
+use Console_CommandLine;
+use Console_CommandLine_Exception;
 
 /**
  * @class Run_Test
@@ -26,6 +28,23 @@ class Run_Tests extends Tool {
   }
 
   public function main($argc, $argv) {
+    $cli = new Console_CommandLine( 
+      array('name'=>'Run_Tests',
+            'description' => 'APD/OS-PHP Run_Tests',
+            'version' => "0.0.1"));
+    try {
+      $result = $cli->parse($argc, $argv);
+      $this->run_test_cases();
+    }
+    catch (Console_CommandLine_Exception $e) {
+      echo $e->getMessage() . PHP_EOL;
+    }
+    catch (Exception $e) {
+      echo $e->getMessage();
+    }
+  }
+
+  private function run_test_cases() {
     $this->run_test_case_test();
     $this->run_event_test();
     $this->run_kernel_test();
