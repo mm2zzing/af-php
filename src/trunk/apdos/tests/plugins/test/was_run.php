@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\plugins\test;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 
 class Was_Run extends Test_Case {
   public $log = '';

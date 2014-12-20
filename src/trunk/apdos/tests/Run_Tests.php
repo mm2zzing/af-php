@@ -1,9 +1,9 @@
 <?php
 namespace apdos\tests;
 
-use apdos\kernel\core\entry;
-use apdos\plugins\test\test_result;
-use apdos\plugins\test\test_case;
+use apdos\tools\ash\Tool;
+use apdos\plugins\test\Test_Result;
+use apdos\plugins\test\Test_Case;
 use apdos\tests\plugins\test\test_case_test;
 use apdos\tests\kernel\event\event_test;
 use apdos\tests\kernel\core\kernel_test;
@@ -21,12 +21,11 @@ use apdos\tests\plugins\auth\auth_test;
  * @brief apdos 모듈 테스트 실행 프로그램
  * @author Lee Hyeon-gi
  */
-class Run_Tests extends Entry {
-  public function __construct($loader) {
-    parent::__construct($loader);
+class Run_Tests extends Tool {
+  public function __construct() {
   }
 
-  public function run() {
+  public function main($argc, $argv) {
     $this->run_test_case_test();
     $this->run_event_test();
     $this->run_kernel_test();

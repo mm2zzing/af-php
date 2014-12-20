@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\kernel\actor;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\kernel\core\kernel;
 
 class Actor_Test extends Test_Case {

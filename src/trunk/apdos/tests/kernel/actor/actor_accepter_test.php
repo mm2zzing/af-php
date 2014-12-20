@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\kernel\actor;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\kernel\actor\actor;
 use apdos\kernel\actor\Actor_Accepter;
 use apdos\kernel\core\kernel;

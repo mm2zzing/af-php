@@ -3,7 +3,7 @@ namespace apdos\tests\plugins\db\mongodb;
 
 use apdos\kernel\core\loader;
 use apdos\kernel\core\kernel;
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\plugins\db_connecters\mongodb\mongodb_connecter;
 
 class Mongodb_Test extends Test_Case {

@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\kernel\event;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\kernel\core\kernel;
 use apdos\kernel\event\event;
 use apdos\kernel\event\event_dispatcher;

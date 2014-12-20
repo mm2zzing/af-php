@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\plugins\auth;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\plugins\auth\models\auth;
 use apdos\plugins\auth\accessors\User;
 use apdos\plugins\auth\dto\User_DTO;

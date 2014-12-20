@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\kernel\core;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\kernel\core\Kernel;
 
 class Kernel_Test extends Test_Case {
