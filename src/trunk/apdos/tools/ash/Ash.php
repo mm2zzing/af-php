@@ -3,6 +3,7 @@ namespace apdos\tools\ash;
 
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\error\Ash_Error;
 
 class Ash extends Tool {
   const LOGO = '
@@ -14,6 +15,9 @@ class Ash extends Tool {
       (_)_\(_)| _ \ |   \  / /  / _ \ / __|  
        / _ \  |  _/ | |) |/_/  | (_) |\__ \  
       /_/ \_\ |_|   |___/       \___/ |___/';
+  const NAME = 'ash';
+  const DESCRIPTION = 'APD/OS-PHP shell';
+  const VERSION = '0.0.1';
   const PROMPT = 'ash> ';
 
   private $cmds = array();
@@ -37,6 +41,7 @@ class Ash extends Tool {
     try {
       $cli->parse($argc, $argv);
       if ($cli->has_option('run_cmd')) {
+        $this->display_version();
         $tool_argv = split(' ', $cli->get_option('run_cmd'));
         $tool_argc = count($tool_argv);
         $this->run_command($tool_argc, $tool_argv);
@@ -50,7 +55,10 @@ class Ash extends Tool {
         }
       }
     }
-    catch (Command_Line_Input_Exception $e) {
+    catch (Command_Line_Input_Error $e) {
+      echo $e->getMessage() . PHP_EOL;
+    }
+    catch (Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     return;
@@ -60,11 +68,15 @@ class Ash extends Tool {
     echo self::LOGO . PHP_EOL . PHP_EOL;
   }
 
+  private function display_version() {
+    echo self::NAME . ' version ' . self::VERSION . PHP_EOL;
+  }
+
   private function create_line_input() {
     $result = new Command_Line_Input(
-      array('name'=>'APD/OS Shell',
-            'description' => 'APD/OS-PHP Shell',
-            'version' => "0.0.1",
+      array('name'=>self::NAME,
+            'description' => self::DESCRIPTION,
+            'version' => self::VERSION,
             'add_help_option'=>TRUE,
             'add_version_option'=>TRUE));
     $result->add_option('run_cmd', array(
@@ -83,12 +95,29 @@ class Ash extends Tool {
   }
 
   private function run_command($tool_argc, $tool_argv) {
-    $class_name = $this->get_tool_class_name($tool_argv[0]);
-    $class = new $class_name();
-    $class->main($tool_argc, $tool_argv);
+    try {
+      $class_name = $this->get_tool_class_name($tool_argv[0]);
+      $class = new $class_name();
+      $class->main($tool_argc, $tool_argv);
+    }
+    catch (Command_Line_Input_Error $e) {
+      echo $e->getMessage() . PHP_EOL;
+    }
+    catch (Ash_Error $e) {
+      echo $e->getMessage() . PHP_EOL;
+    }
+    catch (Exception $e) {
+      echo $e->getMessage() . PHP_EOL;
+    }
   }
 
   private function get_tool_class_name($cmd_name) {
+    if (!$this->has_cmd($cmd_name))
+      throw new Ash_Error("Command \"$cmd_name\" is unknown.", Ash_Error::UNKNOW_COOMAND);
     return $this->cmds[$cmd_name];
   } 
+
+  private function has_cmd($cmd_name) {
+    return isset($this->cmds[$cmd_name]);
+  }
 }

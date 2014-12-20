@@ -3,7 +3,7 @@ namespace apdos\tools\ash\console;
 
 use Console_CommandLine;
 use Console_CommandLine_Exception;
-use apdos\tools\ash\console\error;
+use apdos\tools\ash\console\error\Command_Line_Input_Error;
 
 /**
  * @class Command_Line_Input

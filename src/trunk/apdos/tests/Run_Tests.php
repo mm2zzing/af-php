@@ -14,8 +14,8 @@ use apdos\tests\plugins\db\mongodb\mongodb_test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\auth_test;
-use Console_CommandLine;
-use Console_CommandLine_Exception;
+use apdos\tools\ash\console\Command_Line_Input;
+use apdos\tools\ash\console\error\Command_Line_Input_Error;
 
 /**
  * @class Run_Test
@@ -24,23 +24,24 @@ use Console_CommandLine_Exception;
  * @author Lee Hyeon-gi
  */
 class Run_Tests extends Tool {
+  const NAME = "run_tests";
+  const DESCRIPTION = "APD/OS-PHP unittest runner";
+  const VERSION = '0.0.1';
+
   public function __construct() {
   }
 
   public function main($argc, $argv) {
-    $cli = new Console_CommandLine( 
-      array('name'=>'Run_Tests',
-            'description' => 'APD/OS-PHP Run_Tests',
-            'version' => "0.0.1"));
+    $cli = new Command_Line_Input( 
+      array('name'=>self::NAME,
+            'description' => self::DESCRIPTION,
+            'version' => self::VERSION));
     try {
-      $result = $cli->parse($argc, $argv);
+      $cli->parse($argc, $argv);
       $this->run_test_cases();
     }
-    catch (Console_CommandLine_Exception $e) {
+    catch (Command_Line_Input_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
-    }
-    catch (Exception $e) {
-      echo $e->getMessage();
     }
   }
 
