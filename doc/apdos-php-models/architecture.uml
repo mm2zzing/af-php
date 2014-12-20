@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Package xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_T8hYYIQfEeSpVog-mv0UVA" name="apdos">
+  <ownedComment xmi:id="_0o_DAIQpEeSpVog-mv0UVA" annotatedElement="_T8hYYIQfEeSpVog-mv0UVA _pHePAIQmEeSpVog-mv0UVA">
+    <body>로딩할 Application Root 폴더를 지정하면 그곳에 있는  Config정보를 이용해서 초기화&#xD;
+</body>
+  </ownedComment>
+  <packagedElement xmi:type="uml:Package" xmi:id="_Y69BQIQfEeSpVog-mv0UVA" name="kernel"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_VFH7AIQmEeSpVog-mv0UVA" name="Model"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_lSN0sIQmEeSpVog-mv0UVA" name="Router"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_rTjsEIQmEeSpVog-mv0UVA" name="Config"/>
+  <packagedElement xmi:type="uml:Class" xmi:id="_9FqbwIQmEeSpVog-mv0UVA" name="Kernel"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_U6OyQIQpEeSpVog-mv0UVA" name="App_Loaders" memberEnd="_U6OyQYQpEeSpVog-mv0UVA _U6R1koQpEeSpVog-mv0UVA" navigableOwnedEnd="_U6R1koQpEeSpVog-mv0UVA">
+    <ownedEnd xmi:id="_U6OyQYQpEeSpVog-mv0UVA" name="app_Loaders" type="_pHePAIQmEeSpVog-mv0UVA" association="_U6OyQIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_U6R1kIQpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U6R1kYQpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_U6R1koQpEeSpVog-mv0UVA" name="routers" type="_lSN0sIQmEeSpVog-mv0UVA" association="_U6OyQIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_U6R1k4QpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_U6R1lIQpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_XwJ2gIQpEeSpVog-mv0UVA" name="Controller"/>
+  <packagedElement xmi:type="uml:Association" xmi:id="_bHQ8QIQpEeSpVog-mv0UVA" name="Routers" memberEnd="_bHQ8QYQpEeSpVog-mv0UVA _bHT_koQpEeSpVog-mv0UVA" navigableOwnedEnd="_bHT_koQpEeSpVog-mv0UVA">
+    <ownedEnd xmi:id="_bHQ8QYQpEeSpVog-mv0UVA" name="routers" type="_lSN0sIQmEeSpVog-mv0UVA" association="_bHQ8QIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bHT_kIQpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bHT_kYQpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_bHT_koQpEeSpVog-mv0UVA" name="controllers" type="_XwJ2gIQpEeSpVog-mv0UVA" association="_bHQ8QIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_bHT_k4QpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_bHT_lIQpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Association" xmi:id="_d47yoIQpEeSpVog-mv0UVA" name="App_Loaders" memberEnd="_d47yoYQpEeSpVog-mv0UVA _d4-18YQpEeSpVog-mv0UVA" navigableOwnedEnd="_d4-18YQpEeSpVog-mv0UVA">
+    <ownedEnd xmi:id="_d47yoYQpEeSpVog-mv0UVA" name="app_Loaders" type="_pHePAIQmEeSpVog-mv0UVA" association="_d47yoIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d47yooQpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d4-18IQpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+    <ownedEnd xmi:id="_d4-18YQpEeSpVog-mv0UVA" name="configs" type="_rTjsEIQmEeSpVog-mv0UVA" association="_d47yoIQpEeSpVog-mv0UVA">
+      <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_d4-18oQpEeSpVog-mv0UVA"/>
+      <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_d4-184QpEeSpVog-mv0UVA" value="*"/>
+    </ownedEnd>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Class" xmi:id="_smDuYIQpEeSpVog-mv0UVA" name="Class7"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_m2gGYIQwEeSpVog-mv0UVA" name="launcher">
+    <packagedElement xmi:type="uml:Class" xmi:id="_pHePAIQmEeSpVog-mv0UVA" name="App_Launcher"/>
+  </packagedElement>
+</uml:Package>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_pgBD0IWEEeSsXIxNG1h4tg" name="NewModel">
+  <packagedElement xmi:type="uml:Package" xmi:id="_AxF9oIWFEeSsXIxNG1h4tg" name="web-mixed-deployment">
+    <packagedElement xmi:type="uml:Node" xmi:id="_fx0DsIWFEeSsXIxNG1h4tg" name="cache-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_rnhGYIWFEeSsXIxNG1h4tg" name="dcache"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_twryUIWFEeSsXIxNG1h4tg" name="dcache"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_035FkIWFEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_1wlBEIWFEeSsXIxNG1h4tg" supplier="_fx0DsIWFEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_ErPpkIWGEeSsXIxNG1h4tg" supplier="_4lsNAIWFEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_MK0ZgIWGEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_4lsNAIWFEeSsXIxNG1h4tg" name="db-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_6jFGwIWFEeSsXIxNG1h4tg" name="mysql(master)"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_-8IxsIWFEeSsXIxNG1h4tg" name="mysql"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Node" xmi:id="_tegnwIWGEeSsXIxNG1h4tg" name="persistent-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_2gQVEIWGEeSsXIxNG1h4tg" name="game-server"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_4eTWIIWGEeSsXIxNG1h4tg" name="game-server"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Device" xmi:id="_D77QAIWHEeSsXIxNG1h4tg" name="client"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_FiT_AIWHEeSsXIxNG1h4tg" client="_D77QAIWHEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_GBB7UIWHEeSsXIxNG1h4tg" client="_D77QAIWHEeSsXIxNG1h4tg" supplier="_tegnwIWGEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_mQP00IWHEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_pVrfQIWIEeSsXIxNG1h4tg" name="web-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_pVrfQYWIEeSsXIxNG1h4tg" name="nginx"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_pVrfQoWIEeSsXIxNG1h4tg" name="nginx"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_um0BsIWIEeSsXIxNG1h4tg" client="_D77QAIWHEeSsXIxNG1h4tg" supplier="_pVrfQIWIEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_xY8yIIWIEeSsXIxNG1h4tg" name="queue-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_xY8yIYWIEeSsXIxNG1h4tg" name="dqueue"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_xY8yIoWIEeSsXIxNG1h4tg" name="dqueue"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_E54bIIWJEeSsXIxNG1h4tg" client="_pVrfQIWIEeSsXIxNG1h4tg" supplier="_B9s94IWJEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OMU24IWJEeSsXIxNG1h4tg" client="_pVrfQIWIEeSsXIxNG1h4tg" supplier="_xY8yIIWIEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_OpmowIWJEeSsXIxNG1h4tg" client="_xY8yIIWIEeSsXIxNG1h4tg" supplier="_pVrfQIWIEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_STWWoIWJEeSsXIxNG1h4tg" client="_pVrfQIWIEeSsXIxNG1h4tg" supplier="_4lsNAIWFEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_WcjAoIWJEeSsXIxNG1h4tg" client="_pVrfQIWIEeSsXIxNG1h4tg" supplier="_fx0DsIWFEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_B9s94IWJEeSsXIxNG1h4tg" name="transaction-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_B9s94YWJEeSsXIxNG1h4tg" name="dqueue"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_B9s94oWJEeSsXIxNG1h4tg" name="dqueue"/>
+    </packagedElement>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_9SjS0IWHEeSsXIxNG1h4tg" name="persistent-deployment">
+    <packagedElement xmi:type="uml:Device" xmi:id="_B-hn0IWKEeSsXIxNG1h4tg" name="client"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_DVfawIWKEeSsXIxNG1h4tg" name="persistent-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_Bsj70IWPEeSsXIxNG1h4tg" name="game-server"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_DgjB8IWPEeSsXIxNG1h4tg" name="game-server"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_NS-lUIWPEeSsXIxNG1h4tg" name="chat-server"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_GIDpAIWKEeSsXIxNG1h4tg" client="_B-hn0IWKEeSsXIxNG1h4tg" supplier="_DVfawIWKEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Device" xmi:id="_ehPaYIWKEeSsXIxNG1h4tg" name="db-cache-server">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_ELYusIWPEeSsXIxNG1h4tg" name="db-dcache"/>
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_I51a0IWPEeSsXIxNG1h4tg" name="db-dcache"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_jkHeYIWKEeSsXIxNG1h4tg" client="_DVfawIWKEeSsXIxNG1h4tg" supplier="_ehPaYIWKEeSsXIxNG1h4tg"/>
+    <packagedElement xmi:type="uml:Node" xmi:id="_mUsIkIWKEeSsXIxNG1h4tg" name="db-servers">
+      <nestedClassifier xmi:type="uml:Device" xmi:id="_KeqDkIWPEeSsXIxNG1h4tg" name="mysql"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_oP20wIWKEeSsXIxNG1h4tg" client="_ehPaYIWKEeSsXIxNG1h4tg" supplier="_mUsIkIWKEeSsXIxNG1h4tg"/>
+  </packagedElement>
+</uml:Model>
