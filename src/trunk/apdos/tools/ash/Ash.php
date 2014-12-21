@@ -1,6 +1,8 @@
 <?php
 namespace apdos\tools\ash;
 
+use apdos\kernel\actor\Actor;
+use apdos\kernel\core\Kernel;
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tools\ash\error\Ash_Error;
@@ -33,6 +35,9 @@ class Ash extends Tool {
    */
   public function register_cmd($cmd_name, $tool_class_name) {
     $this->cmds[$cmd_name] = $tool_class_name;
+    $path = '/bin/' . $cmd_name;
+    $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', $path);
+    $actor->add_component($tool_class_name);
   }
 
   public function main($argc, $argv) {
@@ -96,9 +101,12 @@ class Ash extends Tool {
 
   private function run_command($tool_argc, $tool_argv) {
     try {
-      $class_name = $this->get_tool_class_name($tool_argv[0]);
-      $class = new $class_name();
-      $class->main($tool_argc, $tool_argv);
+      $cmd_name = $tool_argv[0];
+      $path = '/bin/' . $cmd_name;
+      $class_name = $this->get_tool_class_name($cmd_name);
+      $actor = Kernel::get_instance()->find_object($path);
+      $component = $actor->get_component($class_name);
+      $component->main($tool_argc, $tool_argv);
     }
     catch (Command_Line_Input_Error $e) {
       echo $e->getMessage() . PHP_EOL;
