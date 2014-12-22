@@ -1,5 +1,5 @@
 <?php
-namespace apdos\plugins\db_connecters\mongodb;
+namespace apdos\plugins\database\connectors\mongodb;
 
 /**
  * @class Majority_Acknowleged

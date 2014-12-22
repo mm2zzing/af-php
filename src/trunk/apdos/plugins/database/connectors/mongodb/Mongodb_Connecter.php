@@ -1,8 +1,8 @@
 <?php
-namespace apdos\plugins\db_connecters\mongodb;
+namespace apdos\plugins\database\connectors\mongodb;
 
 use apdos\kernel\actor\component;
-use apdos\plugins\db_connecters\mongodb\write_concern;
+use apdos\plugins\database\connectors\mongodb\write_concern;
 
 /**
  * @class Mongodb_Connecter

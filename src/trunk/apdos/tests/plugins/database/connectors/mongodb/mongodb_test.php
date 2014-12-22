@@ -1,10 +1,10 @@
 <?php
-namespace apdos\tests\plugins\db\mongodb;
+namespace apdos\tests\plugins\database\connectors\mongodb;
 
 use apdos\kernel\core\loader;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
-use apdos\plugins\db_connecters\mongodb\mongodb_connecter;
+use apdos\plugins\database\connectors\mongodb\mongodb_connecter;
 
 class Mongodb_Test extends Test_Case {
   private $connecter;
@@ -96,7 +96,7 @@ class Mongodb_Test extends Test_Case {
 
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mongo');
-    $this->connecter = $actor->add_component('apdos\plugins\db_connecters\mongodb\Mongodb_Connecter');
+    $this->connecter = $actor->add_component('apdos\plugins\database\connectors\mongodb\Mongodb_Connecter');
     $this->connecter->connect('mongodb://localhost:27017');
     $this->connecter->select_database('apdos_test');
     $this->connecter->drop_collection('ft');
