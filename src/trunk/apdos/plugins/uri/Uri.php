@@ -5,14 +5,34 @@ use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 
 class Uri extends Component {
+  private $uri_string;
+  private $uri_tokens;
+
+  public function parse($request_uri) {
+    $request_uri = $this->extract_uri($request_uri);
+    $this->uri_string = '/'. $request_uri;
+    if ($this->uri_string == '/')
+      $this->uri_tokens = array();
+    else
+      $this->uri_tokens = split('/', $request_uri);
+  }
+
+  public function get_segment($index, $default = '') {
+    if (isset($this->uri_tokens[$index]))
+      return $this->uri_tokens[$index];
+    return $default;
+  }
+
   public function get_uri_string() {
-    $uri = $_SERVER['REQUEST_URI'];
+    return $this->uri_string;
+  }
+
+  private function extract_uri($uri) {
     $tokens = split($_SERVER['SCRIPT_NAME'], $uri);
-    // URI가 공백이거나 슬래시 한개면 맨 상위 루트를 의미한다.
-    if ($tokens[0] == '' || $tokens[0] == '/')
-      return '/';
-    // URI 마지막 뒤에 붙은 슬래시는 무시한다. 루트가 아닌 경우 마지막 슬래시는 의미가 없다.
-    return rtrim($tokens[0], '/');
+    if ($tokens[0] == '')
+      return trim($tokens[1], '/');
+    else
+      return trim($tokens[0], '/');
   }
 
   public static function get_instance() {
