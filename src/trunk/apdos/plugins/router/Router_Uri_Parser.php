@@ -1,9 +1,14 @@
 <?php
 namespace apdos\plugins\router;
 
-use apdos\kernel\actor\Component;
-
-class Router_Uri extends Component {
+/**
+ * @class Router_Uri_Parser
+ *
+ * @brief Router에 등록된 URI를 파싱하는 객체
+ *
+ * @author Lee, Hyeon-gi
+ */
+class Router_Uri_Parser {
   private $register_uri;
   private $uri_string;
   private $uri_tokens;
@@ -19,12 +24,11 @@ class Router_Uri extends Component {
   }
 
   private function extract_uri($register_uri) {
-    $result = strstr($register_uri, '/{', true);
-    if ($result == '') {
+    $tokens = split('/{', $register_uri);
+    if ($tokens[0] == '')
       return trim($register_uri, '/');
-    }
     else
-      return trim($result, '/');
+      return trim($tokens[0], '/');
   }
 
   public  function get_paramters($uri) {
@@ -40,7 +44,7 @@ class Router_Uri extends Component {
   }
 
   private function has_parameter($uri) {
-    return $uri != ('/' . $this->register_uri);
+    return $uri != ($this->uri_string);
   }
 
   public  function get_method($uri) {

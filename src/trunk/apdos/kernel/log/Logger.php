@@ -5,7 +5,7 @@ use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 
 class Logger extends Component {
-  public function debug($tag, $message) {
+  public static function debug($tag, $message) {
     echo '[' . $tag . '] ' . $message;
   }
 

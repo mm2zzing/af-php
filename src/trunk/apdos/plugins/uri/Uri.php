@@ -5,35 +5,20 @@ use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 
 class Uri extends Component {
-  private $uri_string;
-  private $uri_tokens;
+  private $paser;
 
   public function parse($request_uri) {
-    $request_uri = $this->extract_uri($request_uri);
-    $this->uri_string = '/'. $request_uri;
-    if ($this->uri_string == '/')
-      $this->uri_tokens = array();
-    else
-      $this->uri_tokens = split('/', $request_uri);
+    $this->parser = new Uri_Parser();
+    $this->parser->parse($request_uri);
   }
 
   public function get_segment($index, $default = '') {
-    if (isset($this->uri_tokens[$index]))
-      return $this->uri_tokens[$index];
-    return $default;
+    $this->parser->get_segment($index, $default);
   }
 
   public function get_uri_string() {
-    return $this->uri_string;
-  }
-
-  private function extract_uri($uri) {
-    $tokens = split($_SERVER['SCRIPT_NAME'], $uri);
-    if ($tokens[0] == '')
-      return trim($tokens[1], '/');
-    else
-      return trim($tokens[0], '/');
-  }
+    return $this->parser->get_uri_string();
+  } 
 
   public static function get_instance() {
     static $instance = null;

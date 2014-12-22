@@ -5,6 +5,7 @@ use apdos\kernel\core\Kernel;
 
 class Component {
   private $parent_actor;
+  private $properties = array();
 
   public function set_parent($actor) {
     $this->parent_actor = $actor;
@@ -16,6 +17,16 @@ class Component {
 
   public function is_null() {
     return false;
+  }
+
+  public function set_property($name, $component) {
+    $this->properties[$name] = $component;
+  }
+
+  public function get_property($name) {
+    if (isset($this->properties[$name]))
+      return $this->properties[$name];
+    return new Null_Component();
   }
 
   public static function create($component_class, $path) {
