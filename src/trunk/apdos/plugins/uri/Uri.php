@@ -8,7 +8,7 @@ class Uri extends Component {
   private $paser;
 
   public function parse($request_uri) {
-    $this->parser = new Uri_Parser();
+    $this->parser = new Uri_Parser($_SERVER['SCRIPT_NAME']);
     $this->parser->parse($request_uri);
   }
 

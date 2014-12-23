@@ -26,7 +26,7 @@ class Router_Uri_Parser {
   private function extract_uri($register_uri) {
     $tokens = split('/{', $register_uri);
     if ($tokens[0] == '')
-      return trim($register_uri, '/');
+      return trim($tokens[1], '/');
     else
       return trim($tokens[0], '/');
   }
