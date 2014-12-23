@@ -26,15 +26,12 @@ class Uri_Parser {
     if ($this->uri_string == '/')
       $this->uri_tokens = array();
     else
-      $this->uri_tokens = split('/', $request_uri);
+      $this->uri_tokens = explode('/', $request_uri);
   }
 
   private function extract_uri($uri) {
-    $tokens = split($this->split_pattern, $uri);
-    if ($tokens[0] == '')
-      return trim($tokens[1], '/');
-    else
-      return trim($tokens[0], '/');
+    $tokens = explode($this->split_pattern, $uri);
+    return trim($tokens[0], '/');
   }
 
   public function get_segment($index, $default = '') {

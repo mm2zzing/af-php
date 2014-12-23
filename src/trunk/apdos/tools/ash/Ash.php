@@ -47,14 +47,14 @@ class Ash extends Tool {
       $cli->parse($argc, $argv);
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
-        $tool_argv = split(' ', $cli->get_option('run_cmd'));
+        $tool_argv = explode(' ', $cli->get_option('run_cmd'));
         $tool_argc = count($tool_argv);
         $this->run_command($tool_argc, $tool_argv);
       }
       else {
         while (1) {
           $line = readline(self::PROMPT);
-          $tool_argv = split(' ', $line);
+          $tool_argv = explode(' ', $line);
           $tool_argc = count($tool_argv);
           $this->run_command($tool_argc, $tool_argv);
         }
@@ -63,7 +63,7 @@ class Ash extends Tool {
     catch (Command_Line_Input_Error $e) {
       echo $e->getMessage() . PHP_EOL;
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     return;
@@ -114,7 +114,7 @@ class Ash extends Tool {
     catch (Ash_Error $e) {
       echo $e->getMessage() . PHP_EOL;
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
   }

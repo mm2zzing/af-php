@@ -1,6 +1,5 @@
 <?php
 namespace apdos\plugins\test;
-//require_once 'MockObjectGenerator.php';
 
 class Test_Case {
   private $test_method_name;
@@ -21,28 +20,24 @@ class Test_Case {
     }
   }
 
-  /*
-  public function generateMock($className, $parentClassName, $arrayMethods, $arrayArgs) {
-    $gen = new MockObjectGenerator();
-    return $gen->getMock($className, $parentClassName, $arrayMethods, $arrayArgs);
-  }
-  */
-
   public function run($result) {
-    $result->add_run_count();
-    $this->set_up();
-
     try {
-      call_user_func(array($this, $this->test_method_name));
+      $result->add_run_count();
+      $this->set_up();
+      $this->run_method();
+      $this->tear_down();
     }
     catch (\Exception $e) {
+      $this->tear_down();
       $result->add_failed_count();
       $message = $e->getMessage();
       $stack = $e->getTraceAsString();
       echo "Exception: $message $stack" . PHP_EOL;
     }
+  }
 
-    $this->tear_down();
+  private function run_method() {
+    call_user_func(array($this, $this->test_method_name));
   }
 }
 

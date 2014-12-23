@@ -4,6 +4,13 @@ namespace apdos\plugins\uri;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 
+/**
+ * @class Uri
+ *
+ * @brief 유저가 입력한 URI 정보를 조회하는 컴포넌트
+ * 
+ * @author Lee, Hyeon-gi
+ */
 class Uri extends Component {
   private $paser;
 

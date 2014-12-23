@@ -3,7 +3,7 @@ namespace apdos\kernel\core;
 
 use apdos\kernel\core\node;
 use apdos\kernel\core\null_node;
-use apdos\kernel\core\error\node_is_exist_error;
+use apdos\kernel\core\errors\node_is_exist_error;
 
 /**
  * @class Kernel
@@ -51,7 +51,7 @@ class Kernel {
     }
     return new Null_Node();
   }
-
+   
   public static function get_instance() {
     static $instance = null;
     if (null == $instance) {

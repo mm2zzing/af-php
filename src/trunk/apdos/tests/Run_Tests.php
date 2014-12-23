@@ -10,7 +10,7 @@ use apdos\tests\kernel\core\kernel_test;
 use apdos\tests\kernel\actor\actor_test;
 use apdos\tests\kernel\core\object_converter_test;
 use apdos\tests\kernel\actor\actor_accepter_test;
-use apdos\tests\plugins\database\connectors\mongodb\mongodb_test;
+use apdos\tests\plugins\database\connectors\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\auth_test;
