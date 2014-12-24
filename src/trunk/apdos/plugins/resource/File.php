@@ -11,6 +11,7 @@ class File extends Component {
 
   public function load($file_path) {
     $this->contents = file_get_contents($file_path);
+    //$this->contents = '{"register_gets":[{"uri":"/welcome/hellow", "controller_class":"app\\\\welcome\\\\controllers\\\\Hellow"}]}';
   }
 
   public function get_contents() {
