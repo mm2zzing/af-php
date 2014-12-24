@@ -1,8 +1,12 @@
 <?php
 namespace apdos\kernel\log\handlers;
 
-class Logd_Handler implements Log_Handler {
-  public function write($message) {
-    echo $message . '<br/>';
+class Logd_Handler implements Logger_Handler {
+  public function write($log) {
+    $time = $log->get_time();
+    $tag = $log->get_tag();
+    $level = $log->get_level();
+    $message = $log->get_message();
+    echo "[$time][$tag][$level]$message" . '<br/>';
   }
 }
