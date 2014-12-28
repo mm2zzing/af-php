@@ -1,5 +1,5 @@
 <?php
-namespace apdos\plugins\database\connectors\mongodb;
+namespace apdos\plugins\database\connecters\mongodb;
 
 class Unkacknowleged_Write implements Write_Concern {
   public function get_options() {

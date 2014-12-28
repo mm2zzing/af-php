@@ -1,19 +1,20 @@
 <?php
-namespace apdos\tools\ash\cmds;
+namespace apdos\tools\acttree;
 
 use apdos\tools\ash\Tool;
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\acttree\actions\Acttree_Help;
 
 /**
- * @class Ash_Exit
+ * @class Acttree
  *
- * @brief 쉘에서 빠져나오는 프로그램 
+ * @brief 생성되어 있는 Actor리스트를 트리구조로 출력 
  * @author Lee Hyeon-gi
  */
-class Ash_Exit extends Tool {
-  const NAME = "ash exit";
-  const DESCRIPTION = "APD/OS-PHP shell exit";
+class Acttree extends Tool {
+  const NAME = "acttre";
+  const DESCRIPTION = "Display a tree of actors";
   const VERSION = '0.0.1';
 
   public function __construct() {
@@ -24,9 +25,15 @@ class Ash_Exit extends Tool {
       array('name'=>self::NAME,
             'description' => self::DESCRIPTION,
             'version' => self::VERSION));
+    $cli->addOption('help', array(
+      'short_name'=>'-h',
+      'long_name'=>'--help',
+      'action'=>'Acttree_Help',
+      'description'=>'help'
+    ));
     try {
       $cli->parse($argc, $argv);
-      exit;
+      //echo 'hi';
     }
     catch (Command_Line_Input_Exception $e) {
       echo $e->getMessage() . PHP_EOL;

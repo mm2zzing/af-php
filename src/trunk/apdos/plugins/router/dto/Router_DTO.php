@@ -6,7 +6,7 @@ class Router_DTO {
 
   /**
    *
-   * @param register_gets stdClass 라우팅 정보리스트
+   * @param register_gets Array 라우팅 연결 정보
    */
   public function __construct($register_gets) {
     foreach ($register_gets as $register_get) {

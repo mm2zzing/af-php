@@ -16,10 +16,13 @@ class Router extends Component {
     $this->router = new Null_Router_DTO();
   }
 
-  public function load() {
+  public function load($register_gets) {
+    /*
     $file = $this->get_property('file');
     $parse_data = json_decode($file->get_contents());
-    $this->router = new Router_DTO(Object_Converter::to_object($parse_data->register_gets));
+    $this->router = new Router_DTO(Object_Converter::to_object($parse_data));
+    */
+    $this->router = new Router_DTO($register_gets);
   }
 
   /**

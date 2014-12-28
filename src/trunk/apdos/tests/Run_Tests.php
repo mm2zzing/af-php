@@ -10,12 +10,13 @@ use apdos\tests\kernel\core\kernel_test;
 use apdos\tests\kernel\actor\actor_test;
 use apdos\tests\kernel\core\object_converter_test;
 use apdos\tests\kernel\actor\actor_accepter_test;
-use apdos\tests\plugins\database\connectors\mongodb\Mongodb_Test;
+use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\auth_test;
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tests\plugins\database\connecters\mysql\Mysql_Test;
 
 /**
  * @class Run_Test
@@ -53,6 +54,7 @@ class Run_Tests extends Tool {
     $this->run_actor_accepter_test();
     $this->run_object_converter_test();
     $this->run_mongodb_test();
+    $this->run_mysql_test();
     $this->run_auth_test();
     $this->run_prereg_test();
     $this->run_prereg_manager_test();
@@ -195,6 +197,15 @@ class Run_Tests extends Tool {
     $test = new Mongodb_Test('test_set');
     $test->run($test_result);
     $test = new Mongodb_Test('test_set_all');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_mysql_test() {
+    $test_result = new Test_Result('mysql_test');
+
+    $test = new Mysql_Test('test_insert');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;

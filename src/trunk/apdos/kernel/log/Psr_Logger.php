@@ -26,6 +26,9 @@ class Psr_Logger implements LoggerInterface {
       LogLevel::INFO => 1 << 6,
       LogLevel::DEBUG => 1 << 7
     );
+
+    foreach ($this->masks as $mask)
+      $this->level_mask |= $mask;
   }
 
   public function select_tag($tag) {

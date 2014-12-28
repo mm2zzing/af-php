@@ -1,6 +1,8 @@
 <?php
 namespace apdos\plugins\test;
 
+use apdos\kernel\log\Logger;
+
 class Test_Case {
   private $test_method_name;
 
@@ -32,7 +34,7 @@ class Test_Case {
       $result->add_failed_count();
       $message = $e->getMessage();
       $stack = $e->getTraceAsString();
-      echo "Exception: $message $stack" . PHP_EOL;
+      Logger::get_instance()->error('TEST_CASE', "Exception: $message $stack");
     }
   }
 
