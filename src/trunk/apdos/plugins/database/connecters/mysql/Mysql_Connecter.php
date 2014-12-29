@@ -30,20 +30,34 @@ class Mysql_Connecter extends Component {
   public function has_database($name) {
     $query = "select schema_name from information_schema.schemata where schema_name = '$name'";
     $result = $this->query($query);
-    return $result->num_rows == 1 ? true : false;
+    $count = $result->get_rows_count();
+    $result->close();
+    return $count == 1 ? true : false;
   }
 
   public function has_table($name) {
     $query = "select table_name from information_schema.tables where table_schema='$this->database' AND table_name = '$name'";
     $result = $this->query($query);
-    return $result->num_rows == 1 ? true : false;
+    $count = $result->get_rows_count();
+    $result->close();
+    return $count  == 1 ? true : false;
   }
 
   public function query($sql) {
     $result = $this->mysqli->query($sql);
     if (!$result)
       throw new Mysql_Error($this->get_last_error(), Mysql_Error::QUERY_FAILED);
-    return $result;
+    return new Mysql_Result($result);
+  }
+
+  public function simple_query($sql) {
+    return $this->mysqli->query($sql);
+  }
+
+  public function begin_trans() {
+  }
+
+  public function end_trans() {
   }
 
   public function get_last_error() {

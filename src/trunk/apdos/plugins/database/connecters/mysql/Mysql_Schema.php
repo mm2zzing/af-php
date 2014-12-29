@@ -21,7 +21,7 @@ class Mysql_Schema extends Component {
     if ($if_not_exists)
       $query .= 'if not exists ';
     $query .= $name;
-    $this->get_connecter()->query($query);
+    $this->get_connecter()->simple_query($query);
   }
 
   public function drop_database($name, $if_exists = true) {
@@ -29,7 +29,7 @@ class Mysql_Schema extends Component {
     if ($if_exists)
       $query .= 'if exists ';
     $query .= $name;
-    $this->get_connecter()->query($query);
+    $this->get_connecter()->simple_query($query);
   }
 
   /**
@@ -52,7 +52,7 @@ class Mysql_Schema extends Component {
       $query .= $this->get_field_query($key, $value);
     }
     $query .= "\n);";
-    $this->get_connecter()->query($query);
+    $this->get_connecter()->simple_query($query);
   }
 
   private function get_field_query($name, $values) {
@@ -96,7 +96,7 @@ class Mysql_Schema extends Component {
     if ($if_exists)
       $query .= 'if exists ';
     $query .= "$name;";
-    $this->get_connecter()->query($query);
+    $this->get_connecter()->simple_query($query);
   }
 
   private function get_connecter() {
