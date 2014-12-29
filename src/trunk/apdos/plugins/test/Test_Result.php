@@ -22,8 +22,7 @@ class Test_Result {
   }
 
   public function summary() {
-    return $this->test_case_name.' '.
-            $this->run_count.' run, '.$this->failed_count.' failed';
+    return $this->test_case_name.' '.  $this->run_count.' run, '.$this->failed_count.' failed';
   }
 }
 ?>

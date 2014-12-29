@@ -17,6 +17,7 @@ use apdos\tests\plugins\auth\auth_test;
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Test;
+use apdos\tests\plugins\database\connecters\mysql\Mysql_Schema_Test;
 
 /**
  * @class Run_Test
@@ -54,6 +55,7 @@ class Run_Tests extends Tool {
     $this->run_actor_accepter_test();
     $this->run_object_converter_test();
     $this->run_mongodb_test();
+    $this->run_mysql_schema_test();
     $this->run_mysql_test();
     $this->run_auth_test();
     $this->run_prereg_test();
@@ -202,12 +204,29 @@ class Run_Tests extends Tool {
     echo $test_result->summary() . PHP_EOL;
   }
 
+  private function run_mysql_schema_test() {
+    $test_result = new Test_Result('mysql_schema_test');
+
+    $test = new Mysql_Schema_Test('test_create_database');
+    $test->run($test_result);
+    $test = new Mysql_Schema_Test('test_drop_database');
+    $test->run($test_result);
+    $test = new Mysql_Schema_Test('test_create_table');
+    $test->run($test_result);
+    $test = new Mysql_Schema_Test('test_drop_table');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
   private function run_mysql_test() {
+    /*
     $test_result = new Test_Result('mysql_test');
 
     $test = new Mysql_Test('test_insert');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
+    */
   }
 }

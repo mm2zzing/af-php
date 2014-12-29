@@ -6,6 +6,7 @@ use apdos\kernel\core\Kernel;
 use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tools\ash\error\Ash_Error;
+use apdos\kernel\log\Logger;
 
 class Ash extends Tool {
   const LOGO = '
@@ -61,10 +62,10 @@ class Ash extends Tool {
       }
     }
     catch (Command_Line_Input_Error $e) {
-      echo $e->getMessage() . PHP_EOL;
+      Logger::get_instance()->error('ASH', $e->getMessage());
     }
     catch (\Exception $e) {
-      echo $e->getMessage() . PHP_EOL;
+      Logger::get_instance()->error('ASH', $e->getMessage());
     }
     return;
   }
@@ -109,13 +110,13 @@ class Ash extends Tool {
       $component->main($tool_argc, $tool_argv);
     }
     catch (Command_Line_Input_Error $e) {
-      echo $e->getMessage() . PHP_EOL;
+      Logger::get_instance()->error('ASH', $e->getMessage());
     }
     catch (Ash_Error $e) {
-      echo $e->getMessage() . PHP_EOL;
+      Logger::get_instance()->error('ASH', $e->getMessage());
     }
     catch (\Exception $e) {
-      echo $e->getMessage() . PHP_EOL;
+      Logger::get_instance()->error('ASH', $e->getMessage());
     }
   }
 
