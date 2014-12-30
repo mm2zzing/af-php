@@ -14,7 +14,7 @@ class Actor extends Node {
    * @param component_class_name String 컴포넌트 클래스 명
    */
   public function add_component($component_class_name) {
-    $result = new $component_class_name;
+    $result = new $component_class_name();
     $result->set_parent($this);
     array_push($this->components, $result);
     return $result;

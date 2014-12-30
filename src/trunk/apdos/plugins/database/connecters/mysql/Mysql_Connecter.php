@@ -9,12 +9,9 @@ class Mysql_Connecter extends Component {
   private $database;
 
   public function connect($host, $user, $password) {
-    try {
-      $this->mysqli = new \mysqli($host, $user, $password);
-    }
-    catch (\Exception $e) {
-      throw new Mysql_Error($e->getMessage(), Mysql_Error::CONNECT_FAIL);
-    }
+    $this->mysqli = new \mysqli($host, $user, $password);
+    if (mysqli_connect_errno())
+      throw new Mysql_Error(mysqli_connect_error(), Mysql_Error::CONNECT_FAIL);
   }
 
   public function close() {
