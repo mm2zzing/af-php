@@ -8,13 +8,15 @@ use apdos\kernel\core\Object_Converter;
 class Config extends Component {
   private $configs;
   private $appication_path;
+  private $environment;
 
   public function __construct() {
     $this->configs = array();
   }
 
-  public function select_application($application_path) {
+  public function select_application($application_path, $environment) {
     $this->application_path = $application_path;
+    $this->environment = $environment;
   }
 
   public function load($config_name, $cache_time = 0) {
@@ -35,7 +37,7 @@ class Config extends Component {
     if (!isset($this->configs[$config_name])) {
       $this->load($config_name);
     }
-    return $this->configs[$config_name]->$item_name;
+    return $this->configs[$config_name]->{$this->environment}->$item_name;
   }
 
   public static function get_instance() {

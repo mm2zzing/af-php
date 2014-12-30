@@ -110,7 +110,6 @@ class Logger extends Component {
       $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/logger');
       $instance = $actor->add_component('apdos\kernel\log\Logger');
       $instance->set_psr_logger(new Psr_Logger());
-      $instance->add_logger_handler(new Logd_Handler());
     }
     return $instance;
   }

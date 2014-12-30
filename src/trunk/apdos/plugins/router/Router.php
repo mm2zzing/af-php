@@ -17,11 +17,6 @@ class Router extends Component {
   }
 
   public function load($register_gets) {
-    /*
-    $file = $this->get_property('file');
-    $parse_data = json_decode($file->get_contents());
-    $this->router = new Router_DTO(Object_Converter::to_object($parse_data));
-    */
     $this->router = new Router_DTO($register_gets);
   }
 
@@ -34,6 +29,10 @@ class Router extends Component {
     $finder = new Register_Get_Finder($this->router->get_register_gets());
     return $finder->find($uri);
   } 
+
+  public function has_register_get($uri) {
+    return !$this->get_register_get($uri)->is_null() ? true : false;
+  }
 
   public static function get_instance() {
     static $instance = null;

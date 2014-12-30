@@ -18,20 +18,21 @@ class Error {
   /**
    * 시스템 시작에 필요한 정보를 로드
    */
-  public function load($is_error_reporting) {
+  public function load($is_error_reporting, $is_display_errors) {
     if ($is_error_reporting)
       error_reporting(E_ALL);
     else
       error_reporting(0);
+    if ($is_display_errors) 
+      ini_set('display_errors', 'On');
+   else
+      ini_set('display_errors', 'Off');
     $this->register_handler();
   }
 
   private function register_handler() {
-    // display_errors는 Off되어 있어야 한다. PHP 옵션에서 변경 
-    //ini_set('display_errors', 'On');
-
-    // FATAL ERROR는 캐치하지 못한다.
     set_error_handler(array($this, 'on_error'));
+    // set_error_hander는 FATAL ERROR는 캐치하지 못한다.
     // FATAL ERROR는 로그 출력후 종료
     register_shutdown_function(function() { 
       $this->on_stop(); 
