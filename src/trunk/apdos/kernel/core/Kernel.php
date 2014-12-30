@@ -1,9 +1,9 @@
 <?php
 namespace apdos\kernel\core;
 
-use apdos\kernel\core\node;
-use apdos\kernel\core\null_node;
-use apdos\kernel\core\errors\node_is_exist_error;
+use apdos\kernel\core\Node;
+use apdos\kernel\core\Null_Node;
+use apdos\kernel\core\errors\Node_Is_Exist_Error;
 
 /**
  * @class Kernel

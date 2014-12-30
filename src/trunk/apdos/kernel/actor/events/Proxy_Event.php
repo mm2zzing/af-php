@@ -1,8 +1,8 @@
 <?php
 namespace apdos\kernel\actor\events;
 
-use apdos\kernel\event\event;
-use apdos\kernel\event\errors\event_error;
+use apdos\kernel\event\Event;
+use apdos\kernel\event\errors\Event_Error;
 
 /**
  * @class Proxy_Event

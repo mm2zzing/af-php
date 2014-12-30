@@ -1,7 +1,7 @@
 <?php
 namespace apdos\kernel\actor;
 
-use apdos\kernel\core\node;
+use apdos\kernel\core\Node;
 use apdos\kernel\actor\Component;
 use apdos\kernel\actor\Null_Component;
 

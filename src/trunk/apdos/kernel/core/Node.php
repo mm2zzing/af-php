@@ -1,7 +1,7 @@
 <?php
 namespace apdos\kernel\core;
 
-use apdos\kernel\event\event_dispatcher;
+use apdos\kernel\event\Event_Dispatcher;
 
 class Node extends Event_Dispatcher {
   private $name;

@@ -3,10 +3,10 @@ namespace apdos\tests\kernel\event;
 
 use apdos\plugins\test\Test_Case;
 use apdos\kernel\core\kernel;
-use apdos\kernel\event\event;
-use apdos\kernel\event\event_dispatcher;
-use apdos\kernel\event\listener;
-use apdos\tests\kernel\event\dummy_event;
+use apdos\kernel\event\Event;
+use apdos\kernel\event\Event_Dispatcher;
+use apdos\kernel\event\Listener;
+use apdos\tests\kernel\event\Dummy_Event;
 
 class Event_Test extends Test_Case {
   public static $DUMMY_EVENT_SERIALIZE_STRING = "{\"type\":\"Dummy_Event\",\"name\":\"dummy_event_name1\",\"data\":{\"var1\":1,\"var2\":\"1\"}}";

@@ -5,7 +5,7 @@ use apdos\tools\ash\Tool;
 use apdos\plugins\test\Test_Result;
 use apdos\plugins\test\Test_Case;
 use apdos\tests\plugins\test\test_case_test;
-use apdos\tests\kernel\event\event_test;
+use apdos\tests\kernel\event\Event_Test;
 use apdos\tests\kernel\core\kernel_test;
 use apdos\tests\kernel\actor\actor_test;
 use apdos\tests\kernel\core\object_converter_test;

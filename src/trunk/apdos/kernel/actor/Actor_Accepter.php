@@ -1,13 +1,13 @@
 <?php
 namespace apdos\kernel\actor;
 
-use apdos\kernel\actor\component;
+use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\event\event;
-use apdos\kernel\actor\events\proxy_event;
-use apdos\kernel\actor\remote_actor;
-use apdos\kernel\event\errors\event_error;
-use apdos\kernel\actor\errors\actor_error;
+use apdos\kernel\event\errors\Event_Error;
+use apdos\kernel\actor\events\Proxy_Event;
+use apdos\kernel\actor\Remote_Actor;
+use apdos\kernel\actor\errors\Actor_Error;
 
 /**
  * @class Actor_Accepter

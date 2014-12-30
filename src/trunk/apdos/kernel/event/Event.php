@@ -2,8 +2,8 @@
 namespace apdos\kernel\event;
 
 use apdos\kernel\core\Object_Converter;
-use apdos\kernel\event\errors\event_error;
-use apdos\kernel\event\event_database;
+use apdos\kernel\event\errors\Event_Error;
+use apdos\kernel\event\Event_Database;
 
 class Event {
   protected $name;

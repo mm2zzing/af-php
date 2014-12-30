@@ -1,8 +1,8 @@
 <?php
 namespace apdos\kernel\actor\events;
 
-use apdos\kernel\event\event;
-use apdos\kernel\actor\remote_actor;
+use apdos\kernel\event\Event;
+use apdos\kernel\actor\Remote_Actor;
 
 /**
  * @class Remote_Event

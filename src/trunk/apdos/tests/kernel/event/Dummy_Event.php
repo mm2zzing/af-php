@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests\kernel\event;
 
-use apdos\kernel\actor\events\remote_event;
+use apdos\kernel\actor\events\Remote_Event;
 
 class Dummy_Event extends Remote_Event {
   public static $DUMMY_EVENT_NAME1 = "dummy_event_name1";

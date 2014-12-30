@@ -2,7 +2,7 @@
 namespace apdos\tests\kernel\actor;
 
 use apdos\plugins\test\Test_Case;
-use apdos\kernel\core\kernel;
+use apdos\kernel\core\Kernel;
 
 class Actor_Test extends Test_Case {
   private $kernel;
