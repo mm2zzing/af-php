@@ -24,10 +24,10 @@ class Error {
       ini_set('display_errors', 'On');
    else
       ini_set('display_errors', 'Off');
-    $this->register_handler();
+    $this->register_handlers();
   }
 
-  private function register_handler() {
+  private function register_handlers() {
     /**
      * FATAL ERROR를 제외한 에러 발생시 예외를 발생시켜 내부에서 처리하도록 한다.
      * config.error_reporting 이 false로 지정시 에러 이벤트가 넘어오지 않는다.
@@ -43,16 +43,18 @@ class Error {
   } 
 
   public function on_error($err_no, $err_str, $err_file, $err_line, $err_context = null) {
-    // WARNING 에러는 로그만 남긴다.
+    $message = "$err_str (error no: $err_no, error file: $err_file, error line: $err_line)";
     if ($err_no == E_WARNING || 
         $err_no == E_STRICT || 
         $err_no == E_DEPRECATED ||
         $err_no == E_USER_DEPRECATED) {
-      $message = "$err_str (error no: $err_no, error file: $err_file, error line: $err_line)";
       Logger::get_instance()->warning('ERROR', $message);
       return;
     }
-    $message = "$err_str (error file: $err_file, error line: $err_line)";
+    if ($err_no == E_NOTICE || $err_no == E_USER_NOTICE) {
+      Logger::get_instance()->notice('ERROR', $message);
+      return;
+    }
     throw new Core_Error($message, $err_no);
   }
 
