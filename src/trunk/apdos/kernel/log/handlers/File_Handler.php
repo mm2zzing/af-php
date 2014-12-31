@@ -41,6 +41,7 @@ class File_Handler implements Logger_Handler {
 
   private function rename_log_file($file_name, $file_path) {
     $log_files = scandir($this->log_dir);
+    $number = 1;
     foreach ($log_files as $log_file) {
       $log_number = substr($log_file, strlen($file_name) + 1);
       if ($log_number > $number)

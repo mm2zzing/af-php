@@ -1,9 +1,9 @@
 <?php
 namespace apdos\tools\acttree;
 
-use apdos\tools\ash\Tool;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\app\Tool;
+use apdos\tools\ash\app\console\Command_Line_Input;
+use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
 use apdos\tools\acttree\actions\Acttree_Help;
 
 /**

@@ -4,6 +4,8 @@ namespace apdos\plugins\config;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 use apdos\kernel\core\Object_Converter;
+use apdos\plugins\resource\File_Error;
+use apdos\plugins\config\errors\Config_Error;
 
 class Config extends Component {
   private $configs;
@@ -22,9 +24,14 @@ class Config extends Component {
   public function load($config_name, $cache_time = 0) {
     $file_path = "$this->application_path/config/$config_name.json";
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
-    $file->load($file_path);
-    $parse_data = json_decode($file->get_contents());
-    $this->configs[$config_name] = Object_Converter::to_object($parse_data);
+    try {
+      $file->load($file_path);
+      $parse_data = json_decode($file->get_contents());
+      $this->configs[$config_name] = Object_Converter::to_object($parse_data);
+    }
+    catch (File_Error $e) {
+      throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
+    }
   }
 
   public function unload($config_name) {

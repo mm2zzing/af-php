@@ -1,5 +1,5 @@
 <?php
-namespace apdos\tools\ash\console;
+namespace apdos\tools\ash\app\console;
 
 use Console_CommandLine;
 use Console_CommandLine_Exception;

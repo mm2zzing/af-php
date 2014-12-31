@@ -1,11 +1,11 @@
 <?php
-namespace apdos\tools\ash;
+namespace apdos\tools\ash\app;
 
 use apdos\kernel\actor\Actor;
 use apdos\kernel\core\Kernel;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
-use apdos\tools\ash\error\Ash_Error;
+use apdos\tools\ash\app\console\Command_Line_Input;
+use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\app\error\Ash_Error;
 use apdos\kernel\log\Logger;
 
 class Ash extends Tool {
@@ -53,8 +53,9 @@ class Ash extends Tool {
         $this->run_command($tool_argc, $tool_argv);
       }
       else {
-        while (1) {
-          $line = readline(self::PROMPT);
+        while ($line = readline(self::PROMPT)) {
+          if ($line == 'exit')
+            break;
           $tool_argv = explode(' ', $line);
           $tool_argc = count($tool_argv);
           $this->run_command($tool_argc, $tool_argv);

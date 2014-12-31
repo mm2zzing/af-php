@@ -1,5 +1,5 @@
 <?php
-namespace apdos\tools\ash;
+namespace apdos\tools\ash\app;
 
 use apdos\kernel\actor\Component;
 

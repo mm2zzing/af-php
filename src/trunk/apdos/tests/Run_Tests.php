@@ -1,7 +1,7 @@
 <?php
 namespace apdos\tests;
 
-use apdos\tools\ash\Tool;
+use apdos\tools\ash\app\Tool;
 use apdos\plugins\test\Test_Result;
 use apdos\plugins\test\Test_Case;
 use apdos\tests\plugins\test\test_case_test;
@@ -14,8 +14,8 @@ use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\auth_test;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\app\console\Command_Line_Input;
+use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Connecter_Test;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Schema_Test;
 

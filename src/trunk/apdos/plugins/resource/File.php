@@ -11,7 +11,9 @@ class File extends Component {
 
   public function load($file_path) {
     $this->contents = file_get_contents($file_path);
-    //$this->contents = '{"register_gets":[{"uri":"/welcome/hellow", "controller_class":"app\\\\welcome\\\\controllers\\\\Hellow"}]}';
+    if (!$this->contents) {
+      throw new File_Error("Read faield. path is $file_path", File_Error::FILE_IS_NOT_EXISTS);
+    }
   }
 
   public function get_contents() {
