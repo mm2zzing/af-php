@@ -100,6 +100,10 @@ class Logger extends Component {
     $this->psr_logger = $psr_logger;
   }
 
+  public function remove_logger_handlers() {
+    $this->psr_logger->remove_logger_handlers();
+  }
+
   public function add_logger_handler($logger_handler) {
     $this->psr_logger->add_logger_handler($logger_handler);
   }

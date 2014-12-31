@@ -6,7 +6,7 @@
     "log_enables":["emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"],
     "error_reporting": true,
     "display_errors": true,
-    "log_dir": "vendor/apdos-php/src/trunk/apdos/tools/ash/logs"
+    "log_path": "logs"
   },
   "production": {
     "locale":"en",
@@ -15,6 +15,6 @@
     "log_enables":["emergency", "alert", "critical", "error", "warning"],
     "error_reporting": false,
     "display_errors": false,
-    "log_dir": "vendor/apdos-php/src/trunk/apdos/tools/ash/logs"
+    "log_path": "logs"
   }
 }

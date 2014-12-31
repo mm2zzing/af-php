@@ -75,6 +75,10 @@ class Psr_Logger implements LoggerInterface {
     }
   }
 
+  public function remove_logger_handlers() {
+    $this->logger_handlers = array();
+  }
+
   public function add_logger_handler($logger_handler) {
     array_push($this->logger_handlers, $logger_handler);
   }
