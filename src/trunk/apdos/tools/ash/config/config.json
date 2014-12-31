@@ -4,7 +4,6 @@
     "timezone":"Asia/Seoul",
     "maintenance": false,
     "log_enables":["emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"],
-    "error_reporting": true,
     "display_errors": true,
     "log_path": "logs"
   },
@@ -12,8 +11,7 @@
     "locale":"en",
     "timezone":"Asia/Seoul",
     "maintenance": false,
-    "log_enables":["emergency", "alert", "critical", "error", "warning"],
-    "error_reporting": false,
+    "log_enables":["emergency", "alert", "critical", "error"],
     "display_errors": false,
     "log_path": "logs"
   }

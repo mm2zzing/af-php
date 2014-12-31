@@ -18,11 +18,12 @@ class Error {
   /**
    * 시스템 시작에 필요한 정보를 로드
    */
-  public function load($is_error_reporting) {
-    if ($is_error_reporting)
-      error_reporting(E_ALL);
-    else
-      error_reporting(0);
+  public function load($is_display_errors) {
+   error_reporting(E_ALL);
+    if ($is_display_errors)
+      ini_set('display_errors', 'On');
+   else
+      ini_set('display_errors', 'Off');
     $this->register_handler();
   }
 
