@@ -1,0 +1,8 @@
+{
+  "development": {
+    "handler":"file"
+  },
+  "production": {
+    "handler":"file"
+  }
+}

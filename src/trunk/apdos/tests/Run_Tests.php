@@ -13,11 +13,12 @@ use apdos\tests\kernel\actor\actor_accepter_test;
 use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
-use apdos\tests\plugins\auth\auth_test;
+use apdos\tests\plugins\auth\Auth_Test;
 use apdos\tools\ash\app\console\Command_Line_Input;
 use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Connecter_Test;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Schema_Test;
+use apdos\tests\plugins\cache\Cache_Test;
 
 /**
  * @class Run_Test
@@ -61,6 +62,7 @@ class Run_Tests extends Tool {
     $this->run_auth_test();
     $this->run_prereg_test();
     $this->run_prereg_manager_test();
+    $this->run_cache_test();
   }
 
   private function run_test_case_test() {
@@ -233,6 +235,23 @@ class Run_Tests extends Tool {
     $test = new Mysql_Schema_Test('test_create_table');
     $test->run($test_result);
     $test = new Mysql_Schema_Test('test_drop_table');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_cache_test() {
+    $test_result = new Test_Result('cache_test');
+
+    $test = new Cache_Test('test_numeric');
+    $test->run($test_result);
+    $test = new Cache_Test('test_array');
+    $test->run($test_result);
+    $test = new Cache_Test('test_expire');
+    $test->run($test_result);
+    $test = new Cache_Test('test_clear');
+    $test->run($test_result);
+    $test = new Cache_Test('test_clear_all');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
