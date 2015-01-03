@@ -1,5 +1,5 @@
 <?php
-namespace apdos\tools\ash\app\error;
+namespace apdos\tools\ash\error;
 
 class Ash_Error extends \Exception {
   const UNKNOW_COOMAND = 1;

@@ -1,9 +1,11 @@
 <?php
-namespace apdos\tools\ash\app\console;
+namespace apdos\tools\ash\console;
 
 use Console_CommandLine;
 use Console_CommandLine_Exception;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\Command_Option_Event;
+use apdos\kernel\actor\Component;
 
 /**
  * @class Command_Line_Input
@@ -14,15 +16,24 @@ use apdos\tools\ash\console\error\Command_Line_Input_Error;
  *
  * @author Lee, Hyeon-gi
  */
-class Command_Line_Input {
+class Command_Line_Input extends Component {
   private $cli;
   private $result;
+  private $options = array();
 
-  public function __construct($params) {
+  public function __construct() {
+  }
+
+  public function init($params) {
     $this->cli = new Console_CommandLine($params);
   }
 
+  public function register_action($name, $class_name) {
+    Console_CommandLine::registerAction($name, $class_name);
+  }
+
   public function add_option($name, $params) {
+    array_push($this->options, $name);
     $this->cli->addOption($name, $params);
   }
 
@@ -37,6 +48,12 @@ class Command_Line_Input {
   public function parse($argc, $argv) {
     try {
       $this->result = $this->cli->parse($argc, $argv);
+      foreach ($this->options as $option) {
+        if ($this->has_option($option)) {
+          $event = new Command_Option_Event($option, $this->get_option($option));
+          $this->get_parent()->dispatch_event($event);
+        }
+      }
     }
     catch (Console_CommandLine_Exception $e) {
       throw new Command_Line_Input_Error($e->getMessage(), $e->getCode());
@@ -52,5 +69,9 @@ class Command_Line_Input {
 
   public function get_option($option) {
     return $this->result->options[$option];
+  }
+
+  public function display_usage() {
+    $this->cli->displayUsage(false);
   }
 }

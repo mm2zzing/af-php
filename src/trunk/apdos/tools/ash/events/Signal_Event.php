@@ -1,5 +1,5 @@
 <?php
-namespace apdos\tools\ash\app\events;
+namespace apdos\tools\ash\events;
 
 use apdos\kernel\event\Event;
 

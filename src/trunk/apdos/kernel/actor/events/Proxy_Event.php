@@ -23,13 +23,13 @@ class Proxy_Event extends Event {
    * @receiver_path String 이벤트를 전달받는 액터의 path
    */
   public function init($remote_event, $sender_path, $receiver_path) {
-    parent::init(self::$PROXY_EVENT);
+    parent::init_with_name(self::$PROXY_EVENT);
     $this->set_data($this->create_event_data($remote_event, $sender_path, $receiver_path));
     $this->check_properties();
   } 
 
   public function init_by_null_receiver($remote_event, $sender_path) {
-    parent::init(self::$PROXY_EVENT);
+    parent::init_with_name(self::$PROXY_EVENT);
     $this->set_data($this->create_event_data($remote_event, $sender_path, self::$NULL_PATH));
     $this->check_properties();
   }

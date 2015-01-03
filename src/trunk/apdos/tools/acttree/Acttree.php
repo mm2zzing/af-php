@@ -1,9 +1,9 @@
 <?php
 namespace apdos\tools\acttree;
 
-use apdos\tools\ash\app\Tool;
-use apdos\tools\ash\app\console\Command_Line_Input;
-use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\Tool;
+use apdos\tools\ash\console\Command_Line_Input;
+use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tools\acttree\actions\Acttree_Help;
 
 /**
@@ -24,16 +24,19 @@ class Acttree extends Tool {
     $cli = new Command_Line_Input( 
       array('name'=>self::NAME,
             'description' => self::DESCRIPTION,
-            'version' => self::VERSION));
-    $cli->addOption('help', array(
-      'short_name'=>'-h',
-      'long_name'=>'--help',
-      'action'=>'Acttree_Help',
-      'description'=>'help'
+            'version' => self::VERSION,
+            'add_help_option'=>FALSE));
+    $cli->add_option('help', array(
+        'short_name'=>'-h',
+        'long_name'=>'--help',
+        'action'=>'StoreTrue',
+        'description'=>'help'
     ));
     try {
       $cli->parse($argc, $argv);
-      //echo 'hi';
+      if ($cli->has_option('help')) {
+        $cli->display_usage();
+      }
     }
     catch (Command_Line_Input_Exception $e) {
       echo $e->getMessage() . PHP_EOL;

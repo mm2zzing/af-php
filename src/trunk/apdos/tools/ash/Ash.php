@@ -1,12 +1,13 @@
 <?php
-namespace apdos\tools\ash\app;
+namespace apdos\tools\ash;
 
 use apdos\kernel\actor\Actor;
 use apdos\kernel\core\Kernel;
-use apdos\tools\ash\app\console\Command_Line_Input;
-use apdos\tools\ash\app\console\error\Command_Line_Input_Error;
-use apdos\tools\ash\app\error\Ash_Error;
+use apdos\tools\ashconsole\Command_Line_Input;
+use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\error\Ash_Error;
 use apdos\kernel\log\Logger;
+use apdos\kernel\actor\Component;
 
 class Ash extends Tool {
   const LOGO = '
@@ -80,12 +81,12 @@ class Ash extends Tool {
   }
 
   private function create_line_input() {
-    $result = new Command_Line_Input(
-      array('name'=>self::NAME,
-            'description' => self::DESCRIPTION,
-            'version' => self::VERSION,
-            'add_help_option'=>TRUE,
-            'add_version_option'=>TRUE));
+    $result = Component::create('apdos\tools\ash\console\Command_Line_Input', '/bin/cmd_line');
+    $result->init(array('name'=>self::NAME,
+                        'description' => self::DESCRIPTION,
+                        'version' => self::VERSION,
+                        'add_help_option'=>TRUE,
+                        'add_version_option'=>TRUE));
     $result->add_option('run_cmd', array(
         'short_name'=>'-r',
         'long_name'=>'--run_cmd',

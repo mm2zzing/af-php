@@ -4,6 +4,7 @@ namespace apdos\kernel\core;
 use apdos\kernel\core\Node;
 use apdos\kernel\core\Null_Node;
 use apdos\kernel\core\errors\Node_Is_Exist_Error;
+use apdos\kernel\core\Kernel;
 
 /**
  * @class Kernel

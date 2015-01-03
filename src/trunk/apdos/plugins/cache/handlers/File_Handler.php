@@ -14,7 +14,8 @@ class File_Handler implements Cache_Handler {
 
   public function set($key, $value, $cache_time) {
     $data = array("value"=>$value, "expire_time"=>Time::get_instance()->get_timestamp() + $cache_time);
-    file_put_contents($this->get_cache_path($key), serialize($data)); 
+    if (!file_put_contents($this->get_cache_path($key), serialize($data)))
+      throw new Cache_Error('Write failed. Key:' . $key, Cache_Error::CACHE_WRITE_FAILED);
   }
 
   public function get($key) {

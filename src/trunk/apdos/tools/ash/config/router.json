@@ -1,8 +1,0 @@
-{
-  "development": {
-    "register_gets":[]
-  },
-  "production": {
-    "register_gets":[]
-  }
-}

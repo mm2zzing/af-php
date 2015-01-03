@@ -7,7 +7,7 @@ class Res_Login extends Remote_Event {
   public static $RES_LOGIN = "res_login";
 
   public function init($user) {
-    parent::init(self::$RES_LOGIN);
+    parent::init_with_name(self::$RES_LOGIN);
     $this->set_data(array('user'=>$user));
   }
 }

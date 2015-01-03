@@ -7,7 +7,7 @@ class Req_Register_Device extends \Remote_Event {
   public static $REQ_REGISTER_DEVICE = "req_register_device";
 
   public function init($device_id) {
-    parent::init(self::$REQ_REGISTER_DEVICE);
+    parent::init_with_name(self::$REQ_REGISTER_DEVICE);
     $this->set_data(array("device_id"=>$device_id));
   }
 

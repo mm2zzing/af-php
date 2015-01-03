@@ -9,7 +9,10 @@ class Event {
   protected $name;
   protected $data = array();
 
-  public function init($name) {
+  public function __construct() {
+  }
+
+  public function init_with_name($name) {
     $this->name = $name;
   }
 
