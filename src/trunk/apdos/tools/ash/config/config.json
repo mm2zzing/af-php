@@ -2,17 +2,21 @@
   "development": {
     "locale":"en",
     "timezone":"Asia/Seoul",
-    "maintenance": false,
     "log_enables":["emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"],
     "display_errors": true,
-    "log_path": "logs"
+    "log_handler": {
+      "type":"file", 
+      "path":"logs"
+    }
   },
   "production": {
     "locale":"en",
     "timezone":"Asia/Seoul",
-    "maintenance": false,
     "log_enables":["emergency", "alert", "critical", "error"],
     "display_errors": false,
-    "log_path": "logs"
+    "log_handler": {
+      "type":"file", 
+      "path":"logs"
+    }
   }
 }

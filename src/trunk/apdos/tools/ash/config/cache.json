@@ -1,8 +1,14 @@
 {
   "development": {
-    "handler":"file"
+    "handler": {
+      "type":"file",
+      "path":"cache"
+    }
   },
   "production": {
-    "handler":"file"
+    "handler": {
+      "type":"file",
+      "path":"cache"
+    }
   }
 }
