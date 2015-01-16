@@ -14,6 +14,23 @@ class Actor_Test extends Test_Case {
 
   public function test_create() {
     $this->assert(0 == strcmp('actor1', $this->actor->get_name()), 'actor name is actor1');
+    $this->assert(0 == strcmp('/temp/actor1', $this->actor->get_path()), 'actor path is /temp/actor1');
+  }
+
+  /**
+   * @TODO Kernel에서 트리구조로 객체 생성하는 기능 구현후 테스트 케이스 추가 
+   *
+   */
+  public function test_add_child() {
+    /*
+    $child = $this->kernel->new_object('apdos\kernel\actor\Actor', '/test1');
+    $this->assert($child->get_name() == 'test1', 'child actor name is test1');
+    $this->assert($child->get_path() == '/test1', 'child actor path is /test1');
+
+    $this->actor->add_child($child);
+    $this->assert($child->get_name() == 'test1', 'child actor name is test1');
+    $this->assert($child->get_path() == '/temp/actor1/test1', 'child actor path is /temp/actor1/test1');
+    */
   }
 
   public function test_add_component() {

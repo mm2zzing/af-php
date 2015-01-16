@@ -105,7 +105,7 @@ class Psr_Logger implements LoggerInterface {
     foreach ($context as $key=>$val) {
       $replace['{' . $key . '}'] = $val;
     }
-    return count($replace) == 0 ? $message : strstr($message, $replace);
+    return count($replace) == 0 ? $message : strtr($message, $replace);
   }
 
   private function write_log($log) {

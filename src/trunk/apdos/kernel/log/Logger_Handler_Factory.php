@@ -10,6 +10,9 @@ class Logger_Handler_Factory {
     if ($handler->type == 'file') {
       return new File_Handler($this->get_path($handler->path));
     }
+    if ($handler->type == 'console') {
+      return new Console_Handler();
+    }
     return new Null_Logger_Handler();
   }
 

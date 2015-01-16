@@ -7,8 +7,8 @@ use apdos\kernel\actor\Component;
 use apdos\plugins\test\Test_Case;
 use apdos\tests\plugins\test\test_case_test;
 use apdos\tests\kernel\event\Event_Test;
-use apdos\tests\kernel\core\kernel_test;
-use apdos\tests\kernel\actor\actor_test;
+use apdos\tests\kernel\core\Kernel_Test;
+use apdos\tests\kernel\actor\Actor_Test;
 use apdos\tests\kernel\core\object_converter_test;
 use apdos\tests\kernel\actor\actor_accepter_test;
 use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
@@ -109,6 +109,9 @@ class Run_Tests extends Tool {
 
     $test = new Actor_Test('test_create');
     $test->run($test_result);
+    $test = new Actor_Test('test_add_child');
+    $test->run($test_result);
+
     $test = new Actor_Test('test_add_component');
     $test->run($test_result);
     $test = new Actor_Test('test_remove_component');
