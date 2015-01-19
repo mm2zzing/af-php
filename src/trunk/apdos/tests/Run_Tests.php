@@ -20,6 +20,7 @@ use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Connecter_Test;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Schema_Test;
 use apdos\tests\plugins\cache\Cache_Test;
+use apdos\tests\plugins\input\Input_Test;
 use apdos\kernel\core\Kernel;
 
 /**
@@ -66,6 +67,7 @@ class Run_Tests extends Tool {
     $this->run_prereg_test();
     $this->run_prereg_manager_test();
     $this->run_cache_test();
+    $this->run_input_test();
   }
 
   private function run_test_case_test() {
@@ -258,6 +260,21 @@ class Run_Tests extends Tool {
     $test = new Cache_Test('test_clear');
     $test->run($test_result);
     $test = new Cache_Test('test_clear_all');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_input_test() {
+    $test_result = new Test_Result('input_test');
+
+    $test = new Input_Test('test_get');
+    $test->run($test_result);
+    $test = new Input_Test('test_has');
+    $test->run($test_result);
+    $test = new Input_Test('test_get_ip');
+    $test->run($test_result);
+    $test = new Input_Test('test_get_user_agent');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;

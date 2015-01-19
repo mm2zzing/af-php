@@ -1,0 +1,182 @@
+[1421610962.1512][APDOS][debug]os start
+[1421610968.3936][APDOS][debug]os stop
+[1421610981.0419][APDOS][debug]os start
+[1421610984.6016][APDOS][debug]os stop
+[1421610988.1837][APDOS][debug]os start
+[1421610991.6116][APDOS][debug]os stop
+[1421612248.3593][APDOS][debug]os start
+[1421612250.5889][ERROR][critical]Class 'apdos\kernel\event\Remote_Event' not found (error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/tools/ash/events/Run_Command.php, error line: 6)
+[1421612250.5891][ERROR][debug]os stop
+[1421612275.261][APDOS][debug]os start
+[1421612276.3448][ASH][error]Event_Error::target_name property is not set
+[1421612282.6438][ASH][error]Node_Is_Exist_Error::Node is already exist. path is /bin/actor_connecter
+[1421612284.3896][APDOS][debug]os stop
+[1421612347.8118][APDOS][debug]os start
+[1421612349.7583][ERROR][critical]Call to undefined method apdos\kernel\actor\events\Remote_Event::init_wiht_name() (error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/tools/ash/events/Run_Command.php, error line: 10)
+[1421612349.7584][ERROR][debug]os stop
+[1421612387.3057][APDOS][debug]os start
+[1421612390.0883][ERROR][critical]Call to undefined method apdos\tools\ash\events\Run_Command::init_wiht_name() (error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/tools/ash/events/Run_Command.php, error line: 10)
+[1421612390.0884][ERROR][debug]os stop
+[1421612397.0178][APDOS][debug]os start
+[1421612398.8567][ERROR][critical]Class 'apdos\kernel\actor\events\Event' not found (error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 18)
+[1421612398.8568][ERROR][debug]os stop
+[1421612421.0579][APDOS][debug]os start
+[1421612426.335][ASH][error]Node_Is_Exist_Error::Node is already exist. path is /bin/actor_connecter
+[1421612445.3468][APDOS][debug]os stop
+[1421612454.574][APDOS][debug]os start
+[1421612457.2856][APDOS][debug]os stop
+[1421612639.8428][APDOS][debug]os start
+[1421612643.1026][APDOS][debug]os stop
+[1421612926.2091][APDOS][debug]os start
+[1421612931.6229][APDOS][debug]os start
+[1421612933.8849][ERROR][notice]Undefined variable: content (error no: 8, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421612937.8226][APDOS][debug]os stop
+[1421612946.6448][APDOS][debug]os start
+[1421612951.9536][APDOS][debug]os stop
+[1421612960.0558][APDOS][debug]os start
+[1421612964.4696][APDOS][debug]os stop
+[1421637984.1928][APDOS][debug]os start
+[1421637987.6796][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421637992.5906][APDOS][debug]os stop
+[1421638040.9109][APDOS][debug]os start
+[1421638042.1346][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421638166.9889][APDOS][debug]os start
+[1421638170.0216][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421642310.0099][APDOS][debug]os start
+[1421642311.6506][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421642314.7718][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421642316.1548][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421642316.9616][APDOS][debug]os stop
+[1421642330.1127][APDOS][debug]os start
+[1421642331.7566][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 27)
+[1421642335.3406][APDOS][debug]os stop
+[1421642678.8123][APDOS][debug]os start
+[1421642681.3336][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 28)
+[1421642685.6108][ERROR][warning]file_get_contents(0): failed to open stream: No such file or directory (error no: 2, error file: /workspace/projects/apdos-php-launcher/src/trunk/vendor/apdos-php/src/trunk/apdos/kernel/actor/Actor_Connecter.php, error line: 28)
+[1421642688.6296][APDOS][debug]os stop
+[1421642699.7068][APDOS][debug]os start
+[1421642702.9224][APDOS][debug]os stop
+[1421644011.5208][APDOS][debug]os start
+[1421644018.6956][APDOS][debug]os stop
+[1421649998.2047][APDOS][debug]os start
+[1421650002.3276][APDOS][debug]os stop
+[1421650194.2849][APDOS][debug]os start
+[1421650201.8798][APDOS][debug]os stop
+[1421650247.1916][APDOS][debug]os start
+[1421650252.1276][APDOS][debug]os stop
+[1421650263.2679][APDOS][debug]os start
+[1421650267.5666][APDOS][debug]os stop
+[1421650726.509][APDOS][debug]os start
+[1421650733.4416][APDOS][debug]os stop
+[1421650746.003][APDOS][debug]os start
+[1421650750.1906][APDOS][debug]os stop
+[1421650823.5002][APDOS][debug]os start
+[1421650829.0678][APDOS][debug]os stop
+[1421650833.8862][APDOS][debug]os start
+[1421650838.2048][APDOS][debug]os stop
+[1421650920.1749][APDOS][debug]os start
+[1421650923.7256][APDOS][debug]os stop
+[1421650932.6579][APDOS][debug]os start
+[1421650935.4866][APDOS][debug]os stop
+[1421651002.1868][APDOS][debug]os start
+[1421651006.4676][APDOS][debug]os stop
+[1421651012.2188][APDOS][debug]os start
+[1421651017.2386][APDOS][debug]os stop
+[1421651030.3308][APDOS][debug]os start
+[1421651033.4036][APDOS][debug]os stop
+[1421651038.931][APDOS][debug]os start
+[1421651043.4186][APDOS][debug]os stop
+[1421651049.9568][APDOS][debug]os start
+[1421651052.7356][APDOS][debug]os stop
+[1421651112.5785][APDOS][debug]os start
+[1421651115.1406][APDOS][debug]os stop
+[1421651125.3588][APDOS][debug]os start
+[1421651132.6386][APDOS][debug]os stop
+[1421651291.4169][APDOS][debug]os start
+[1421651295.2346][APDOS][debug]os stop
+[1421651302.4419][APDOS][debug]os start
+[1421651312.5316][APDOS][debug]os stop
+[1421651322.6179][APDOS][debug]os start
+[1421651337.3906][APDOS][debug]os stop
+[1421651548.7554][APDOS][debug]os start
+[1421651559.0396][APDOS][debug]os stop
+[1421651570.2769][APDOS][debug]os start
+[1421651574.1086][APDOS][debug]os stop
+[1421651588.1039][APDOS][debug]os start
+[1421651592.6586][APDOS][debug]os stop
+[1421651683.1477][APDOS][debug]os start
+[1421651685.7666][APDOS][debug]os stop
+[1421651700.3519][APDOS][debug]os start
+[1421651730.0116][APDOS][debug]os stop
+[1421651741.327][APDOS][debug]os start
+[1421651746.8578][APDOS][debug]os stop
+[1421651870.674][APDOS][debug]os start
+[1421651904.4376][APDOS][debug]os stop
+[1421651934.4328][APDOS][debug]os start
+[1421651944.0766][APDOS][debug]os stop
+[1421651991.9709][APDOS][debug]os start
+[1421652005.8997][APDOS][debug]os stop
+[1421652103.242][APDOS][debug]os start
+[1421652118.9616][APDOS][debug]os stop
+[1421652579.4333][APDOS][debug]os start
+[1421652592.7686][APDOS][debug]os stop
+[1421652602.1253][APDOS][debug]os start
+[1421652609.9196][APDOS][debug]os stop
+[1421652610.502][APDOS][debug]os start
+[1421653509.4046][APDOS][debug]os stop
+[1421654045.5497][APDOS][debug]os start
+[1421654050.0756][APDOS][debug]os stop
+[1421654713.6895][APDOS][debug]os start
+[1421654714.0408][APDOS][debug]os stop
+[1421654919.7239][APDOS][debug]os start
+[1421654920.2365][APDOS][debug]os stop
+[1421655150.1555][APDOS][debug]os start
+[1421655150.5276][APDOS][debug]os stop
+[1421655160.1554][APDOS][debug]os start
+[1421655160.5114][APDOS][debug]os stop
+[1421655179.231][APDOS][debug]os start
+[1421655179.9098][APDOS][debug]os stop
+[1421655197.7768][APDOS][debug]os start
+[1421655198.0808][APDOS][debug]os stop
+[1421655296.3508][APDOS][debug]os start
+[1421655296.373][APDOS][debug]os stop
+[1421655306.7389][APDOS][debug]os start
+[1421655307.0954][APDOS][debug]os stop
+[1421655336.1482][APDOS][debug]os start
+[1421655336.6446][APDOS][debug]os stop
+[1421655341.5471][APDOS][debug]os start
+[1421655341.9963][APDOS][debug]os stop
+[1421655384.3048][APDOS][debug]os start
+[1421655384.6474][APDOS][debug]os stop
+[1421655444.2298][APDOS][debug]os start
+[1421655444.5665][APDOS][debug]os stop
+[1421655445.8348][APDOS][debug]os start
+[1421655446.1092][APDOS][debug]os stop
+[1421655460.4909][APDOS][debug]os start
+[1421655460.8547][APDOS][debug]os stop
+[1421655490.7028][APDOS][debug]os start
+[1421655490.9976][APDOS][debug]os stop
+[1421655505.7948][APDOS][debug]os start
+[1421655506.1863][APDOS][debug]os stop
+[1421655581.8108][APDOS][debug]os start
+[1421655582.1411][APDOS][debug]os stop
+[1421655721.9943][APDOS][debug]os start
+[1421655722.343][APDOS][debug]os stop
+[1421655744.6619][APDOS][debug]os start
+[1421655744.9706][APDOS][debug]os stop
+[1421655832.8419][APDOS][debug]os start
+[1421655833.1499][APDOS][debug]os stop
+[1421655938.987][APDOS][debug]os start
+[1421655940.0858][APDOS][debug]os stop
+[1421655941.4649][APDOS][debug]os start
+[1421655941.8852][APDOS][debug]os stop
+[1421655942.9188][APDOS][debug]os start
+[1421655943.2407][APDOS][debug]os stop
+[1421655979.7108][APDOS][debug]os start
+[1421655980.0369][APDOS][debug]os stop
+[1421655981.0079][APDOS][debug]os start
+[1421655981.3557][APDOS][debug]os stop
+[1421656035.4118][APDOS][debug]os start
+[1421656035.7486][APDOS][debug]os stop
+[1421656040.0869][APDOS][debug]os start
+[1421656072.6506][APDOS][debug]os stop

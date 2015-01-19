@@ -8,6 +8,8 @@ use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\tools\ash\error\Ash_Error;
 use apdos\kernel\log\Logger;
 use apdos\kernel\actor\Component;
+use apdos\kernel\actor\Actor_Connecter;
+use apdos\tools\ash\events\Shell_Command;
 
 class Ash extends Tool {
   const LOGO = '
@@ -24,23 +26,11 @@ class Ash extends Tool {
   const VERSION = '0.0.1';
   const PROMPT = 'ash> ';
 
-  private $cmds = array();
+  private $actor_connecter;
 
   public function __construct() {
-  }
-
-  /**
-   * 쉘에서 처리할 명령어를 등록한다.
-   *
-   * @param cmd_name string 쉘에서 입력할 명령어
-   * @param tool_class_name 명령어가 처리할 툴 컴포넌트 클래스 이름
-   */
-  public function register_cmd($cmd_name, $tool_class_name) {
-    $this->cmds[$cmd_name] = $tool_class_name;
-    $path = '/bin/' . $cmd_name;
-    $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', $path);
-    $actor->add_component($tool_class_name);
-  }
+    $this->actor_connecter = Component::create('apdos\kernel\actor\Actor_Connecter', '/bin/actor_connecter');
+  } 
 
   public function main($argc, $argv) {
     $this->display_logo();
@@ -104,12 +94,9 @@ class Ash extends Tool {
 
   private function run_command($tool_argc, $tool_argv) {
     try {
-      $cmd_name = $tool_argv[0];
-      $path = '/bin/' . $cmd_name;
-      $class_name = $this->get_tool_class_name($cmd_name);
-      $actor = Kernel::get_instance()->find_object($path);
-      $component = $actor->get_component($class_name);
-      $component->main($tool_argc, $tool_argv);
+      $shell_command = new Shell_Command();
+      $shell_command->init($tool_argc, $tool_argv);
+      $this->actor_connecter->send('http://211.50.119.82:10005', $shell_command);
     }
     catch (Command_Line_Input_Error $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());
@@ -120,15 +107,5 @@ class Ash extends Tool {
     catch (\Exception $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
-  }
-
-  private function get_tool_class_name($cmd_name) {
-    if (!$this->has_cmd($cmd_name))
-      throw new Ash_Error("Command \"$cmd_name\" is unknown.", Ash_Error::UNKNOW_COOMAND);
-    return $this->cmds[$cmd_name];
   } 
-
-  private function has_cmd($cmd_name) {
-    return isset($this->cmds[$cmd_name]);
-  }
 }

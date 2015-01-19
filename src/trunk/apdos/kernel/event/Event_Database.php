@@ -19,6 +19,7 @@ class Event_Database {
     $this->add_event('Res_Get_User', 'apdos\plugins\auth\presenters\events\events\Res_Get_User');
     $this->add_event('Req_Register_Device', 'apdos\plugins\auth\presenters\events\events\Req_Register_Device');
     $this->add_event('Res_Register_Device', 'apdos\plugins\auth\presenters\events\events\Res_Register_Device');
+    $this->add_event('Shell_Command', 'apdos\tools\ash\events\Shell_Command');
   }
 
   /**

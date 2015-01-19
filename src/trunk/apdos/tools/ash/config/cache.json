@@ -1,0 +1,14 @@
+{
+  "development": {
+    "handler": {
+      "type":"file",
+      "path":"cache"
+    }
+  },
+  "production": {
+    "handler": {
+      "type":"file",
+      "path":"cache"
+    }
+  }
+}
