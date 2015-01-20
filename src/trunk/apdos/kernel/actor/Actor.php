@@ -1,11 +1,11 @@
 <?php
 namespace apdos\kernel\actor;
 
-use apdos\kernel\core\Node;
+use apdos\kernel\core\Root_Node;
 use apdos\kernel\actor\Component;
 use apdos\kernel\actor\Null_Component;
 
-class Actor extends Node {
+class Actor extends Root_Node {
   private $components = array();
 
   /**

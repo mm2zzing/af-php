@@ -11,32 +11,26 @@ class Input extends Component {
   public function __construct() {
   }
 
-  public function get($key) {
+  public function get($key, $default_value = '') {
     if (isset($_GET[$key]))
       return $_GET[$key];
     if (isset($_POST[$key]))
       return $_POST[$key];
-    return '';
+    return $default_value;
   }
 
   public function has($key) {
-    if (isset($_GET[$key]))
-      return true;
-    if (isset($_POST[$key]))
+    if (isset($_GET[$key]) || isset($_POST[$key]))
       return true;
     return false;
   }
 
   public function get_ip() {
-    if (isset($_SERVER['REMOTE_ADDR']))
-      return $_SERVER['REMOTE_ADDR'];
-    return 'Unknown';
+    return isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
   }
 
   public function get_user_agent() {
-    if (isset($_SERVER['HTTP_USER_AGENT']))
-      return $_SERVER['HTTP_USER_AGENT'];
-    return 'Unknown';
+    return isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
   }
 
   public function xss_filter($contents) {

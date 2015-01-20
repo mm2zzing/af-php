@@ -2,25 +2,46 @@
 namespace apdos\kernel\core;
 
 use apdos\kernel\event\Event_Dispatcher;
+use apdos\kernel\log\Logger;
 
 class Node extends Event_Dispatcher {
-  private $name;
-  private $path;
 
-  public function __construct($name, $path) {
-    $this->name = $name;
-    $this->path = $path;
+  public function __construct() {
   }
 
   public function get_name() {
-    return $this->name;
+    Logger::get_instance()->error('Node', 'node is inteface');
   }
 
   public function get_path() {
-    return $this->path;
+    Logger::get_instance()->error('Node', 'node is inteface');
   }
 
-  public function is_null() {
-    return false;
+  public function add_child($node) {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function find_child($name) {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function remove_child($name) {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function get_childs() {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function set_parent($node) {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function get_parent() {
+    Logger::get_instance()->error('Node', 'node is inteface');
+  }
+
+  public function release() {
+    Logger::get_instance()->error('Node', 'node is inteface');
   }
 }

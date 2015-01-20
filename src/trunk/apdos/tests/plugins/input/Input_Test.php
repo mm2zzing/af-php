@@ -20,6 +20,9 @@ class Input_Test extends Test_Case {
     $this->prepare_get('pet', 'dog');
     $pet = Input::get_instance()->get('pet');
     $this->assert($pet == 'dog', 'pet is dog');
+
+    $foo = Input::get_instance()->get('foo', 'bar');
+    $this->assert($foo == 'bar', 'Default value is bar');
   }
 
   public function test_has() {

@@ -9,7 +9,7 @@ use apdos\tests\plugins\test\test_case_test;
 use apdos\tests\kernel\event\Event_Test;
 use apdos\tests\kernel\core\Kernel_Test;
 use apdos\tests\kernel\actor\Actor_Test;
-use apdos\tests\kernel\core\object_converter_test;
+use apdos\tests\kernel\core\Object_Converter_Test;
 use apdos\tests\kernel\actor\actor_accepter_test;
 use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
@@ -103,6 +103,10 @@ class Run_Tests extends Tool {
 
     $test = new Kernel_Test('test_create');
     $test->run($test_result);
+    
+    $test = new Kernel_Test('test_lookup');
+    $test->run($test_result);
+
     echo $test_result->summary() . PHP_EOL;
   }
 
@@ -136,7 +140,6 @@ class Run_Tests extends Tool {
   }
 
   private function run_object_converter_test() {
-
     $test_result = new Test_Result('object_converter_test');
 
     $test = new Object_Converter_Test('test_object_to_array');
@@ -147,7 +150,6 @@ class Run_Tests extends Tool {
   }
 
   private function run_auth_test() {
-
     $test_result = new Test_Result('auth_test');
 
     $test = new Auth_Test('test_register_guest');

@@ -11,4 +11,7 @@ class Null_Node extends Node {
   public function is_null() {
     return true;
   }
+
+  public function release() {
+  }
 }
