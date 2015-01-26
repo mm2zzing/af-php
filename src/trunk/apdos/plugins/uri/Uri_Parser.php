@@ -34,12 +34,21 @@ class Uri_Parser {
 
   private function extract_uri($uri) {
     $tokens = explode($this->split_pattern, $uri);
-    // explode 후에 빈 문자열이 들어가는 부분을 skip
+    $token = $this->skip_empty_token($tokens);
+    return $this->trim_get_and_slash($token); 
+  }
+
+  private function skip_empty_token(&$tokens) {
     for ($i = 0; $i < count($tokens); $i++) {
       if ($tokens[$i] != '')
-        return trim($tokens[$i], '/');
+        return $tokens[$i];
     }
     return '';
+  }
+
+  private function trim_get_and_slash($token) {
+    $tokens = explode('?', $token);
+    return trim($tokens[0], '/');
   }
 
   public function get_segment($index, $default = '') {
