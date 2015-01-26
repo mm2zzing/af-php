@@ -16,6 +16,9 @@ class Uri_Parser {
   private $uri_tokens;
   private $split_pattern;
 
+  /**
+   * @param split_pattern string uri로 사용하는 부분을 뽑아내기 위한 패턴
+   */
   public function __construct($split_pattern) {
     $this->split_pattern = $split_pattern;
   }
@@ -31,7 +34,12 @@ class Uri_Parser {
 
   private function extract_uri($uri) {
     $tokens = explode($this->split_pattern, $uri);
-    return trim($tokens[0], '/');
+    // explode 후에 빈 문자열이 들어가는 부분을 skip
+    for ($i = 0; $i < count($tokens); $i++) {
+      if ($tokens[$i] != '')
+        return trim($tokens[$i], '/');
+    }
+    return '';
   }
 
   public function get_segment($index, $default = '') {
