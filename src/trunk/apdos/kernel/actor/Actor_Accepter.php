@@ -1,13 +1,13 @@
 <?php
 namespace apdos\kernel\actor;
 
-use apdos\kernel\actor\component;
+use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
-use apdos\kernel\event\event;
-use apdos\kernel\actor\events\proxy_event;
-use apdos\kernel\actor\remote_actor;
-use apdos\kernel\event\errors\event_error;
-use apdos\kernel\actor\errors\actor_error;
+use apdos\kernel\event\Event;
+use apdos\kernel\event\errors\Event_Error;
+use apdos\kernel\actor\events\Proxy_Event;
+use apdos\kernel\actor\Remote_Actor;
+use apdos\kernel\actor\errors\Actor_Error;
 
 /**
  * @class Actor_Accepter
@@ -24,13 +24,12 @@ class Actor_Accepter extends Component {
       $target_event = Event::deserialize_by_parameter($proxy_event->get_target_type(), 
                                                       $proxy_event->get_target_name(), 
                                                       $proxy_event->get_target_data());
-      $target_event->connect(new Remote_Actor($this, 
-                                              $proxy_event->get_sender_path(), 
-                                              $proxy_event->get_receiver_path()));
+      $remote_actor = new Remote_Actor($this, $proxy_event->get_sender_path(), $proxy_event->get_receiver_path());
+      $target_event->connect($remote_actor);
       $receiver_path = $proxy_event->get_receiver_path();
       if (strlen($receiver_path) > 0) {
         $node = Kernel::get_instance()->find_object($receiver_path);
-        if (null == $node)
+        if ($node->is_null())
           throw new Event_Error("target object is null");
         $node->dispatch_event($target_event);
       }

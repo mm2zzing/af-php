@@ -7,7 +7,7 @@ class Req_Login extends Remote_Event {
   public static $REQ_LOGIN = "req_login";
 
   public function init_with_register($register_id, $register_password) {
-    parent::init(self::$REQ_LOGIN);
+    parent::init_with_name(self::$REQ_LOGIN);
   }
 
   public function get_register_id() {

@@ -7,6 +7,6 @@ class Res_Register extends Remote_Event {
   public static $RES_REGISTER = "res_register";
 
   public function init() {
-    parent::init(self::$RES_REGISTER);
+    parent::init_with_name(self::$RES_REGISTER);
   }
 }

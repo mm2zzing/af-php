@@ -7,6 +7,6 @@ class Req_Register_Guest extends Remote_Event {
   public static $REQ_REGISTER_GUEST = "req_register_guest";
 
   public function init() {
-    parent::init(self::$REQ_REGISTER_GUEST);
+    parent::init_with_name(self::$REQ_REGISTER_GUEST);
   }
 }

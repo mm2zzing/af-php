@@ -7,7 +7,7 @@ class Req_Get_User extends \Remote_Event {
   public static $REQ_GET_USER = "req_get_user";
 
   public function init_by_device_id($device_id) {
-    parent::init(self::$REQ_GET_USER);
+    parent::init_with_name(self::$REQ_GET_USER);
     $this->set_data(array('device_id'=>$device_id));
   }
 

@@ -1,7 +1,7 @@
 <?php
 namespace apdos\plugins\prereg\errors;
 
-use apdos\kernel\error\apdos_error;
+use apdos\kernel\error\Apdos_Error;
 
 class Prereg_Error extends Apdt_Error {
   public function __construct($message) {

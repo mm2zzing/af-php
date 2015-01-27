@@ -2,7 +2,7 @@
 namespace apdos\tests\plugins\prereg;
 
 use apdos\kernel\core\Kernel;
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\plugins\prereg\models\prereg_manager;
 use apdos\plugins\prereg\accessors\prereg_user;
 use apdos\plugins\prereg\dto\prereg_user_dto;

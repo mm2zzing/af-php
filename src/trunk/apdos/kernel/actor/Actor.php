@@ -1,11 +1,11 @@
 <?php
 namespace apdos\kernel\actor;
 
-use apdos\kernel\core\node;
+use apdos\kernel\core\Root_Node;
 use apdos\kernel\actor\Component;
 use apdos\kernel\actor\Null_Component;
 
-class Actor extends Node {
+class Actor extends Root_Node {
   private $components = array();
 
   /**
@@ -14,7 +14,7 @@ class Actor extends Node {
    * @param component_class_name String 컴포넌트 클래스 명
    */
   public function add_component($component_class_name) {
-    $result = new $component_class_name;
+    $result = new $component_class_name();
     $result->set_parent($this);
     array_push($this->components, $result);
     return $result;

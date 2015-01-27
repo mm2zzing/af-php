@@ -1,12 +1,12 @@
 <?php
 namespace apdos\tests\kernel\actor;
 
-use apdos\plugins\test\test_case;
+use apdos\plugins\test\Test_Case;
 use apdos\kernel\actor\actor;
 use apdos\kernel\actor\Actor_Accepter;
 use apdos\kernel\core\kernel;
 use apdos\kernel\actor\errors\Actor_Error;
-use apdos\tests\kernel\event\dummy_event;
+use apdos\tests\kernel\event\Dummy_Event;
 
 class Actor_Accepter_Test extends Test_Case {
   public $receive_dummy_event = false;
