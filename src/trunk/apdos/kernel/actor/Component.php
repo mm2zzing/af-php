@@ -2,8 +2,9 @@
 namespace apdos\kernel\actor;
 
 use apdos\kernel\core\Kernel;
+use apdos\kernel\event\Event_Dispatcher;
 
-class Component {
+class Component extends Event_Dispatcher {
   private $parent_actor;
   private $properties = array();
 

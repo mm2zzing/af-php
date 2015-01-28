@@ -14,6 +14,7 @@ class Proxy_Event extends Event {
   public static $PROXY_EVENT = 'proxy_event';
   // 이벤트를 전달할 ACTOR가 없는 경우 설정하는 PATH이다. 상대방 Actor_Accepter로 이벤트가 전송된다.
   public static $NULL_PATH = '';
+  public static $VERSION = '1.0f';
 
   /**
    * 생성자
@@ -41,6 +42,7 @@ class Proxy_Event extends Event {
 
   private function create_event_data($remote_event, $sender_path, $receiver_path) {
     $data = array();
+    $data['version'] = self::$VERSION;
     $data['target_type'] = $remote_event->get_type();
     $data['target_name'] = $remote_event->get_name();
     $data['target_data'] = $remote_event->get_data();

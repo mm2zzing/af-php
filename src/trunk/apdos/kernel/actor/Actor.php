@@ -38,4 +38,12 @@ class Actor extends Root_Node {
       }
     }
   }
+
+  // override
+  public function dispatch_event($event) {
+    parent::dispatch_event($event);
+    for ($i = 0; $i < count($this->components); $i++) {
+      $this->components[$i]->dispatch_event($event);
+    }
+  }
 }

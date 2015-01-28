@@ -14,7 +14,7 @@ class Actor_Connecter extends Component {
     $data = Event::serialize($proxy_event);
 
     $post_data = http_build_query(
-      array('command'=>$data)
+      array('event'=>$data)
     );
     $options = array(
       'http'=>array(
@@ -24,7 +24,7 @@ class Actor_Connecter extends Component {
       )
     );
     $context = stream_context_create($options);
-    $this->recv_event(file_get_contents($url . '/sys/run_cmd', false, $context));
+    $this->recv_event(file_get_contents($url . '/sys/run_cmd/dispatch_post', false, $context));
   }
 
   public function send_by_path($url, $sender_path, $receiver_path, $remote_event) {
