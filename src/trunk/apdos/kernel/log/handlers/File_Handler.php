@@ -32,7 +32,7 @@ class File_Handler implements Logger_Handler {
     $tag = $log->get_tag();
     $level = $log->get_level();
     $message = $log->get_message();
-    return "[$time][$tag][$level]$message\n";
+    return "[$time] [$level] [$tag] $message\n";
   }
 
   private function is_rotate($file_path) {

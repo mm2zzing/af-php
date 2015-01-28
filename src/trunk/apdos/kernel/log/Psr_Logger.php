@@ -70,7 +70,7 @@ class Psr_Logger implements LoggerInterface {
   public function log($level, $message, array $context = array()) {
     if ($this->has_level($level)) {
       $message = $this->replace_message($message, $context);
-      $log_dto = new Log_DTO(Time::get_instance()->get_timestamp(), $this->tag, $level, $message);
+      $log_dto = new Log_DTO(Time::get_instance()->get_ymd_his(), $this->tag, $level, $message);
       $this->write_log($log_dto);
     }
   }

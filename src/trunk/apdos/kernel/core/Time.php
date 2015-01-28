@@ -32,6 +32,10 @@ class Time extends Component {
     return $this->get_timestamp() - $this->start_time;
   }
 
+  public function get_ymd_his() {
+    return date('Y-m-d H:i:s');
+  }
+
   /**
    * 현재 요일을 반환 
    *

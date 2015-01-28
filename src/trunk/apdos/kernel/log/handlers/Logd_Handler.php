@@ -8,6 +8,6 @@ class Logd_Handler implements Logger_Handler {
     $level = $log->get_level();
     $message = $log->get_message();
     // @TODO Logd접속후 로그 전송. 로테이션 설정은 Logd스스로 처리
-    echo "[$time][$tag][$level]$message" . '<br/>';
+    echo "[$time] [$level] [$tag] $message" . '<br/>';
   }
 }
