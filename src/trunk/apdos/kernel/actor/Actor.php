@@ -29,6 +29,16 @@ class Actor extends Root_Node {
     return new Null_Component();
   }
 
+  public function get_components($component_class_name) {
+    $result = array();
+    foreach ($this->components as $component) {
+      $class_name = get_class($component);
+      if (0 == strcmp($class_name, $component_class_name))
+        array_push($result, $component);
+    }
+    return $result;
+  }
+
   public function remove_component($component_class_name) {
     for ($i = 0; $i < count($this->components); $i++) {
       $component = $this->components[$i];

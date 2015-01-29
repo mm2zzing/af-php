@@ -27,8 +27,8 @@ class Controller extends Component {
    * GET으로 전송된 이벤트를 처리한다.
    *
    */
-  public function dispatch_get($event) {
+  public function dispatch_get($proxy_event) {
     $this->accepter = $this->get_parent()->add_component('apdos\kernel\actor\Actor_Accepter');
-    $this->accepter->recv($event);
+    $this->accepter->recv($proxy_event);
   }
 }

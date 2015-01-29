@@ -3,6 +3,7 @@ namespace apdos\tests\kernel\actor;
 
 use apdos\plugins\test\Test_Case;
 use apdos\kernel\core\Kernel;
+use apdos\tests\kernel\actor\Test_Component;
 
 class Actor_Test extends Test_Case {
   private $kernel;
@@ -39,6 +40,16 @@ class Actor_Test extends Test_Case {
     $component = $this->actor->add_component('apdos\kernel\actor\Component');
     $find_component = $this->actor->get_component('apdos\kernel\actor\Component');
     $this->assert(false == $find_component->is_null(), 'find component is not null');
+  }
+
+  public function test_add_components() {
+    $find_component = $this->actor->add_component('apdos\tests\kernel\actor\Test_Component');
+    $find_component = $this->actor->add_component('apdos\tests\kernel\actor\Test_Component');
+    $find_component = $this->actor->add_component('apdos\kernel\actor\Component');
+    $components = $this->actor->get_components('apdos\tests\kernel\actor\Test_Component');
+    $this->assert(2 == count($components), 'Test_Component count is 2');
+    $components = $this->actor->get_components('apdos\kernel\actor\Component');
+    $this->assert(1 == count($components), 'Component count is 1');
   }
 
   public function test_remove_component() {

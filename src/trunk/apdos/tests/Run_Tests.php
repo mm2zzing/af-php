@@ -120,6 +120,8 @@ class Run_Tests extends Tool {
 
     $test = new Actor_Test('test_add_component');
     $test->run($test_result);
+    $test = new Actor_Test('test_add_components');
+    $test->run($test_result);
     $test = new Actor_Test('test_remove_component');
     $test->run($test_result);
     echo $test_result->summary() . PHP_EOL;

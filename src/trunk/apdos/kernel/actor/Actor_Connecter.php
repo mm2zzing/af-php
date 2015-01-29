@@ -24,7 +24,7 @@ class Actor_Connecter extends Component {
       )
     );
     $context = stream_context_create($options);
-    $this->recv_event(file_get_contents($url . '/sys/run_cmd/dispatch_post', false, $context));
+    $this->recv_event(file_get_contents($url . "/sys/run_cmd/dispatch_post", false, $context));
   }
 
   public function send_by_path($url, $sender_path, $receiver_path, $remote_event) {
