@@ -30,11 +30,18 @@ class Command_Line_Input extends Component {
 
   public function register_action($name, $class_name) {
     Console_CommandLine::registerAction($name, $class_name);
-  }
-
+  } 
   public function add_option($name, $params) {
     array_push($this->options, $name);
     $this->cli->addOption($name, $params);
+  }
+
+  /**
+   *
+   * @param params array 인자의 타입. optional-> true or false, multiple -> true or false
+   */
+  public function add_argument($name, $params) {
+    $this->cli->addArgument($name, $params);
   }
 
   public function add_command($name, $params) {
@@ -69,6 +76,21 @@ class Command_Line_Input extends Component {
 
   public function get_option($option) {
     return $this->result->options[$option];
+  }
+
+  public function has_arg($name) {
+    return isset($this->result->args[$name]) ? true : false;
+  }
+
+  public function get_arg($name) {
+    if (isset($this->result->args[$name]))
+      return $this->result->args[$name];
+    else
+      return '';
+  }
+
+  public function get_args() {
+    return $this->result->args;
   }
 
   public function display_usage() {

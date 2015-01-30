@@ -13,8 +13,6 @@ use apdos\tools\ash\events\Shell_Command;
 
 class Ash extends Tool {
   const LOGO = '
-               (    (              )   (     
-        (      )\ ) )\ )        ( /(   )\ )  
         )\    (()/((()/(        )\()) (()/(  
      ((((_)(   /(_))/(_))    __((_)\   /(_)) 
       )\ _ )\ (_)) (_))_    / /  ((_) (_))   
@@ -27,6 +25,8 @@ class Ash extends Tool {
   const PROMPT = 'ash> ';
 
   private $actor_connecter;
+  private $host = 'http://localhost';
+  private $port = 0;
 
   public function __construct() {
     $this->actor_connecter = Component::create('apdos\kernel\actor\Actor_Connecter', '/bin/actor_connecter');
@@ -37,6 +37,10 @@ class Ash extends Tool {
     $cli = $this->create_line_input();
     try {
       $cli->parse($argc, $argv);
+      if ($cli->has_arg('host_address')) {
+        $this->host = $cli->get_arg('host_address');
+      }
+      $this->port = $cli->get_option('port');
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
         $tool_argv = explode(' ', $cli->get_option('run_cmd'));
@@ -77,6 +81,7 @@ class Ash extends Tool {
                         'version' => self::VERSION,
                         'add_help_option'=>TRUE,
                         'add_version_option'=>TRUE));
+    $result->add_argument('host_address', array('optional'=>true));
     $result->add_option('run_cmd', array(
         'short_name'=>'-r',
         'long_name'=>'--run_cmd',
@@ -84,6 +89,13 @@ class Ash extends Tool {
         'help_name'=>'{execute command}',
         'action='=>'StoreString',
         'default'=>''
+    ));
+    $result->add_option('port', array(
+        'short_name'=> '-p',
+        'long_name'=> '--port',
+        'description'=>'Bind port number',
+        'action'=>'StoreInt',
+        'default'=>80
     ));
     return $result;
   }
@@ -96,7 +108,8 @@ class Ash extends Tool {
     try {
       $shell_command = new Shell_Command();
       $shell_command->init($tool_argc, $tool_argv);
-      $this->actor_connecter->send('http://211.50.119.82:10005', $shell_command);
+      $address = $this->host . ':' . $this->port;
+      $this->actor_connecter->send($address, $shell_command);
     }
     catch (Command_Line_Input_Error $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());
