@@ -22,11 +22,12 @@ class Ash extends Tool {
   const NAME = 'ash';
   const DESCRIPTION = 'APD/OS-PHP shell';
   const VERSION = '0.0.1';
-  const PROMPT = 'ash> ';
 
   private $actor_connecter;
   private $host = 'http://localhost';
   private $port = 0;
+  private $prompt = '';
+
 
   public function __construct() {
     $this->actor_connecter = Component::create('apdos\kernel\actor\Actor_Connecter', '/bin/actor_connecter');
@@ -41,6 +42,7 @@ class Ash extends Tool {
         $this->host = $cli->get_arg('host_address');
       }
       $this->port = $cli->get_option('port');
+      $this->prompt = $this->get_prompt();
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
         $tool_argv = explode(' ', $cli->get_option('run_cmd'));
@@ -48,7 +50,7 @@ class Ash extends Tool {
         $this->run_command($tool_argc, $tool_argv);
       }
       else {
-        while ($line = readline(self::PROMPT)) {
+        while ($line = readline($this->prompt)) {
           if ($line == 'exit')
             break;
           $tool_argv = explode(' ', $line);
@@ -64,6 +66,11 @@ class Ash extends Tool {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
     return;
+  }
+
+  private function get_prompt() {
+    $tokens = explode('//', $this->host);
+    return 'root@' . $tokens[1] . '> ';
   }
 
   private function display_logo() {
