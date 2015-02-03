@@ -77,6 +77,8 @@ class Run_Tests extends Tool {
     $test->run($test_result);
     $test = new Test_Case_Test('test_summary');
     $test->run($test_result);
+    $test = new Test_Case_Test('test_mock_object');
+    $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
   }
