@@ -63,10 +63,14 @@ class Config extends Component {
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     try {
       $file->load($file_path);
+      // @TODO 오류가 있는 json파일을 로드해도 Exception에 안걸리는 현상 체크
       $parse_data = json_decode($file->get_contents());
       $this->configs[$config_name] = Object_Converter::to_object($parse_data);
     }
     catch (File_Error $e) {
+      throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
+    }
+    catch (Exception $e) {
       throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
     }
   }

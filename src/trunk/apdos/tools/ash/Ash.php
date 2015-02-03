@@ -50,7 +50,8 @@ class Ash extends Tool {
         $this->run_command($tool_argc, $tool_argv);
       }
       else {
-        while ($line = readline($this->prompt)) {
+        while (1) {
+          $line = readline($this->prompt);
           if ($line == 'exit')
             break;
           $tool_argv = explode(' ', $line);
