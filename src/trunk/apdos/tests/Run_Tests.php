@@ -9,6 +9,7 @@ use apdos\tests\plugins\test\test_case_test;
 use apdos\tests\kernel\event\Event_Test;
 use apdos\tests\kernel\core\Kernel_Test;
 use apdos\tests\kernel\actor\Actor_Test;
+use apdos\tests\kernel\user\User_Server_Test;
 use apdos\tests\kernel\core\Object_Converter_Test;
 use apdos\tests\kernel\actor\actor_accepter_test;
 use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
@@ -57,6 +58,7 @@ class Run_Tests extends Tool {
     $this->run_event_test();
     $this->run_kernel_test();
     $this->run_actor_test();
+    $this->run_user_server_test();
     $this->run_actor_accepter_test();
     $this->run_object_converter_test();
     $this->run_mongodb_test();
@@ -126,6 +128,15 @@ class Run_Tests extends Tool {
     $test->run($test_result);
     $test = new Actor_Test('test_remove_component');
     $test->run($test_result);
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_user_server_test() {
+    $test_result = new Test_Result('user_server_test');
+
+    $test = new User_Server_Test('test_create');
+    $test->run($test_result);
+
     echo $test_result->summary() . PHP_EOL;
   }
 
