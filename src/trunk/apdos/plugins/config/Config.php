@@ -30,15 +30,24 @@ class Config extends Component {
   }
 
   /**
-   * 설정 정보를 저장한다.
+   * 설정 정보를 저장한다. json 파일이 변경되는 것은 아니므로 주의
    *
    * @param path string 설정 패스 
    */
   public function set($path, $value) {
     $tokens = explode('.', $path);
     $config_name = $tokens[0];
-    $item_name = $tokens[1];
-    $this->configs[$config_name]->{$this->environment}->$item_name = $value;
+    $current = &$this->configs[$config_name]->{$this->environment};
+    for ($i = 1; $i < count($tokens); $i++) {
+      $name = $tokens[$i]; 
+      if ($i == (count($tokens) - 1))
+        $current->$name = $value;
+      else { 
+        if (!isset($current->$name))
+          $current->$name = new \stdClass();
+        $current = &$current->$name;
+      }
+    }
   }
 
   /**
@@ -51,11 +60,15 @@ class Config extends Component {
     $tokens = explode('.', $path);
     $config_name = $tokens[0];
     $item_name = $tokens[1];
-    if (!isset($this->configs[$config_name]) ||
-        !isset($this->configs[$config_name]->{$this->environment}->$item_name)) {
+    if (!isset($this->configs[$config_name]))
       $this->load($config_name);
+
+    $current = $this->configs[$config_name]->{$this->environment};
+    for ($i = 1; $i < count($tokens); $i++) {
+      $name = $tokens[$i];
+      $current = $current->$name;
     }
-    return $this->configs[$config_name]->{$this->environment}->$item_name;
+    return $current;
   }
 
   private function load($config_name) {
@@ -66,11 +79,14 @@ class Config extends Component {
       // @TODO 오류가 있는 json파일을 로드해도 Exception에 안걸리는 현상 체크
       $parse_data = json_decode($file->get_contents());
       $this->configs[$config_name] = Object_Converter::to_object($parse_data);
+      $file->get_parent()->release();
     }
     catch (File_Error $e) {
+      $file->get_parent()->release();
       throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
     }
     catch (Exception $e) {
+      $file->get_parent()->release();
       throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
     }
   }

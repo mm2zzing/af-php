@@ -136,6 +136,18 @@ class Run_Tests extends Tool {
 
     $test = new User_Server_Test('test_create');
     $test->run($test_result);
+    $test = new User_Server_Test('test_change_user');
+    $test->run($test_result);
+    $test = new User_Server_Test('test_change_app_user');
+    $test->run($test_result);
+    $test = new User_Server_Test('test_user_login');
+    $test->run($test_result);
+    $test = new User_Server_Test('test_app_user_login');
+    $test->run($test_result);
+    $test = new User_Server_Test('test_logout');
+    $test->run($test_result);
+    $test = new User_Server_Test('test_register');
+    $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;
   }
