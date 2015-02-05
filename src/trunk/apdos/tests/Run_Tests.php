@@ -7,6 +7,7 @@ use apdos\kernel\actor\Component;
 use apdos\plugins\test\Test_Case;
 use apdos\tests\plugins\test\test_case_test;
 use apdos\tests\kernel\event\Event_Test;
+use apdos\tests\kernel\event\Redf_Serializer_Test;
 use apdos\tests\kernel\core\Kernel_Test;
 use apdos\tests\kernel\actor\Actor_Test;
 use apdos\tests\kernel\user\User_Server_Test;
@@ -56,6 +57,7 @@ class Run_Tests extends Tool {
   private function run_test_cases() {
     $this->run_test_case_test();
     $this->run_event_test();
+    $this->run_redf_serializer_test();
     $this->run_kernel_test();
     $this->run_actor_test();
     $this->run_user_server_test();
@@ -88,15 +90,22 @@ class Run_Tests extends Tool {
   private function run_event_test() {
     $test_result = new Test_Result('event_test');
 
-    $test = new Event_Test('test_serialize');
-    $test->run($test_result);
-    $test = new Event_Test('test_deserialize');
-    $test->run($test_result);
     $test = new Event_Test('test_add_event_listener');
     $test->run($test_result);
     $test = new Event_Test('test_remove_event_listener');
     $test->run($test_result);
     $test = new Event_Test('test_dispatch_event');
+    $test->run($test_result);
+
+    echo $test_result->summary() . PHP_EOL;
+  }
+
+  private function run_redf_serializer_test() {
+    $test_result = new Test_Result('redf_serializer_test');
+
+    $test = new Redf_Serializer_Test('test_serialize');
+    $test->run($test_result);
+    $test = new Redf_Serializer_Test('test_deserialize');
     $test->run($test_result);
 
     echo $test_result->summary() . PHP_EOL;

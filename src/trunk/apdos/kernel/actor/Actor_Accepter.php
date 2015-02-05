@@ -8,6 +8,7 @@ use apdos\kernel\event\errors\Event_Error;
 use apdos\kernel\actor\events\Proxy_Event;
 use apdos\kernel\actor\Remote_Actor;
 use apdos\kernel\actor\errors\Actor_Error;
+use apdos\kernel\event\serializer\Redf_Serializer;
 
 /**
  * @class Actor_Accepter
@@ -20,10 +21,11 @@ use apdos\kernel\actor\errors\Actor_Error;
 class Actor_Accepter extends Component {
   public function recv($json_string) {
     try {
-      $proxy_event = Event::deserialize($json_string);
-      $target_event = Event::deserialize_by_parameter($proxy_event->get_target_type(), 
-                                                      $proxy_event->get_target_name(), 
-                                                      $proxy_event->get_target_data());
+      $redf = new Redf_Serializer();
+      $proxy_event = $redf->read($json_string);
+      $target_event = $redf->read_by_parameter($proxy_event->get_target_type(), 
+                                               $proxy_event->get_target_name(), 
+                                               $proxy_event->get_target_data());
       $remote_actor = new Remote_Actor($this, $proxy_event->get_sender_path(), $proxy_event->get_receiver_path());
       $target_event->connect($remote_actor);
       $receiver_path = $proxy_event->get_receiver_path();
