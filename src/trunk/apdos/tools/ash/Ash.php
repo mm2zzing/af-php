@@ -24,9 +24,12 @@ class Ash extends Tool {
   const VERSION = '0.0.1';
 
   private $actor_connecter;
-  private $host = 'http://localhost';
-  private $port = 0;
   private $prompt = '';
+  private $host = 'root@localhost';
+
+  private $user;
+  private $address;
+  private $port;
 
 
   public function __construct() {
@@ -42,7 +45,10 @@ class Ash extends Tool {
         $this->host = $cli->get_arg('host_address');
       }
       $this->port = $cli->get_option('port');
+      $this->user = $this->get_user();
+      $this->address = $this->get_address();
       $this->prompt = $this->get_prompt();
+
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
         $tool_argv = explode(' ', $cli->get_option('run_cmd'));
@@ -70,8 +76,24 @@ class Ash extends Tool {
   }
 
   private function get_prompt() {
-    $tokens = explode('//', $this->host);
-    return 'root@' . $tokens[1] . '> ';
+    return "$this->user@$this->address> ";
+  }
+
+  private function get_user() {
+    $tokens = explode('@', $this->host);
+    if (count($tokens) == 1)
+      return 'root';
+    else
+      return $tokens[0];
+  }
+
+  private function get_address() {
+    $tokens = explode('@', $this->host);
+    if (count($tokens) == 1)
+      return $tokens[0];
+   else
+      return $tokens[1];
+
   }
 
   private function display_logo() {
@@ -89,7 +111,7 @@ class Ash extends Tool {
                         'version' => self::VERSION,
                         'add_help_option'=>TRUE,
                         'add_version_option'=>TRUE));
-    $result->add_argument('host_address', array('optional'=>true));
+    $result->add_argument('host_address', array('optional'=>true, 'help_name'=>'[user@]host_address'));
     $result->add_option('run_cmd', array(
         'short_name'=>'-r',
         'long_name'=>'--run_cmd',
@@ -115,8 +137,8 @@ class Ash extends Tool {
   private function run_command($tool_argc, $tool_argv) {
     try {
       $shell_command = new Shell_Command();
-      $shell_command->init($tool_argc, $tool_argv);
-      $address = $this->host . ':' . $this->port;
+      $shell_command->init($tool_argc, $tool_argv, $this->user);
+      $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
     }
     catch (Command_Line_Input_Error $e) {

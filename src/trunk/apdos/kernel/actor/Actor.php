@@ -8,6 +8,9 @@ use apdos\kernel\actor\Null_Component;
 class Actor extends Root_Node {
   private $components = array();
 
+  private $owner;
+  private $permissions;
+
   /**
    * 컴포넌트 추가
    * 
@@ -55,5 +58,21 @@ class Actor extends Root_Node {
     for ($i = 0; $i < count($this->components); $i++) {
       $this->components[$i]->dispatch_event($event);
     }
+  }
+
+  public function set_owner($name) {
+    $this->owner = $name;
+  }
+
+  public function set_permissions($permissions) {
+    $this->permissions = $permissions;
+  }
+
+  public function get_owner() {
+    return $this->owner;
+  }
+
+  public function get_permissions() {
+    return $this->permissions;
   }
 }
