@@ -20,6 +20,7 @@ class Actor_Connecter extends Component {
       'http'=>array(
         'method'=>'POST',
         'header'=>'Content-type: application/x-www-form-urlencoded',
+        'user_agent'=>'redf system/1.0',
         'content'=>$post_data
       )
     );

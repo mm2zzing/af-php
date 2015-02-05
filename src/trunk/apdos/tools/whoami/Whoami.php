@@ -6,6 +6,7 @@ use apdos\tools\ash\console\Command_Line_Input;
 use apdos\tools\ash\console\error\Command_Line_Input_Error;
 use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
+use apdos\plugins\input\Input;
 
 /**
  * @class Whoami
@@ -39,7 +40,11 @@ class Whoami extends Tool {
         $this->cli->display_usage();
       }
 
-      echo $this->get_parent()->get_owner() . PHP_EOL;
+      $user = $this->get_parent()->get_owner();
+      $remote_ip = Input::get_instance()->get_ip();
+      $user_agent = Input::get_instance()->get_user_agent();
+
+      echo "user:$user remote ip:$remote_ip user agent:$user_agent" . PHP_EOL;
     }
     catch (Command_Line_Input_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
