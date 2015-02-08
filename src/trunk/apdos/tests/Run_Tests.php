@@ -55,6 +55,7 @@ class Run_Tests extends Tool {
   }
 
   private function run_test_cases() {
+
     $this->run_test_case_test();
     $this->run_event_test();
     $this->run_redf_serializer_test();

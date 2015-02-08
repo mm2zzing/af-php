@@ -3,6 +3,7 @@ namespace apdos\kernel\actor\events;
 
 use apdos\kernel\event\Event;
 use apdos\kernel\event\errors\Event_Error;
+use apdos\kernel\event\Event_Database;
 
 /**
  * @class Proxy_Event
@@ -82,5 +83,17 @@ class Proxy_Event extends Event {
 
   public function get_target_data() {
     return $this->data['target_data'];
+  }
+
+  /**
+   * Proxy_Event가 가지고 있는 전송 이벤트 객체를 Remote_Event 형태로 역직렬화한다
+   *
+   * @return Remote_Event 전송 이벤트
+   */
+  public function deserialize_remote_event() {
+    $event_type = Event_Database::get_instance()->get_class_name($this->get_target_type());
+    $object = new $event_type();
+    $object->init_with_data($this->get_target_name(), $this->get_target_data());
+    return $object;
   }
 }
