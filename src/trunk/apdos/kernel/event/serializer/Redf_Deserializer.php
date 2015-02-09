@@ -46,7 +46,7 @@ class Redf_Deserializer extends Deserializer {
     }
     $event_type = Event_Database::get_instance()->get_class_name($json_data['type']);
     if (!class_exists($event_type))
-      throw new \Exception($event_type . ' is not exist');
+      throw new \Exception('Not exist event type => ' . $event_type);
     $object = new $event_type();
     $object->init_with_data($json_data['name'], $json_data['data']);
     return $object;
