@@ -61,7 +61,7 @@ class Auth extends Component {
     $user = new $this->user_dto_class_name;
     $this->update_user_dto($user);
     $this->register_user($user);
-    return $this->get_user(array('uuid'=>$user->uuid));
+    return $this->get_user(array('token'=>$user->token));
   }
 
 
@@ -73,19 +73,20 @@ class Auth extends Component {
    */
   public function register_device($device_id) {
     $user = new $this->user_dto_class_name;
-    $user->device_id = $device_id;
+    $user->external_ids['device_id'] = $device_id;
     $this->update_user_dto($user);
     $this->register_user($user);
     return $this->get_user(array('device_id'=>$device_id));
   }
 
   private function update_user_dto($user) {
+    $user->id = $this->gen_uuid();
     if (isset($_SERVER['REMOTE_ADDR']))
       $user->install_ip = $_SERVER['REMOTE_ADDR'];
     else
       $user->install_ip = '<unknown system>';
     $user->install_date = date('Y-m-d H:i:s');
-    $user->uuid = $this->gen_uuid();
+    $user->token = $this->gen_uuid();
   }
 
   private function register_user($user) {
@@ -99,9 +100,6 @@ class Auth extends Component {
   }
 
   /**
-   * http://stackoverflow.com/questions/2040240/php-function-to-generate-v4-uuid
-   * UUID를 사용하여 플레이어 아이디가 겹치지 않게 한다.
-   * 완벽하게 유니크한 값을 생성하지 않는다는 점은 염두에 두어야 한다.
    */
   private function gen_uuid() {
     return sprintf( '%04x%04x-%04x-%04x-%04x-%04x%04x%04x',
@@ -129,14 +127,14 @@ class Auth extends Component {
   /**
    * 회원 탈퇴
    * 
-   * @param user_uuid String 유저의 UUID
+   * @param user_token String 유저의 UUID
    */ 
-  public function unregister($user_uuid) {
+  public function unregister($user_token) {
     try {
-      $user = $this->get_user(array('uuid'=>$user_uuid));
+      $user = $this->get_user(array('token'=>$user_token));
       if ($user->is_null())
         throw new Auth_Uuid_Is_None('Uuis is none');
-      $this->storage->unregister($user_uuid);
+      $this->storage->unregister($user_token);
     }
     catch (Auth_Storage_Error $e) {
       throw new Auth_Error($e->getMessage());

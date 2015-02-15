@@ -18,7 +18,7 @@ class Auth_Test extends Test_Case {
   const REGISTER_ID = 'testid';
   const REGISTER_PASSWORD = 'testpassword';
   const REGISTER_EMAIL = 'test@mail.com';
-  const UUID = "21312312-123123-1231-123123123123";
+  const TOKEN = "21312312-123123-1231-123123123123";
   const DEVICE_ID = "0302342342-234234-234234-234234234234";
 
   private $auth;
@@ -36,8 +36,8 @@ class Auth_Test extends Test_Case {
     $this->assert(strlen($user_dto->register_id) == 0, 'register id length is 0');
     $this->assert(strlen($user_dto->register_password) == 0, 'register password length is 0');
     $this->assert(strlen($user_dto->register_email) == 0, 'register email length is 0');
-    $this->assert(strlen($user_dto->device_id) == 0, 'device id length is 0');
-    $this->assert(strlen($user_dto->uuid) > 0, 'uuid length is great than 0');
+    $this->assert(strlen($user_dto->external_ids['device_id']) == 0, 'device id length is 0');
+    $this->assert(strlen($user_dto->token) > 0, 'token length is great than 0');
     $this->assert(strlen($user_dto->install_ip) > 0, 'install ip is great than 0');
     $this->assert(strlen($user_dto->install_date) > 0, 'install date is great than 0');
   }
@@ -51,7 +51,7 @@ class Auth_Test extends Test_Case {
     $this->assert(strlen($user_dto->register_id) > 0, 'register id length is great than 0');
     $this->assert(strlen($user_dto->register_password) > 0, 'register password length is great than 0');
     $this->assert(strlen($user_dto->register_email) > 0, 'register email length is great than 0');
-    $this->assert(strlen($user_dto->uuid) > 0, 'uuid length is great than 0');
+    $this->assert(strlen($user_dto->token) > 0, 'token length is great than 0');
     $this->assert(strlen($user_dto->install_ip) > 0, 'install ip is great than 0');
     $this->assert(strlen($user_dto->install_date) > 0, 'install date is great than 0');
 
@@ -66,15 +66,15 @@ class Auth_Test extends Test_Case {
     $this->assert(strlen($user_dto->register_id) == 0, 'register id length is 0');
     $this->assert(strlen($user_dto->register_password) == 0, 'register password length is 0');
     $this->assert(strlen($user_dto->register_email) == 0, 'register email length is 0');
-    $this->assert(strlen($user_dto->uuid) > 0, 'uuid length is great than 0');
-    $this->assert(strlen($user_dto->device_id) > 0, 'device length is great than 0');
+    $this->assert(strlen($user_dto->token) > 0, 'token length is great than 0');
+    $this->assert(strlen($user_dto->external_ids['device_id']) > 0, 'device length is great than 0');
     $this->assert(strlen($user_dto->install_ip) > 0, 'install ip is great than 0');
     $this->assert(strlen($user_dto->install_date) > 0, 'install date is great than 0');
 
   }
 
   public function test_get_user() {
-    $user = $this->auth->get_user(array('uuid'=>self::UUID));
+    $user = $this->auth->get_user(array('token'=>self::TOKEN));
     $this->assert(true == $user->is_null(), 'user is null');
     $user = $this->auth->register_guest();
     $this->assert(false == $user->is_null(), 'user is not null');
@@ -104,12 +104,12 @@ class Auth_Test extends Test_Case {
   public function test_unregister() {
     $occur_exception = false;
     try {
-      $this->auth->unregister(self::UUID);
+      $this->auth->unregister(self::TOKEN);
     }
     catch (Auth_Uuid_Is_None $e) {
       $occur_excption = true;
     }
-    $this->assert(true == $occur_excption, 'uuid is none');
+    $this->assert(true == $occur_excption, 'token is none');
 
     $user = $this->auth->register_guest();
     $user_dto = $user->get_user_dto();
@@ -117,9 +117,9 @@ class Auth_Test extends Test_Case {
     $this->assert(false == $user->is_null(), 'user is not null');
     $this->assert(false == $user_dto->unregistered, 'user unregistered is false');
 
-    $this->auth->unregister($user_dto->uuid);
+    $this->auth->unregister($user_dto->token);
 
-    $user = $this->auth->get_user(array('uuid'=>$user_dto->uuid));
+    $user = $this->auth->get_user(array('token'=>$user_dto->token));
     $user_dto = $user->get_user_dto();
     $this->assert(false == $user->is_null(), 'user is not null');
     $this->assert(true == $user_dto->unregistered, 'user unregistered is false');
@@ -131,7 +131,7 @@ class Auth_Test extends Test_Case {
   public function test_unregister_login() {
     $user = $this->auth->register(self::REGISTER_ID, self::REGISTER_PASSWORD, self::REGISTER_EMAIL);
     $user_dto = $user->get_user_dto();
-    $this->auth->unregister($user_dto->uuid);
+    $this->auth->unregister($user_dto->token);
     $occur_exception = false;
     try {
       $this->auth->login($user_dto->register_id, $user_dto->register_password);
