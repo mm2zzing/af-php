@@ -76,8 +76,29 @@ class Config extends Component {
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     try {
       $file->load($file_path);
-      // @TODO 오류가 있는 json파일을 로드해도 Exception에 안걸리는 현상 체크
       $parse_data = json_decode($file->get_contents());
+      switch (json_last_error()) {
+        case JSON_ERROR_NONE:
+          break;
+        case JSON_ERROR_DEPTH:
+          throw new Config_Error('Maximum stack depth exceeded');
+          break;
+        case JSON_ERROR_STATE_MISMATCH:
+          throw new Config_Error('Underflow or the modes mismatch');
+          break;
+        case JSON_ERROR_CTRL_CHAR:
+          throw new Config_Error('Unexpected control character found');
+          break;
+        case JSON_ERROR_SYNTAX:
+          throw new Config_Error('Syntax error, malformed JSON');
+          break;
+        case JSON_ERROR_UTF8:
+          throw new Config_Error('Malformed UTF-8 characters, possibly incorrectly encoded');
+          break;
+        default:
+          throw new Config_Error('Unknown error');
+          break;
+      }
       $this->configs[$config_name] = Object_Converter::to_object($parse_data);
       $file->get_parent()->release();
     }

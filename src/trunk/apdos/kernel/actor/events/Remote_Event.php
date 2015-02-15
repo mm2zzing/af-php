@@ -25,6 +25,6 @@ class Remote_Event extends Event {
     if (null == $this->remote_actor)
       return new Null_Remote_Actor();
     return $this->remote_actor;
-  }
+  } 
 }
 
