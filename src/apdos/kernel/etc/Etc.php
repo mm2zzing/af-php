@@ -96,22 +96,22 @@ class Etc extends Component {
         case JSON_ERROR_NONE:
           break;
         case JSON_ERROR_DEPTH:
-          throw new Etc_Error('Maximum stack depth exceeded');
+          throw new Etc_Error($file_path . '=>Maximum stack depth exceeded', json_last_error());
           break;
         case JSON_ERROR_STATE_MISMATCH:
-          throw new Etc_Error('Underflow or the modes mismatch');
+          throw new Etc_Error($file_path . '=>Underflow or the modes mismatch', json_last_error());
           break;
         case JSON_ERROR_CTRL_CHAR:
-          throw new Etc_Error('Unexpected control character found');
+          throw new Etc_Error($file_path . '=>Unexpected control character found', json_last_error());
           break;
         case JSON_ERROR_SYNTAX:
-          throw new Etc_Error('Syntax error, malformed JSON');
+          throw new Etc_Error($file_path . '=>Syntax error, malformed JSON', json_last_error());
           break;
         case JSON_ERROR_UTF8:
-          throw new Etc_Error('Malformed UTF-8 characters, possibly incorrectly encoded');
+          throw new Etc_Error($file_path . '=>Malformed UTF-8 characters, possibly incorrectly encoded', json_last_error());
           break;
         default:
-          throw new Etc_Error('Unknown error');
+          throw new Etc_Error($file_path . '=>Unknown error', json_last_error());
           break;
       }
       $this->etcs[$etc_name] = Object_Converter::to_object($parse_data);
