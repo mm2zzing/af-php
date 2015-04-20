@@ -12,7 +12,8 @@ class Time extends Component {
   /**
    * 타임 컴포넌트에 필요한 정보를 로드
    */
-  public function load() {
+  public function load($timezone) {
+    date_default_timezone_set($timezone);
     $this->start_time = $this->get_timestamp();
   }
 

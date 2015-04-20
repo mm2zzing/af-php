@@ -7,7 +7,8 @@
     "log_handler": {
       "type":"file", 
       "path":"logs"
-    }
+    },
+    "timezone":"Asia/Seoul"
   },
   "production": {
     "locale":"en",
@@ -17,6 +18,7 @@
     "log_handler": {
       "type":"file", 
       "path":"logs"
-    }
+    },
+    "timezone":"Asia/Seoul"
   }
 }
