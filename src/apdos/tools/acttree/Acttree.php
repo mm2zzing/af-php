@@ -2,8 +2,8 @@
 namespace apdos\tools\acttree;
 
 use apdos\tools\ash\Tool;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\Command_Line;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\acttree\actions\Acttree_Help;
 
 /**
@@ -21,7 +21,7 @@ class Acttree extends Tool {
   }
 
   public function main($argc, $argv) {
-    $cli = new Command_Line_Input( 
+    $cli = new Command_Line( 
       array('name'=>self::NAME,
             'description' => self::DESCRIPTION,
             'version' => self::VERSION,
@@ -38,7 +38,7 @@ class Acttree extends Tool {
         $cli->display_usage();
       }
     }
-    catch (Command_Line_Input_Exception $e) {
+    catch (Command_Line_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
   }

@@ -3,20 +3,20 @@ namespace apdos\tools\ash\console;
 
 use Console_CommandLine;
 use Console_CommandLine_Exception;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\ash\console\Command_Option_Event;
 use apdos\kernel\actor\Component;
 
 /**
- * @class Command_Line_Input
+ * @class Command_Line
  *
- * @brief 유저의 입력을 받아서 파싱해주는 역할을 한다.
+ * @brief 콘솔 프로그램의 인자와 옵션 처리를 위한 컴포넌트
  *        Consoel_CommandLine 패키지를 사용하여 구현. Consoel_Table/Console_Color2 패키지
  *        역시 사용할 예정이다.
  *
  * @author Lee, Hyeon-gi
  */
-class Command_Line_Input extends Component {
+class Command_Line extends Component {
   private $cli;
   private $result;
   private $options = array();
@@ -63,10 +63,10 @@ class Command_Line_Input extends Component {
       }
     }
     catch (Console_CommandLine_Exception $e) {
-      throw new Command_Line_Input_Error($e->getMessage(), $e->getCode());
+      throw new Command_Line_Error($e->getMessage(), $e->getCode());
     }
     catch (Exception $e) {
-      throw new Command_Line_Input_Error($e->getMessage(), $e->getCode());
+      throw new Command_Line_Error($e->getMessage(), $e->getCode());
     }
   }
 

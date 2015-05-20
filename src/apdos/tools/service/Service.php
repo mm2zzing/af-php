@@ -2,9 +2,9 @@
 namespace apdos\tools\service;
 
 use apdos\tools\ash\Tool;
-use apdos\tools\ash\console\Command_Line_Input;
+use apdos\tools\ash\console\Command_Line;
 use apdos\tools\ash\console\Command_Option_Event;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\servicee\actions\Service_Help;
 use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
@@ -27,7 +27,7 @@ class Service extends Tool {
   }
 
   public function main($argc, $argv) { 
-    $this->cli = Component::create('apdos\tools\ash\console\Command_Line_Input', '/bin/cmd/service');
+    $this->cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/service');
     $this->cli->init(array('name'=>self::NAME,
                            'description' => self::DESCRIPTION,
                            'version' => self::VERSION,
@@ -57,7 +57,7 @@ class Service extends Tool {
     try {
       $this->cli->parse($argc, $argv);
     }
-    catch (Command_Line_Input_Exception $e) {
+    catch (Command_Line_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     Kernel::get_instance()->delete_object($this->cli->get_parent()->get_path());

@@ -2,8 +2,8 @@
 namespace apdos\tools\whoami;
 
 use apdos\tools\ash\Tool;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\Command_Line;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
 use apdos\plugins\input\Input;
@@ -23,7 +23,7 @@ class Whoami extends Tool {
   }
 
   public function main($argc, $argv) {
-    $this->cli = Component::create('apdos\tools\ash\console\Command_Line_Input', '/bin/cmd/service');
+    $this->cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/service');
     $this->cli->init(array('name'=>self::NAME,
                            'description' => self::DESCRIPTION,
                            'version' => self::VERSION,
@@ -46,7 +46,7 @@ class Whoami extends Tool {
 
       echo "user:$user remote ip:$remote_ip user agent:$user_agent" . PHP_EOL;
     }
-    catch (Command_Line_Input_Exception $e) {
+    catch (Command_Line_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     $this->cli->get_parent()->release();

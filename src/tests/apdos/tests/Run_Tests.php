@@ -17,8 +17,8 @@ use apdos\tests\plugins\database\connecters\mongodb\Mongodb_Test;
 use apdos\tests\plugins\prereg\Prereg_Manager_Test;
 use apdos\tests\plugins\prereg\Prereg_Test;
 use apdos\tests\plugins\auth\Auth_Test;
-use apdos\tools\ash\console\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ash\console\Command_Line;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Connecter_Test;
 use apdos\tests\plugins\database\connecters\mysql\Mysql_Schema_Test;
 use apdos\tests\plugins\cache\Cache_Test;
@@ -40,7 +40,7 @@ class Run_Tests extends Tool {
   }
 
   public function main($argc, $argv) {
-    $cli = Component::create('apdos\tools\ash\console\Command_Line_Input', '/bin/cmd/run_tests');
+    $cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/run_tests');
     $cli->init(array('name'=>self::NAME,
                      'description' => self::DESCRIPTION,
                      'version' => self::VERSION));
@@ -48,7 +48,7 @@ class Run_Tests extends Tool {
       $cli->parse($argc, $argv);
       $this->run_test_cases();
     }
-    catch (Command_Line_Input_Exception $e) {
+    catch (Command_Line_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     Kernel::get_instance()->delete_object('/bin/cmd/run_tests');

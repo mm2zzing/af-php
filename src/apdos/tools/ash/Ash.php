@@ -3,8 +3,8 @@ namespace apdos\tools\ash;
 
 use apdos\kernel\actor\Actor;
 use apdos\kernel\core\Kernel;
-use apdos\tools\ashconsole\Command_Line_Input;
-use apdos\tools\ash\console\error\Command_Line_Input_Error;
+use apdos\tools\ashconsole\Command_Line;
+use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\ash\error\Ash_Error;
 use apdos\kernel\log\Logger;
 use apdos\kernel\actor\Component;
@@ -34,9 +34,7 @@ class Ash extends Tool {
 
   public function __construct() {
     $this->actor_connecter = Component::create('apdos\kernel\actor\Actor_Connecter', '/bin/actor_connecter');
-  } 
-
-  public function main($argc, $argv) {
+  } public function main($argc, $argv) {
     $this->display_logo();
     $cli = $this->create_line_input();
     try {
@@ -66,7 +64,7 @@ class Ash extends Tool {
         }
       }
     }
-    catch (Command_Line_Input_Error $e) {
+    catch (Command_Line_Error $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
     catch (\Exception $e) {
@@ -105,7 +103,7 @@ class Ash extends Tool {
   }
 
   private function create_line_input() {
-    $result = Component::create('apdos\tools\ash\console\Command_Line_Input', '/bin/cmd_line');
+    $result = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd_line');
     $result->init(array('name'=>self::NAME,
                         'description' => self::DESCRIPTION,
                         'version' => self::VERSION,
@@ -122,9 +120,7 @@ class Ash extends Tool {
     ));
     $result->add_option('port', array(
         'short_name'=> '-p',
-        'long_name'=> '--port',
-        'description'=>'Bind port number',
-        'action'=>'StoreInt',
+        'long_name'=> '--port', 'description'=>'Bind port number', 'action'=>'StoreInt',
         'default'=>80
     ));
     return $result;
@@ -141,7 +137,7 @@ class Ash extends Tool {
       $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
     }
-    catch (Command_Line_Input_Error $e) {
+    catch (Command_Line_Error $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
     catch (Ash_Error $e) {
