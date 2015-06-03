@@ -7,6 +7,15 @@ use apdos\kernel\core\Object_Converter;
 use apdos\plugins\resource\File_Error;
 use apdos\plugins\config\errors\Config_Error;
 
+/**
+ * @class Config
+ *
+ * @brief 특정 어플리케이션의 설정을 로드하는 객체. 
+ *        Config에서 관리하는 설정 파일은 읽기만 가능하다.
+ *
+ *        @TODO Config와 Etc 설정파일에서 json 처리 코드 리펙토링 필요
+ * @authro Lee, Hyeon-gi
+ */
 class Config extends Component {
   private $configs;
   private $appication_path;
@@ -30,7 +39,7 @@ class Config extends Component {
   }
 
   /**
-   * 설정 정보를 저장한다. json 파일이 변경되는 것은 아니므로 주의
+   * 설정 정보를 임시로 변경 한다. json 파일이 변경되는 것은 아니므로 주의
    *
    * @param path string 설정 패스 
    */

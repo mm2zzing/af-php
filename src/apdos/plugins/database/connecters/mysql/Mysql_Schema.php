@@ -7,6 +7,10 @@ use apdos\kernel\actor\component;
  * @class Mysql_Schema
  *
  * @brieif Mysql 데이타베이스와 테이블을 생성하는 방법들을 제공
+
+           http://codeigniter-kr.org/user_guide_2.1.0/database/index.html와 같이
+           
+           액티브레코드를 사용하여 쿼리를 자동으로 생성한다.
  *
  * @authro Lee, Hyeon-gi
  */

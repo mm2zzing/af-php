@@ -6,6 +6,13 @@ use apdos\kernel\actor\Component;
 use apdos\kernel\core\Object_Converter;
 use apdos\plugins\resource\File_Error;
 
+/**
+ * @class Etc
+ *
+ * @brief 특정 어플리케이션의 기타 설정을 관리하는 객체. Etc 설정은
+          actor framework 모듈에서 변경이 가능하다.
+ * @authro Lee, Hyeon-gi
+ */
 class Etc extends Component {
   private $etcs;
   private $appication_path;
