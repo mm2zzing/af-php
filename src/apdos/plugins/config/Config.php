@@ -106,7 +106,7 @@ class Config extends Component {
   }
 
   /**
-   * 설정 정보를 리턴한다. set 함수에 의해 이미 값이 설정되어 있다면 파일에서 로드 하지 않는다.
+   * 설정 정보를 리턴한다. 
    *
    * @param path string 설정 패스 
    * @return object 설정 값
