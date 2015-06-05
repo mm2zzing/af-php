@@ -39,14 +39,20 @@ class Config extends Component {
   }
 
   /**
-   * 설정 정보를 임시로 변경 한다. json 파일이 변경되는 것은 아니므로 주의
+   * 설정 정보를 변경 한다. 변경하기 위해서는 정보가 미리 로드되어 있어야 한다.
+   * 
+   * 시스템이 구동되면서 동적으로 설정을 변경하고자 할떄는 persistent 옵션을 false로 설정
+   * 변경된 설정 정보가 파일에 반영되길 원한다면 persistenent 옵션을 true로 설정
    *
    * @param path string 설정 패스 
+   * @param value object 설정 데이터
    */
-  public function set($path, $value) {
+  public function set($path, $value, $persistent = false) {
     $tokens = explode('.', $path);
     $config_name = $tokens[0];
-    $current = &$this->configs[$config_name]->{$this->environment};
+    if (!isset($this->configs[$config_name]))
+      throw new Config_Error('Not loaded config:' . $path);
+    $current = &$this->configs[$config_name];
     for ($i = 1; $i < count($tokens); $i++) {
       $name = $tokens[$i]; 
       if ($i == (count($tokens) - 1))
@@ -57,6 +63,46 @@ class Config extends Component {
         $current = &$current->$name;
       }
     }
+
+    if ($persistent)
+      $this->save($config_name);
+  }
+
+  public function push($path, $value, $persistent = false) {
+    $tokens = explode('.', $path);
+    $config_name = $tokens[0];
+    if (!isset($this->configs[$config_name]))
+      throw new Config_Error('Not loaded config:' . $path);
+    $current = &$this->configs[$config_name];
+    for ($i = 1; $i < count($tokens); $i++) {
+      $name = $tokens[$i]; 
+      if ($i == (count($tokens) - 1)) {
+        if (!is_array($current->$name))
+          throw new Config_Error("Target path is not array", Config_Error::PUSH_FAILED);
+        array_push($current->$name, $value);
+      }
+      else { 
+        if (!isset($current->$name))
+          $current->$name = new \stdClass();
+        $current = &$current->$name;
+      }
+    }
+    if ($persistent)
+      $this->save($config_name);
+  }
+
+  public function clear($config_name, $persistent = false) {
+    unset($this->configs[$config_name]);
+    if ($persistent)
+      $this->delete($config_name);
+  }
+
+  private function delete($config_name) {
+    $env = $this->get_enviroment();
+    $file_path = "$this->application_path/config/$env/$config_name.json";
+    $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
+    $file->delete($file_path);
+    $file->get_parent()->release();
   }
 
   /**
@@ -72,16 +118,19 @@ class Config extends Component {
     if (!isset($this->configs[$config_name]))
       $this->load($config_name);
 
-    $current = $this->configs[$config_name]->{$this->environment};
+    $current = $this->configs[$config_name];
     for ($i = 1; $i < count($tokens); $i++) {
       $name = $tokens[$i];
+      if (!isset($current->$name))
+        throw new Config_Error('Not exist path:' + $path, Config_Error::GET_FAILED);
       $current = $current->$name;
     }
     return $current;
   }
 
   private function load($config_name) {
-    $file_path = "$this->application_path/config/$config_name.json";
+    $env = $this->get_enviroment();
+    $file_path = "$this->application_path/config/$env/$config_name.json";
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     try {
       $file->load($file_path);
@@ -90,22 +139,22 @@ class Config extends Component {
         case JSON_ERROR_NONE:
           break;
         case JSON_ERROR_DEPTH:
-          throw new Config_Error('Maximum stack depth exceeded');
+          throw new \Exception('Maximum stack depth exceeded');
           break;
         case JSON_ERROR_STATE_MISMATCH:
-          throw new Config_Error('Underflow or the modes mismatch');
+          throw new \Exception('Underflow or the modes mismatch');
           break;
         case JSON_ERROR_CTRL_CHAR:
-          throw new Config_Error('Unexpected control character found');
+          throw new \Exception('Unexpected control character found');
           break;
         case JSON_ERROR_SYNTAX:
-          throw new Config_Error('Syntax error, malformed JSON');
+          throw new \Exception('Syntax error, malformed JSON');
           break;
         case JSON_ERROR_UTF8:
-          throw new Config_Error('Malformed UTF-8 characters, possibly incorrectly encoded');
+          throw new \Exception('Malformed UTF-8 characters, possibly incorrectly encoded');
           break;
         default:
-          throw new Config_Error('Unknown error');
+          throw new \Exception('Unknown error');
           break;
       }
       $this->configs[$config_name] = Object_Converter::to_object($parse_data);
@@ -115,9 +164,28 @@ class Config extends Component {
       $file->get_parent()->release();
       throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
     }
-    catch (Exception $e) {
+    catch (\Exception $e) {
       $file->get_parent()->release();
       throw new Config_Error($e->getMessage(), Config_Error::LOAD_FAILED);
+    }
+  }
+
+  private function save($config_name) {
+    $env = $this->get_enviroment();
+    $file_path = "$this->application_path/config/$env/$config_name.json";
+    $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
+    try {
+      $encode_data = json_encode($this->configs[$config_name], JSON_PRETTY_PRINT);
+      $file->save($file_path, $encode_data);
+      $file->get_parent()->release();
+    }
+    catch (File_Error $e) {
+      $file->get_parent()->release();
+      throw new Config_Error($e->getMessage(), Config_Error::SAVE_FAILED);
+    }
+    catch (\Exception $e) {
+      $file->get_parent()->release();
+      throw new Config_Error($e->getMessage(), Config_Error::SAVE_FAILED);
     }
   }
 

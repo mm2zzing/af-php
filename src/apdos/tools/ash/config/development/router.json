@@ -1,0 +1,7 @@
+{
+  "register_gets": [
+    {"uri":"/", "controller_class":"app\\welcome\\controllers\\Hellow"},
+    {"uri":"/sys/maintenance", "controller_class":"app\\welcome\\controllers\\Maintenance"},
+    {"uri":"/sys/error", "controller_class":"app\\welcome\\controllers\\Error"}
+  ]
+}

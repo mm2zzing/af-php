@@ -1,0 +1,6 @@
+{
+  "handler": {
+    "type":"file",
+    "path":"cache"
+  }
+}
