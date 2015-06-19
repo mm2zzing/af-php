@@ -14,21 +14,10 @@ class Controller extends Component {
   }
 
   /**
-   * POST로 전송된 이벤트를 처리한다.
-   * 
-   * @param string URL에 전달되어온 base64인코딩된 이벤트 객체
+   * POST로 전송된 이벤트 객체를 처리한다.
    */
-  public function dispatch_post() {
+  public function dispatch() {
     $this->accepter = $this->get_parent()->add_component('apdos\kernel\actor\Actor_Accepter');
     $this->accepter->recv(Input::get_instance()->get('event'));
-  }
-
-  /**
-   * GET으로 전송된 이벤트를 처리한다.
-   *
-   */
-  public function dispatch_get($proxy_event) {
-    $this->accepter = $this->get_parent()->add_component('apdos\kernel\actor\Actor_Accepter');
-    $this->accepter->recv($proxy_event);
   }
 }
