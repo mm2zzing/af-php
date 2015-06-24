@@ -1,5 +1,5 @@
 <?php
-namespace tests\apdos;
+namespace tests\tools\apdos_test;
 
 use apdos\kernel\core\Kernel;
 use apdos\tools\ash\Tool;
@@ -14,17 +14,13 @@ use tests\apdos\kernel\actor\Actor_Test;
 use tests\apdos\kernel\user\User_Server_Test;
 use tests\apdos\kernel\core\Object_Converter_Test;
 use tests\apdos\kernel\actor\actor_accepter_test;
-use tests\apdos\plugins\database\connecters\mongodb\Mongodb_Test;
 use tests\apdos\plugins\prereg\Prereg_Manager_Test;
 use tests\apdos\plugins\prereg\Prereg_Test;
 use tests\apdos\plugins\auth\Auth_Test;
 use apdos\tools\ash\console\Command_Line;
 use apdos\tools\ash\console\error\Command_Line_Error;
-use tests\apdos\plugins\database\connecters\mysql\Mysql_Connecter_Test;
-use tests\apdos\plugins\database\connecters\mysql\Mysql_Schema_Test;
 use tests\apdos\plugins\cache\Cache_Test;
 use tests\apdos\plugins\input\Input_Test;
-use tests\apdos\plugins\shard\Shard_Test;
 
 /**
  * @class Apdos_Test
@@ -33,7 +29,7 @@ use tests\apdos\plugins\shard\Shard_Test;
  * @author Lee Hyeon-gi
  */
 class Apdos_Test extends Tool {
-  const NAME = "apdos_tests";
+  const NAME = "apdos-test";
   const DESCRIPTION = "APD/OS-PHP unittest runner";
   const VERSION = '0.0.1';
 
@@ -64,16 +60,11 @@ class Apdos_Test extends Tool {
     $this->run_user_server_test();
     $this->run_actor_accepter_test();
     $this->run_object_converter_test();
-    $this->run_mongodb_test();
-    $this->run_mysql_connecter_test();
-    $this->run_mysql_schema_test();
-    $this->run_mysql_table_test();
     $this->run_auth_test();
     $this->run_prereg_test();
     $this->run_prereg_manager_test();
     $this->run_cache_test();
     $this->run_input_test();
-    $this->run_shard_test();
   }
 
   private function run_test_case_test() {
@@ -228,66 +219,6 @@ class Apdos_Test extends Tool {
     echo $test_result->summary() . PHP_EOL;
   }
 
-
-  /**
-   * @TODO 외부 플러그인으로 제외시킨다.
-   */
-  private function run_mongodb_test() {
-    $test_result = new Test_Result('mongodb_test');
-
-    $test = new Mongodb_Test('test_insert');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_find_one');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_find');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_limit');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_skip');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_update');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_set');
-    $test->run($test_result);
-    $test = new Mongodb_Test('test_set_all');
-    $test->run($test_result);
-
-    echo $test_result->summary() . PHP_EOL;
-  }
-
-  private function run_mysql_connecter_test() {
-    $test_result = new Test_Result('mysql_connecter_test');
-
-    $test = new Mysql_Connecter_Test('test_create_database');
-    $test->run($test_result);
-    $test = new Mysql_Connecter_Test('test_drop_database');
-    $test->run($test_result);
-    $test = new Mysql_Connecter_Test('test_insert');
-    $test->run($test_result);
-    $test = new Mysql_Connecter_Test('test_select');
-    $test->run($test_result);
-    $test = new Mysql_Connecter_Test('test_delete');
-    $test->run($test_result);
-
-
-    echo $test_result->summary() . PHP_EOL;
-  }
-
-  private function run_mysql_schema_test() {
-    $test_result = new Test_Result('mysql_schema_test');
-
-    $test = new Mysql_Schema_Test('test_create_database');
-    $test->run($test_result);
-    $test = new Mysql_Schema_Test('test_drop_database');
-    $test->run($test_result);
-    $test = new Mysql_Schema_Test('test_create_table');
-    $test->run($test_result);
-    $test = new Mysql_Schema_Test('test_drop_table');
-    $test->run($test_result);
-
-    echo $test_result->summary() . PHP_EOL;
-  }
-
   private function run_cache_test() {
     $test_result = new Test_Result('cache_test');
 
@@ -323,12 +254,4 @@ class Apdos_Test extends Tool {
   private function run_mysql_table_test() {
   }
 
-  private function run_shard_test() {
-    $test_result = new Test_Result('shard_test');
-
-    $test = new Shard_Test('test_set');
-    $test->run($test_result);
-
-    echo $test_result->summary() . PHP_EOL;
-  }
 }
