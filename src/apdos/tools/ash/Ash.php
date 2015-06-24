@@ -8,7 +8,7 @@ use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\ash\error\Ash_Error;
 use apdos\kernel\log\Logger;
 use apdos\kernel\actor\Component;
-use apdos\kernel\actor\Actor_Connecter;
+use apdos\kernel\actor\net\Actor_Connecter;
 use apdos\tools\ash\events\Shell_Command;
 
 class Ash extends Tool {
@@ -33,8 +33,10 @@ class Ash extends Tool {
 
 
   public function __construct() {
-    $this->actor_connecter = Component::create('apdos\kernel\actor\Actor_Connecter', '/bin/actor_connecter');
-  } public function main($argc, $argv) {
+    $this->actor_connecter = Component::create('apdos\kernel\actor\net\Actor_Connecter', '/bin/actor_connecter');
+  } 
+  
+  public function main($argc, $argv) {
     $this->display_logo();
     $cli = $this->create_line_input();
     try {

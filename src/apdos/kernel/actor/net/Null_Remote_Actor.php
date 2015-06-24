@@ -1,5 +1,5 @@
 <?php
-namespace apdos\kernel\actor;
+namespace apdos\kernel\actor\net;
 
 class Null_Remote_Actor extends Remote_Actor {
   public function get_sender_path() {

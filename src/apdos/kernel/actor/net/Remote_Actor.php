@@ -1,5 +1,5 @@
 <?php
-namespace apdos\kernel\actor;
+namespace apdos\kernel\actor\net;
 
 class Remote_Actor {
   private $actor_accepter;

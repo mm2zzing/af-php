@@ -1,12 +1,12 @@
 <?php
-namespace apdos\kernel\actor;
+namespace apdos\kernel\actor\net;
 
 use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\event\Event;
 use apdos\kernel\event\errors\Event_Error;
 use apdos\kernel\actor\events\Proxy_Event;
-use apdos\kernel\actor\Remote_Actor;
+use apdos\kernel\actor\net\Remote_Actor;
 use apdos\kernel\actor\errors\Actor_Error;
 use apdos\kernel\event\serializer\Redf_Deserializer;
 

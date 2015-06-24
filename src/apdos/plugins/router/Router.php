@@ -6,7 +6,7 @@ use apdos\kernel\actor\Component;
 use apdos\kernel\core\Object_Converter;
 use apdos\plugins\router\dto\Router_DTO;
 use apdos\plugins\router\dto\Null_Router_DTO;
-use apdos\plugins\router\internal\Register_Get_Finder;
+use apdos\plugins\router\_common_\Register_Get_Finder;
 use apods\plugins\router\Controller_Runner;
 
 class Router extends Component {

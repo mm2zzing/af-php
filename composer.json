@@ -16,6 +16,6 @@
     }
   ],
   "autoload": {
-    "psr-4": {"apdos\\":"src/apdos", "apdos\\tests\\":"src/tests/apdos/tests"}
+    "psr-4": {"apdos\\":"src/apdos", "tests\\":"src/tests", "examples\\":"src/examples"}
   }
 }
