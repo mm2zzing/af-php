@@ -10,6 +10,7 @@ use apdos\kernel\log\Logger;
 use apdos\kernel\actor\Component;
 use apdos\kernel\actor\net\Actor_Connecter;
 use apdos\tools\ash\events\Shell_Command;
+use apdos\tools\ash\dto\Argument_DTO;
 
 class Ash extends Tool {
   const LOGO = '
@@ -38,8 +39,8 @@ class Ash extends Tool {
   
   public function main($argc, $argv) {
     $this->display_logo();
-    $cli = $this->create_line_input();
     try {
+      $cli = $this->create_line_input();
       $cli->parse($argc, $argv);
       if ($cli->has_arg('host_address')) {
         $this->host = $cli->get_arg('host_address');
@@ -51,18 +52,18 @@ class Ash extends Tool {
 
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
-        $tool_argv = explode(' ', $cli->get_option('run_cmd'));
-        $tool_argc = count($tool_argv);
-        $this->run_command($tool_argc, $tool_argv);
+        $dtos = $this->parse_line($cli->get_option('run_cmd'));
+        foreach ($dtos as $dto)
+          $this->run_command($dto);
       }
       else {
         while (1) {
           $line = readline($this->prompt);
           if ($line == 'exit')
             break;
-          $tool_argv = explode(' ', $line);
-          $tool_argc = count($tool_argv);
-          $this->run_command($tool_argc, $tool_argv);
+          $dtos = $this->parse_line($line);
+          foreach ($dtos as $dto)
+            $this->run_command($dto);
         }
       }
     }
@@ -73,6 +74,24 @@ class Ash extends Tool {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
     return;
+  }
+
+  /**
+   * 입력된 문자열을 커맨드 단위로 파싱한다. |, & 연산자를 통해 커맨드 체인 기능
+   * 지원이 된다.
+   * 
+   * @param input_str string 입력된 문자열
+   *
+   * @return array(Argument_DTO)
+   */
+  private function parse_line($input_str) {
+    $result = array();
+    $cmds = explode('&', $input_str);
+    foreach ($cmds as $cmd) {
+      $arguments = explode(' ', $cmd);
+      array_push($result, new Argument_DTO($arguments));
+    }
+    return $result;
   }
 
   private function get_prompt() {
@@ -117,12 +136,14 @@ class Ash extends Tool {
         'long_name'=>'--run_cmd',
         'description'=>'Insert one line command string',
         'help_name'=>'{execute command}',
-        'action='=>'StoreString',
+        'action'=>'StoreString',
         'default'=>''
     ));
     $result->add_option('port', array(
         'short_name'=> '-p',
-        'long_name'=> '--port', 'description'=>'Bind port number', 'action'=>'StoreInt',
+        'long_name'=> '--port', 
+        'description'=>'Bind port number', 
+        'action'=>'StoreInt',
         'default'=>80
     ));
     return $result;
@@ -132,10 +153,10 @@ class Ash extends Tool {
       return strlen($result->options[$option]) > 0 ? true : false;
   }
 
-  private function run_command($tool_argc, $tool_argv) {
+  private function run_command($argument_dto) {
     try {
       $shell_command = new Shell_Command();
-      $shell_command->init($tool_argc, $tool_argv, $this->user);
+      $shell_command->init($argument_dto->get_count(), $argument_dto->gets(), $this->user);
       $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
     }

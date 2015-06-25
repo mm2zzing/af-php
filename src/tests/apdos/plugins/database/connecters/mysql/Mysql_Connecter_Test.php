@@ -1,6 +1,7 @@
 <?php
 namespace tests\apdos\plugins\database\connecters\mysql;
 
+use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
@@ -50,7 +51,7 @@ class Mysql_Connecter_Test extends Test_Case {
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
     $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
-    $this->connecter->connect('localhost', 'root', 'hserver1@sql');
+    $this->connecter->connect('localhost', 'root', '');
     $this->connecter->simple_query($this->create_database_query(self::TEST_DATABASE_NAME));
   }
 
@@ -89,6 +90,15 @@ class Mysql_Connecter_Test extends Test_Case {
     $this->connecter->simple_query($this->drop_database_query(self::TEST_DATABASE_NAME));
     $this->connecter->close();
     Kernel::get_instance()->delete_object('/sys/db/mysql');
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Mysql_Schema_Test');
+    $suite->add(new Mysql_Schema_Test('test_create_database'));
+    $suite->add(new Mysql_Schema_Test('test_drop_database'));
+    $suite->add(new Mysql_Schema_Test('test_create_table'));
+    $suite->add(new Mysql_Schema_Test('test_drop_table'));
+    return $suite;
   }
 }
 

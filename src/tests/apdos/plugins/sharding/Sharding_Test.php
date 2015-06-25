@@ -1,11 +1,11 @@
 <?php
-namespace tests\apdos\plugins\shard;
+namespace tests\apdos\plugins\sharding;
 
 use apdos\plugins\test\Test_Case;
-use apdos\plugins\shard\
+use apdos\plugins\test\Test_Suite;
 
 
-class Shard_Test extends Test_Case {
+class Sharding_Test extends Test_Case {
   public function __construct($method_name) {
     parent::__construct($method_name);
   }
@@ -24,6 +24,12 @@ class Shard_Test extends Test_Case {
 
   public function get_config() {
     return array();
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Sharding_Test');
+    $suite->add(new Sharding_Test('test_set'));
+    return $suite;
   }
 }
 

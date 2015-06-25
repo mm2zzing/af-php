@@ -20,6 +20,12 @@ class Command_Line extends Component {
   private $cli;
   private $result;
   private $options = array();
+  private $valid_options = array('short_name', 
+                                 'long_name', 
+                                 'description', 
+                                 'help_name', 
+                                 'action',
+                                 'default');
 
   public function __construct() {
   }
@@ -31,7 +37,21 @@ class Command_Line extends Component {
   public function register_action($name, $class_name) {
     Console_CommandLine::registerAction($name, $class_name);
   } 
+
+  /**
+   * 파라미터 옵션을 추가한다. action타입에 StoreTrue, StoreFalse를
+   * 지정하는 경우 옵션에 대한 추가 파라미터가 필요없다.
+   *
+   * @param name string 옵션명
+   * @param params array(string=>value) 옵션 설정
+   */
   public function add_option($name, $params) {
+    foreach ($params as $key=>$value) {
+      if (!in_array($key, $this->valid_options)) {
+        throw new Command_Line_Error('parameter is invalid name: ' . $key ,
+                                     Command_Line_Error::OPTION_NAME_IS_WRONG);
+      }
+    }
     array_push($this->options, $name);
     $this->cli->addOption($name, $params);
   }

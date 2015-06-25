@@ -4,6 +4,7 @@ namespace tests\apdos\plugins\database\connecters\mongodb;
 use apdos\kernel\core\loader;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\plugins\database\connecters\mongodb\Mongodb_Connecter;
 
 class Mongodb_Test extends Test_Case {
@@ -104,5 +105,18 @@ class Mongodb_Test extends Test_Case {
 
   public function tear_down() {
     Kernel::get_instance()->delete_object('/sys/db/mongo');
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Mongodb_Test');
+    $suite->add(new Mongodb_Test('test_insert'));
+    $suite->add(new Mongodb_Test('test_find_one'));
+    $suite->add(new Mongodb_Test('test_find'));
+    $suite->add(new Mongodb_Test('test_limit'));
+    $suite->add(new Mongodb_Test('test_skip'));
+    $suite->add(new Mongodb_Test('test_update'));
+    $suite->add(new Mongodb_Test('test_set'));
+    $suite->add(new Mongodb_Test('test_set_all'));
+    return $suite;
   }
 }

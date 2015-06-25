@@ -17,12 +17,16 @@ use tests\apdos\kernel\user\User_Server_Test;
 use tests\apdos\kernel\core\Object_Converter_Test;
 use tests\apdos\kernel\actor\Actor_Accepter_Test;
 use tests\apdos\plugins\prereg\Prereg_Manager_Test;
+use tests\apdos\plugins\database\connecters\mongodb\Mongodb_Test;
 use tests\apdos\plugins\prereg\Prereg_Test;
 use tests\apdos\plugins\auth\Auth_Test;
 use apdos\tools\ash\console\Command_Line;
 use apdos\tools\ash\console\error\Command_Line_Error;
 use tests\apdos\plugins\cache\Cache_Test;
 use tests\apdos\plugins\input\Input_Test;
+use tests\apdos\plugins\sharding\Sharding_Test;
+use tests\apdos\plugins\database\connecters\mysql\Mysql_Connecter_Test;
+use tests\apdos\plugins\database\connecters\mysql\Mysql_Schema_Test;
 
 /**
  * @class Apdos_Test
@@ -39,18 +43,33 @@ class Apdos_Test extends Tool {
   }
 
   public function main($argc, $argv) {
-    $cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/run_tests');
-    $cli->init(array('name'=>self::NAME,
-                     'description' => self::DESCRIPTION,
-                     'version' => self::VERSION));
+    $this->cli = $this->create_line_input();
     try {
-      $cli->parse($argc, $argv);
+      $this->cli->parse($argc, $argv);
       $this->run_test_cases();
     }
     catch (Command_Line_Exception $e) {
       echo $e->getMessage() . PHP_EOL;
     }
     Kernel::get_instance()->delete_object('/bin/cmd/run_tests');
+  }
+
+  private function create_line_input() {
+    $cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/run_tests');
+    $cli->init(array('name'=>self::NAME,
+                     'description' => self::DESCRIPTION,
+                     'version' => self::VERSION));
+    $cli->add_option('dmysql', array(
+        'long_name'=>'--d-mysql',
+        'description'=>'include mysql dependency tests. test require mysqli extension',
+        'action'=>'StoreTrue',
+    ));
+    $cli->add_option('dmongodb', array(
+        'long_name'=>'--d-mongodb',
+        'description'=>'include mongodb dependency tests.',
+        'action'=>'StoreTrue',
+    ));
+    return $cli;
   }
 
   private function run_test_cases() {
@@ -69,26 +88,15 @@ class Apdos_Test extends Tool {
     $runner->add(Prereg_Manager_Test::create_suite());
     $runner->add(Cache_Test::create_suite());
     $runner->add(Input_Test::create_suite());
+    $runner->add(Sharding_Test::create_suite());
+    if ($this->cli->has_option('dmysql')) {
+      $runner->add(Mysql_Connecter_Test::create_suite());
+      $runner->add(Mysql_Schema_Test::create_suite());
+    }
+    if ($this->cli->has_option('dmongodb')) {
+      $runner->add(Mongodb_Test::create_suite());
+    }
     $runner->run();
     echo $runner->summary() . PHP_EOL;
   }
-
-  private function run_input_test() {
-    $test_result = new Test_Result('input_test');
-
-    $test = new Input_Test('test_get');
-    $test->run($test_result);
-    $test = new Input_Test('test_has');
-    $test->run($test_result);
-    $test = new Input_Test('test_get_ip');
-    $test->run($test_result);
-    $test = new Input_Test('test_get_user_agent');
-    $test->run($test_result);
-
-    echo $test_result->summary() . PHP_EOL;
-  }
-
-  private function run_mysql_table_test() {
-  }
-
 }
