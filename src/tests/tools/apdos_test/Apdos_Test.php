@@ -88,7 +88,6 @@ class Apdos_Test extends Tool {
     $runner->add(Prereg_Manager_Test::create_suite());
     $runner->add(Cache_Test::create_suite());
     $runner->add(Input_Test::create_suite());
-    $runner->add(Sharding_Test::create_suite());
     if ($this->cli->has_option('dmysql')) {
       $runner->add(Mysql_Connecter_Test::create_suite());
       $runner->add(Mysql_Schema_Test::create_suite());
@@ -96,6 +95,7 @@ class Apdos_Test extends Tool {
     if ($this->cli->has_option('dmongodb')) {
       $runner->add(Mongodb_Test::create_suite());
     }
+    $runner->add(Sharding_Test::create_suite());
     $runner->run();
     echo $runner->summary() . PHP_EOL;
   }
