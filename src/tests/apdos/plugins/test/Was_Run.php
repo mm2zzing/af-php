@@ -2,6 +2,7 @@
 namespace tests\apdos\plugins\test;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 
 class Was_Run extends Test_Case {
   public $log = '';
@@ -20,5 +21,11 @@ class Was_Run extends Test_Case {
 
   public function test_run() {
     $this->log .= 'test_run ';
+  }
+
+  public static function create_suite() {
+    $result = new Test_Suite('Was_Run');
+    $result->add(new Was_Run('test_run'));
+    return $result;
   }
 }

@@ -2,6 +2,7 @@
 namespace tests\apdos\kernel\user;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\kernel\user\User_Server;
 use apdos\kernel\user\errors\Impossible_Login_User_Error;
 use apdos\kernel\etc\Etc;
@@ -73,6 +74,18 @@ class User_Server_Test extends Test_Case {
   }
 
   public function tear_down() {
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('User_Server_Test');
+    $suite->add(new User_Server_Test('test_create'));
+    $suite->add(new User_Server_Test('test_change_user'));
+    $suite->add(new User_Server_Test('test_change_app_user'));
+    $suite->add(new User_Server_Test('test_user_login'));
+    $suite->add(new User_Server_Test('test_app_user_login'));
+    $suite->add(new User_Server_Test('test_logout'));
+    $suite->add(new User_Server_Test('test_register'));
+    return $suite;
   }
 }
 

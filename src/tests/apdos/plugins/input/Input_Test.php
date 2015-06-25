@@ -2,6 +2,7 @@
 namespace tests\apdos\plugins\input;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\plugins\input\Input;
 
 
@@ -71,6 +72,15 @@ class Input_Test extends Test_Case {
     foreach ($_POST as $key=>$value){ 
       unset($_POST[$key]);
     }
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Input_Test');
+    $suite->add(new Input_Test('test_get'));
+    $suite->add(new Input_Test('test_has'));
+    $suite->add(new Input_Test('test_get_ip'));
+    $suite->add(new Input_Test('test_get_user_agent'));
+    return $suite;
   }
 }
 

@@ -2,6 +2,7 @@
 namespace tests\apdos\kernel\actor;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\kernel\actor\actor;
 use apdos\kernel\actor\net\Actor_Accepter;
 use apdos\kernel\core\kernel;
@@ -106,5 +107,14 @@ class Actor_Accepter_Test extends Test_Case {
     $data['data'] = $event;
     
     return json_encode($data);
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Actor_Accepter_Test');
+    $suite->add(new Actor_Accepter_Test('test_json_string_event'));
+    $suite->add(new Actor_Accepter_Test('test_wrong_property_event'));
+    $suite->add(new Actor_Accepter_Test('test_wrong_json_string_event'));
+    $suite->add(new Actor_Accepter_Test('test_actor_path'));
+    return $suite;
   }
 }

@@ -2,6 +2,7 @@
 namespace tests\apdos\plugins\auth;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\plugins\auth\models\auth;
 use apdos\plugins\auth\accessors\User;
 use apdos\plugins\auth\dto\User_DTO;
@@ -152,6 +153,18 @@ class Auth_Test extends Test_Case {
   public function tear_down() {
     Kernel::get_instance()->delete_object('/sys/auth');
     $this->auth = null;
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Auth_Test');
+    $suite->add(new Auth_Test('test_register_guest'));
+    $suite->add(new Auth_Test('test_register'));
+    $suite->add(new Auth_Test('test_register_device'));
+    $suite->add(new Auth_Test('test_get_user'));
+    $suite->add(new Auth_Test('test_login'));
+    $suite->add(new Auth_Test('test_unregister'));
+    $suite->add(new Auth_Test('test_unregister_login'));
+    return $suite;
   }
 }
 

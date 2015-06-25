@@ -3,6 +3,7 @@ namespace tests\apdos\plugins\test;
 
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\test\Test_Result;
+use apdos\plugins\test\Test_Suite;
 use tests\apdos\plugins\test\Was_Run;
 
 class Test_Case_Test extends Test_Case {
@@ -23,7 +24,7 @@ class Test_Case_Test extends Test_Case {
     $was_run = new Was_Run('test_run');
 
     $was_run->run($result);
-    $this->assert(0 == strcmp('test_result 1 run, 0 failed', $result->summary()), 'test result summary');
+    $this->assert(0 == strcmp('test_result: 1 run, 0 failed', $result->short_summary()), 'test result summary');
   }
 
   public function test_mock_object() {
@@ -40,6 +41,11 @@ class Test_Case_Test extends Test_Case {
     $this->assert('mock_bar(2)' == $mock->bar(1), 'mock value is mock_bar(2)');
   }
 
-  public function test_suite() {
+  public static function create_suite() {
+    $suite = new Test_Suite('Test_Case_Test');
+    $suite->add(new Test_Case_Test('test_run'));
+    $suite->add(new Test_Case_Test('test_summary'));
+    $suite->add(new Test_Case_Test('test_mock_object'));
+    return $suite;
   }
 }

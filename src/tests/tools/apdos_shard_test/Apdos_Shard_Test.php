@@ -8,7 +8,7 @@ use apdos\kernel\actor\Component;
 use apdos\plugins\test\Test_Case;
 use tests\apdos\plugins\test\Test_Case_Test;
 use tests\apdos\kernel\event\Event_Test;
-use tests\apdos\kernel\event\Redf_Serializer_Test;
+use tests\apdos\kernel\event\Rdp_Serializer_Test;
 use tests\apdos\kernel\core\Kernel_Test;
 use tests\apdos\kernel\actor\Actor_Test;
 use tests\apdos\kernel\user\User_Server_Test;

@@ -3,6 +3,7 @@ namespace tests\apdos\plugins\prereg;
 
 use apdos\kernel\core\Kernel;
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\plugins\prereg\models\prereg;
 use apdos\plugins\prereg\accessors\prereg_user;
 use apdos\plugins\prereg\dto\prereg_user_dto;
@@ -51,6 +52,13 @@ class Prereg_Test extends Test_Case {
   public function tear_down() {
     $this->prereg = null;
     Kernel::get_instance()->delete_object('/sys/prereg');
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Prereg_Test');
+    $suite->add(new Prereg_Test('test_register'));
+    $suite->add(new Prereg_Test('test_register_with_values'));
+    return $suite;
   }
 }
 

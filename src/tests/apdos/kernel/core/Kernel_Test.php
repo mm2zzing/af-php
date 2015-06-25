@@ -2,6 +2,7 @@
 namespace tests\apdos\kernel\core;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\Kernel;
 
 class Kernel_Test extends Test_Case {
@@ -25,6 +26,13 @@ class Kernel_Test extends Test_Case {
     $this->assert(!$usr->is_null(), 'usr is exist');
     $this->assert($usr->get_path() == '/usr', 'usr path is /usr');
     $this->assert($usr->get_name() == 'usr', 'usr name is usr');
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Kernel_Test');
+    $suite->add(new Kernel_Test('test_create'));
+    $suite->add(new Kernel_Test('test_lookup'));
+    return $suite;
   }
 }
 

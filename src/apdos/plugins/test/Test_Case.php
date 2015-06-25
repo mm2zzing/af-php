@@ -50,10 +50,10 @@ class Test_Case {
       call_user_func(array($this, $this->test_method_name));
     }
     catch (\Exception $e) {
-      $this->result->add_failed_count();
       $message = $e->getMessage();
       $stack = $e->getTraceAsString();
-      Logger::get_instance()->error('TEST_CASE', "Exception: $message $stack");
+      //Logger::get_instance()->error('TEST_CASE', "Exception: $message $stack");
+      $this->result->add_failed($this->test_method_name, "Exception: $message $stack");
     }
   }
 }

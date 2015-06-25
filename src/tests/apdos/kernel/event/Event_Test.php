@@ -2,6 +2,7 @@
 namespace tests\apdos\kernel\event;
 
 use apdos\plugins\test\Test_Case;
+use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\kernel\event\Event;
 use apdos\kernel\event\Event_Dispatcher;
@@ -63,6 +64,14 @@ class Event_Test extends Test_Case {
 
   public function tear_down() {
     $this->event_dispatcher = null;
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Event_Test');
+    $suite->add(new Event_Test('test_add_event_listener'));
+    $suite->add(new Event_Test('test_remove_event_listener'));
+    $suite->add(new Event_Test('test_dispatch_event'));
+    return $suite;
   }
 }
 

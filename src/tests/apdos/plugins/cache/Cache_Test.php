@@ -3,6 +3,7 @@ namespace tests\apdos\plugins\cache;
 
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\cache\Cache;
+use apdos\plugins\test\Test_Suite;
 use apdos\plugins\cache\handlers\File_Handler;
 
 
@@ -59,6 +60,16 @@ class Cache_Test extends Test_Case {
   public function tear_down() {
     Cache::get_instance()->clear_all();
     Cache::get_instance()->remove_handler();
+  }
+
+  public static function create_suite() {
+    $suite = new Test_Suite('Cache_Test');
+    $suite->add(new Cache_Test('test_numeric'));
+    $suite->add(new Cache_Test('test_array'));
+    $suite->add(new Cache_Test('test_expire'));
+    $suite->add(new Cache_Test('test_clear'));
+    $suite->add(new Cache_Test('test_clear_all'));
+    return $suite;
   }
 }
 
