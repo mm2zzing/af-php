@@ -104,7 +104,7 @@ class Mysql_Schema extends Component {
   }
 
   private function get_connecter() {
-    $result = $this->get_parent()->get_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
+    $result = $this->get_property('connecter');
     if ($result->is_null())
       throw new Mysql_Error('Connecter is null', Mysql_Error::CONNECTER_IS_NULL);
     return $result;

@@ -51,9 +51,11 @@ class Mysql_Schema_Test extends Test_Case {
 
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
-    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
-    $this->schema = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Schema');
+    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter'); 
     $this->connecter->connect('p:localhost', 'root', ''); 
+
+    $this->schema = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Schema');
+    $this->schema->set_property('connecter', $this->connecter);
   }
 
   public function tear_down() {
