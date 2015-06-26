@@ -43,6 +43,7 @@ class Apdos_Test extends Tool {
   }
 
   public function main($argc, $argv) {
+    $this->select_config(realpath(__DIR__));
     $this->cli = $this->create_line_input();
     try {
       $this->cli->parse($argc, $argv);

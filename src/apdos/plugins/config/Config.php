@@ -46,6 +46,7 @@ class Config extends Component {
    *
    * @param path string 설정 패스 
    * @param value object 설정 데이터
+   * @param persistent bool 파일에 반영 여부
    */
   public function set($path, $value, $persistent = false) {
     $tokens = explode('.', $path);

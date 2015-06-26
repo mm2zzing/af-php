@@ -1,0 +1,10 @@
+{
+  "lookup_shard": {
+    "lookup01":{
+      "connecter":"mysql"
+    },
+    "lookup02":{
+      "connecter":"my"
+    }
+  }
+}

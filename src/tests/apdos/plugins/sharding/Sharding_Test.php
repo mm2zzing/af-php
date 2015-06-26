@@ -5,6 +5,7 @@ use apdos\plugins\test\Test_Case;
 use apdos\plugins\test\Test_Suite;
 use apdos\plugins\sharding\Shard_Router;
 use apdos\kernel\core\Object_Converter;
+use apdos\tools\ash\Tool_Config;
 
 class Sharding_Test extends Test_Case {
   public function __construct($method_name) {
@@ -12,6 +13,7 @@ class Sharding_Test extends Test_Case {
   }
 
   public function set_up() {
+    //print_r(Tool_Config::get_instance()->get('test_sharding.lookup_shard'));
   }
 
   public function tear_down() {
@@ -23,6 +25,7 @@ class Sharding_Test extends Test_Case {
       $this->get_lookup_shards(),
       $this->get_data_shards());
 
+    $data = array();
     Shard_Router::get_instance()->insert('mytable', $data);
   }
 
