@@ -27,6 +27,7 @@ use tests\apdos\plugins\input\Input_Test;
 use tests\apdos\plugins\sharding\Sharding_Test;
 use tests\apdos\plugins\database\connecters\mysql\Mysql_Connecter_Test;
 use tests\apdos\plugins\database\connecters\mysql\Mysql_Schema_Test;
+use tests\apdos\plugins\database\connecters\mysql\Mysql_Util_Test;
 
 /**
  * @class Apdos_Test
@@ -93,12 +94,13 @@ class Apdos_Test extends Tool {
     if ($this->cli->has_option('dmysql')) {
       $runner->add(Mysql_Connecter_Test::create_suite());
       $runner->add(Mysql_Schema_Test::create_suite());
+      $runner->add(Mysql_Util_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {
       $runner->add(Mongodb_Test::create_suite());
     }
-    $runner->add(Sharding_Test::create_suite());
+    //$runner->add(Sharding_Test::create_suite());
     $runner->run();
     echo $runner->summary() . PHP_EOL;
   }

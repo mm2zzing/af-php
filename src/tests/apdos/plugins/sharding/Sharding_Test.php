@@ -7,6 +7,7 @@ use apdos\plugins\sharding\Shard_Router;
 use apdos\kernel\core\Object_Converter;
 use apdos\tools\ash\Tool_Config;
 use apdos\kernel\actor\Component;
+use apdos\kernel\core\Kernel;
 
 /**
  * @class Sharding_Test
