@@ -159,6 +159,8 @@ class Ash extends Tool {
       $shell_command->init($argument_dto->get_count(), $argument_dto->gets(), $this->user);
       $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
+
+      Kernel::get_instance()->update();
     }
     catch (Command_Line_Error $e) {
       Logger::get_instance()->error('ASH', $e->getMessage());

@@ -3,6 +3,7 @@ namespace apdos\kernel\event;
 
 class Event_Dispatcher {
   private $event_listeners = array();
+  private $process_events = array();
 
   public function add_event_listener($event_name, $event_listener) {
     if (!isset($this->event_listeners[$event_name]))
@@ -21,5 +22,16 @@ class Event_Dispatcher {
     foreach ($listeners as $listener) {
       $listener($event);
     }
+  }
+
+  public function async_dispatch_event($event) {
+    array_push($this->process_events, $event);
+  }
+
+  public function update() {
+    foreach ($this->process_events as $event) {
+      $this->dispatch_event($event);
+    }
+    $this->process_events = array();
   }
 }

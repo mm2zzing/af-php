@@ -7,7 +7,7 @@ class Tool extends Component {
   public function __construct() {
   } 
 
-  public function run($argc, $argv) {
+  public function main($argc, $argv) {
   }
 
   protected function select_config($tool_path) {

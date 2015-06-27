@@ -92,6 +92,12 @@ class Root_Node extends Node {
     $this->childs = array();
   }
 
+  public function update() {
+    foreach ($this->childs as $child) {
+      $child->update();
+    }
+  }
+
   public function is_null() {
     return false;
   }

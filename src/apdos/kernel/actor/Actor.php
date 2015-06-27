@@ -3,6 +3,8 @@ namespace apdos\kernel\actor;
 
 use apdos\kernel\core\Root_Node;
 use apdos\kernel\actor\Component;
+use apdos\kernel\actor\events\Component_Event;
+use apdos\kernel\actor\events\Actor_Event;
 use apdos\kernel\actor\Null_Component;
 
 class Actor extends Root_Node {
@@ -20,6 +22,10 @@ class Actor extends Root_Node {
     $result = new $component_class_name();
     $result->set_parent($this);
     array_push($this->components, $result);
+
+    $start_event = new Component_Event();
+    $start_event->init_with_name(Component_Event::$START);
+    $result->async_dispatch_event($start_event);
     return $result;
   }
 
@@ -46,7 +52,8 @@ class Actor extends Root_Node {
     for ($i = 0; $i < count($this->components); $i++) {
       $component = $this->components[$i];
       $class_name = get_class($component);
-      if (0 == strcmp($class_name, $component_class_name)) {
+      if (0 == strcmp($class_name, $component_class_name)) { 
+        $component->release();
         array_splice($this->components, $i, 1);
       }
     }
@@ -74,5 +81,23 @@ class Actor extends Root_Node {
 
   public function get_permissions() {
     return $this->permissions;
+  }
+
+  public function release() {
+    parent::release();
+    $event = new Actor_Event();
+    $event->init_with_name(Actor_Event::$DESTROY);
+    $this->dispatch_event($event);
+
+    for ($i = 0; $i < count($this->components); $i++) {
+      $this->components[$i]->release();
+    }
+    $this->components = array();
+  }
+
+  public function update() {
+    foreach ($this->components as $component)
+      $component->update();
+    parent::update(); 
   }
 }

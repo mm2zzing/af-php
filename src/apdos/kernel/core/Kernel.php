@@ -94,6 +94,10 @@ class Kernel {
   public function get_root() {
     return $this->root;
   }
+
+  public function update() {
+    $this->root->update();
+  }
    
   public static function get_instance() {
     static $instance = null;
