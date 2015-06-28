@@ -14,26 +14,18 @@ class Actor extends Root_Node {
   private $permissions;
 
   /**
-   * 컴포넌트 추가
-   * 
-   * @param component_class_name String 컴포넌트 클래스 명
+   * 컴포넌트 이름을 이용하여 추가
+   *
+   * @param component_class_name String 컴포넌트 클래스 명(네임스페이스 포함)
    */
   public function add_component($component_class_name) {
-    return $this->build_component(new $component_class_name());
-  }
-
-  public function add_component_by_instance($component) {
-    return $this->build_component($component);
-  }
-
-  private function build_component($component) {
+    $component = new $component_class_name();
     $component->set_parent($this);
     array_push($this->components, $component);
 
     $start_event = new Component_Event(array(Component_Event::$START));
     $component->async_dispatch_event($start_event);
     return $component;
-
   }
 
   public function get_component($component_class_name) {

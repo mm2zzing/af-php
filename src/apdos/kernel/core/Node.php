@@ -6,9 +6,6 @@ use apdos\kernel\log\Logger;
 
 class Node extends Event_Dispatcher {
 
-  public function __construct() {
-  }
-
   public function get_name() {
   }
 

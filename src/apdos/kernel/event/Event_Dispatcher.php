@@ -1,7 +1,9 @@
 <?php
 namespace apdos\kernel\event;
 
-class Event_Dispatcher {
+use apdos\kernel\core\Object;
+
+class Event_Dispatcher extends Object {
   private $event_listeners = array();
   private $process_events = array();
 

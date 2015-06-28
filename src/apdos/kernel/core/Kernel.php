@@ -16,7 +16,7 @@ class Kernel {
   private $root;
 
   public function __construct() {
-    $this->root = new Root_Node('/', '');
+    $this->root = new Root_Node(array('/', ''));
   }
 
   public function has_object($node_path) {
@@ -42,13 +42,13 @@ class Kernel {
     for ($i = $start_index; $i < count($tokens); $i++) {
       $node = $current_node->find_child($tokens[$i]);
       if ($i == $last_index) {
-        $new_node = new $node_class_name($tokens[$i], '');
+        $new_node = new $node_class_name(array($tokens[$i], ''));
         $current_node->add_child($new_node);
         $current_node = $new_node;
       }
       else {
         if ($node->is_null()) {
-          $new_node = new Root_Node($tokens[$i], '');
+          $new_node = new Root_Node(array($tokens[$i], ''));
           $current_node->add_child($new_node);
           $current_node = $new_node;
         }
@@ -57,6 +57,9 @@ class Kernel {
       }
     }
     return $current_node;
+  }
+
+  public function new_object_by_instance($node_class, $node_path) {
   }
 
   /**

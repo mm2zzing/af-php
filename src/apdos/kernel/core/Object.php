@@ -2,7 +2,7 @@
 namespace apdos\kernel\core;
 
 class Object {
-  public function __construct($args, $constructor_methods) {
+  public function __construct($args = array(), $constructor_methods = array()) {
     $this->constructor = new Constructor($this, $args);
 
     for ($i = 0; $i < count($constructor_methods); $i++) {

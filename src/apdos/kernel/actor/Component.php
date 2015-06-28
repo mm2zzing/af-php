@@ -24,6 +24,9 @@ class Component extends Event_Dispatcher {
   private $parent_actor;
   private $properties = array();
 
+  public function __construct() {
+  }
+
   public function set_parent($actor) {
     $this->parent_actor = $actor;
   }

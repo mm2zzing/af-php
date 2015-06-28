@@ -11,8 +11,11 @@ class Root_Node extends Node {
   private $parent;
   private $childs;
 
-  public function __construct($name, $path) {
-    parent::__construct();
+  public function __construct($args) {
+    parent::__construct($args, array('', 'construct2'));
+  }
+
+  public function construct2($name, $path) {
     $this->name = $name;
     $this->parent = new Null_Node();
     $this->childs = array();
