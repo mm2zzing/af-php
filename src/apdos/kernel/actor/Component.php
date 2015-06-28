@@ -60,17 +60,23 @@ class Component extends Event_Dispatcher {
     $this->dispatch_event($event);
   }
 
+  public function unset_property($name) {
+    $this->properties[$name] = new Null_Property($name);
+    $event = new Property_Event(Property_Event::$CHANGE, $name);
+    $this->dispatch_event($event);
+  }
+
   private function regist_destory_events($name, $value) {
     if ($value instanceof Actor) {
       $other = $this;
-      $value->add_event_listener(Actor_Event::$DESTROY, function($event) use(&$other) {
-        $other->set_property($name, new Null_Property($name));
+      $value->add_event_listener(Actor_Event::$DESTROY, function($event) use(&$other, &$name) {
+        $other->unset_property($name);
       });
     }
     if ($value instanceof Component) {
       $other = $this;
       $value->add_event_listener(Component_Event::$DESTROY, function($event) use(&$other, &$name) {
-        $other->set_property($name, new Null_Property($name));
+        $other->unset_property($name);
       });
     }
   }
