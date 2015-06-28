@@ -9,8 +9,12 @@ class Command_Option_Event extends Event {
   private $option_name;
   private $option_value;
 
-  public function __construct($option_name, $option_value) {
-    parent::init_with_name(self::$COMMAND_OPTION_EVENT);
+  public function __construct($args) {
+    parent::__construct($args, array('', 'construct2'));
+  }
+
+  public function construct2($option_name, $option_value) {
+    $this->set_name(self::$COMMAND_OPTION_EVENT);
     $this->option_name = $option_name;
     $this->option_value = $option_value;
   }

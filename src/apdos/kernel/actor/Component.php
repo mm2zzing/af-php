@@ -53,8 +53,7 @@ class Component extends Event_Dispatcher {
     
     $this->properties[$name] = new Root_Property($name, $value);
 
-    $event = new Property_Event();
-    $event->init_with_name(Property_Event::$CHANGE, $name);
+    $event = new Property_Event(Property_Event::$CHANGE, $name);
     $this->dispatch_event($event);
   }
 
@@ -80,8 +79,7 @@ class Component extends Event_Dispatcher {
   }
 
   public function release() {
-    $event = new Component_Event();
-    $event->init_with_name(Component_Event::$DESTROY);
+    $event = new Component_Event(array(Component_Event::$DESTROY));
     $this->dispatch_event($event);
   }
 

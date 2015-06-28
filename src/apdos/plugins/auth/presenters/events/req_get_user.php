@@ -6,8 +6,12 @@ namespace apdos\plugins\auth\presenters\events;
 class Req_Get_User extends \Remote_Event {
   public static $REQ_GET_USER = "req_get_user";
 
-  public function init_by_device_id($device_id) {
-    parent::init_with_name(self::$REQ_GET_USER);
+  public function __construct($args) {
+    parent::__construct($args, array('construct1'));
+  }
+
+  public function construct1($device_id) {
+    $this->set_name(self::$REQ_GET_USER);
     $this->set_data(array('device_id'=>$device_id));
   }
 

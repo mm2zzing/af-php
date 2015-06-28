@@ -18,8 +18,7 @@ class Event_Test extends Test_Case {
   }
 
   public function test_add_event_listener() {
-    $dummy_event = new Dummy_Event();
-    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $dummy_event = new Dummy_Event(array(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1"));
     $this->event_dispatcher->dispatch_event($dummy_event);
     $this->assert(false == $this->occur_dispatch_event, "not occur dispatch event");
 
@@ -30,8 +29,7 @@ class Event_Test extends Test_Case {
   }
 
   public function test_remove_event_listener() {
-    $dummy_event = new Dummy_Event();
-    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $dummy_event = new Dummy_Event(array(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1"));
     $this->event_dispatcher->add_event_listener(Dummy_Event::$DUMMY_EVENT_NAME1, $this->create_event_listener());
     $this->event_dispatcher->dispatch_event($dummy_event);
     $this->assert(true == $this->occur_dispatch_event, "occur dispatch event");
@@ -45,8 +43,7 @@ class Event_Test extends Test_Case {
   public function test_dispatch_event() {
     $this->event_dispatcher->add_event_listener(Dummy_Event::$DUMMY_EVENT_NAME1, $this->create_event_listener());
 
-    $dummy_event = new Dummy_Event();
-    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $dummy_event = new Dummy_Event(array(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1"));
     $this->event_dispatcher->dispatch_event($dummy_event);
     $this->assert(true == $this->occur_dispatch_event, "occur dispatch event");
   } 
@@ -54,8 +51,7 @@ class Event_Test extends Test_Case {
   public function test_async_event() {
     $this->event_dispatcher->add_event_listener(Dummy_Event::$DUMMY_EVENT_NAME1, $this->create_event_listener());
 
-    $dummy_event = new Dummy_Event();
-    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $dummy_event = new Dummy_Event(array(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1"));
     $this->event_dispatcher->async_dispatch_event($dummy_event);
     $this->assert(false == $this->occur_dispatch_event, "do not occur dispatch event");
 

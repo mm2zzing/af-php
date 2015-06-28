@@ -21,8 +21,7 @@ class Rdp_Serializer_Test extends Test_Case {
   }
 
   public function test_serialize() {
-    $dummy_event = new Dummy_Event();
-    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $dummy_event = new Dummy_Event(array(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1"));
     $rdp = new Rdp_Serializer();
     $string = $rdp->write($dummy_event);
     $this->assert(0 == strcmp($string, self::$DUMMY_EVENT_SERIALIZE_STRING), "seraizlie string check");

@@ -1,24 +1,26 @@
 <?php
 namespace apdos\kernel\event;
 
+use apdos\kernel\core\Object;
 use apdos\kernel\core\Object_Converter;
 
-class Event {
+class Event extends Object{
   protected $name;
   protected $data = array();
   private $serializer;
 
-  public function __construct() {
+  public function __construct($args, $constructor_methods = array()) {
+    if (count($constructor_methods) == 0)
+      parent::__construct($args, array('construct1', 'construct2'));
+    else
+      parent::__construct($args, $constructor_methods);
   }
 
-  public function init_with_name($name) {
+  public function construct1($name) {
     $this->name = $name;
   }
 
-  /**
-   * @TODO 파라미터를 검사하여 채워 넣는 방식으로 변경.
-   */
-  public function init_with_data($name, $data) {
+  public function construct2($name, $data) {
     $this->name = $name;
     $this->set_data($data);
   }
@@ -36,6 +38,10 @@ class Event {
     return $this->name;
   }
 
+  protected function set_name($name) {
+    $this->name = $name;
+  }
+
   protected function set_data($data) {
     $this->data = Object_Converter::to_array($data);
   }
@@ -47,5 +53,10 @@ class Event {
    */
   protected function set_name_space($namespace) {
     $this->namespace = $namespace;
+  }
+
+  public function deserialize($name, $data) {
+    $this->name = $name;
+    $this->data = $data;
   }
 }

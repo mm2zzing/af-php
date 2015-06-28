@@ -48,11 +48,13 @@ class Mysql_Schema extends Component {
 
     $last_index = count($fields) - 1;
     $index = 0;
+
+    end($fields);
+    $last_key = key($fields);
     foreach ($fields as $key=>$value) {
       $query .= $this->get_field_query($key, $value);
-      if ($index != $last_index)
+      if($key != $last_key)
         $query .= ",\n";
-      $index++;
     }
     $query .= "\n);";
     $this->get_connecter()->simple_query($query);

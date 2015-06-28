@@ -7,8 +7,12 @@ class Dummy_Event extends Remote_Event {
   public static $DUMMY_EVENT_NAME1 = "dummy_event_name1";
   public static $DUMMY_EVENT_NAME2 = "dummy_event_name1";
 
-  public function init($name, $var1, $var2) {
-    parent::init_with_name($name);
+  public function __construct($args) {
+    parent::__construct($args, array('', '', 'construct3'));
+  }
+
+  public function construct3($name, $var1, $var2) {
+    $this->set_name($name);
     $data = array();
     $data['var1'] = $var1;
     $data['var2'] = $var2;

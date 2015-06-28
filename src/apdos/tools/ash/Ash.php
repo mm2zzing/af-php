@@ -155,8 +155,7 @@ class Ash extends Tool {
 
   private function run_command($argument_dto) {
     try {
-      $shell_command = new Shell_Command();
-      $shell_command->init($argument_dto->get_count(), $argument_dto->gets(), $this->user);
+      $shell_command = new Shell_Command(array($argument_dto->get_count(), $argument_dto->gets(), $this->user));
       $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
 

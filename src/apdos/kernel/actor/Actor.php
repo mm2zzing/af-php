@@ -19,14 +19,21 @@ class Actor extends Root_Node {
    * @param component_class_name String 컴포넌트 클래스 명
    */
   public function add_component($component_class_name) {
-    $result = new $component_class_name();
-    $result->set_parent($this);
-    array_push($this->components, $result);
+    return $this->build_component(new $component_class_name());
+  }
 
-    $start_event = new Component_Event();
-    $start_event->init_with_name(Component_Event::$START);
-    $result->async_dispatch_event($start_event);
-    return $result;
+  public function add_component_by_instance($component) {
+    return $this->build_component($component);
+  }
+
+  private function build_component($component) {
+    $component->set_parent($this);
+    array_push($this->components, $component);
+
+    $start_event = new Component_Event(array(Component_Event::$START));
+    $component->async_dispatch_event($start_event);
+    return $component;
+
   }
 
   public function get_component($component_class_name) {
@@ -85,8 +92,7 @@ class Actor extends Root_Node {
 
   public function release() {
     parent::release();
-    $event = new Actor_Event();
-    $event->init_with_name(Actor_Event::$DESTROY);
+    $event = new Actor_Event(array(Actor_Event::$DESTROY));
     $this->dispatch_event($event);
 
     for ($i = 0; $i < count($this->components); $i++) {

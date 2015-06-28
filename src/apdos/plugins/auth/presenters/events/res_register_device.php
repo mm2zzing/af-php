@@ -8,8 +8,12 @@ class Res_Register_Device extends \Remote_Event {
 
   public static $RESULT_SUCCESS = 0;
 
-  public function init($user) {
-    parent::init_with_name(self::$RES_REGISTER_DEVICE);
+  public function __construct($args) {
+    parent::__construct($args, array('construct1'));
+  }
+
+  public function construct1($user) {
+    $this->set_name(self::$RES_REGISTER_DEVICE);
     $code = self::$RESULT_SUCCESS;
     $data = array('code'=>$code, 'user'=>$user);
     $this->set_data(array('result'=>$data));

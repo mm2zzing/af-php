@@ -6,8 +6,12 @@ use apdos\kernel\actor\events\Remote_Event;
 class Shell_Command extends Remote_Event {
   public static $RUN = "run";
 
-  public function init($argc, $argv, $login_user) {
-    parent::init_with_name(self::$RUN);
+  public function __construct($args) {
+    parent::__construct($args, array('', '', 'construct3'));
+  }
+
+  public function construct3($argc, $argv, $login_user) {
+    $this->set_name(self::$RUN);
     $this->set_data(array('argc'=>$argc, 'argv'=>$argv, 'login_user'=>$login_user));
   }
 

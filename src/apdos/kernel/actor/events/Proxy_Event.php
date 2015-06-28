@@ -14,8 +14,16 @@ use apdos\kernel\event\Event_Database;
 class Proxy_Event extends Event {
   public static $PROXY_EVENT = 'proxy_event';
   // 이벤트를 전달할 ACTOR가 없는 경우 설정하는 PATH이다. 상대방 Actor_Accepter로 이벤트가 전송된다.
-  public static $NULL_PATH = '';
   public static $VERSION = '1.0f';
+
+  public function __construct($args) {
+    parent::__construct($args, array('', 'construct2', 'construct3'));
+  }
+
+  public function constructor2($name, $data) {
+    parent::constructor2($name, $data);
+    $this->check_properties();
+  }
 
   /**
    * 생성자
@@ -24,22 +32,11 @@ class Proxy_Event extends Event {
    * @sender_path String 이벤트를 전달하는 액터의 path
    * @receiver_path String 이벤트를 전달받는 액터의 path
    */
-  public function init($remote_event, $sender_path, $receiver_path) {
-    parent::init_with_name(self::$PROXY_EVENT);
+  public function construct3($remote_event, $sender_path, $receiver_path) {
+    $this->set_name(self::$PROXY_EVENT);
     $this->set_data($this->create_event_data($remote_event, $sender_path, $receiver_path));
     $this->check_properties();
   } 
-
-  public function init_by_null_receiver($remote_event, $sender_path) {
-    parent::init_with_name(self::$PROXY_EVENT);
-    $this->set_data($this->create_event_data($remote_event, $sender_path, self::$NULL_PATH));
-    $this->check_properties();
-  }
-
-  public function init_with_data($name, $data) {
-    parent::init_with_data($name, $data);
-    $this->check_properties();
-  }
 
   private function create_event_data($remote_event, $sender_path, $receiver_path) {
     $data = array();
@@ -85,6 +82,11 @@ class Proxy_Event extends Event {
     return $this->data['target_data'];
   }
 
+  public function deserialize($name, $data) {
+    parent::deserialize($name, $data);
+    $this->check_properties();
+  }
+
   /**
    * Proxy_Event가 가지고 있는 전송 이벤트 객체를 Remote_Event 형태로 역직렬화한다
    *
@@ -92,8 +94,8 @@ class Proxy_Event extends Event {
    */
   public function deserialize_remote_event() {
     $event_type = Event_Database::get_instance()->get_class_name($this->get_target_type());
-    $object = new $event_type();
-    $object->init_with_data($this->get_target_name(), $this->get_target_data());
+    $object = new $event_type(array());
+    $object->deserialize($this->get_target_name(), $this->get_target_data());
     return $object;
   }
 }

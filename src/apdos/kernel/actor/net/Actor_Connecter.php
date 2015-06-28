@@ -10,8 +10,7 @@ class Actor_Connecter extends Component {
   private $host;
 
   public function send($url, $remote_event) {
-    $proxy_event = new Proxy_Event();
-    $proxy_event->init($remote_event, $this->get_parent()->get_path(), '');
+    $proxy_event = new Proxy_Event(array($remote_event, $this->get_parent()->get_path(), ''));
 
     $rdp = new Rdp_Serializer();
     $post_data = http_build_query(

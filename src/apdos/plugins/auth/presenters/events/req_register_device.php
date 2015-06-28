@@ -6,8 +6,12 @@ namespace apdos\plugins\auth\presenters\events;
 class Req_Register_Device extends \Remote_Event {
   public static $REQ_REGISTER_DEVICE = "req_register_device";
 
-  public function init($device_id) {
-    parent::init_with_name(self::$REQ_REGISTER_DEVICE);
+  public function __construct($args) {
+    parent::__construct($args, array('construct1'));
+  }
+
+  public function construct1($device_id) {
+    $this->set_name(self::$REQ_REGISTER_DEVICE);
     $this->set_data(array("device_id"=>$device_id));
   }
 
