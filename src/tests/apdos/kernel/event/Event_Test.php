@@ -51,6 +51,19 @@ class Event_Test extends Test_Case {
     $this->assert(true == $this->occur_dispatch_event, "occur dispatch event");
   } 
 
+  public function test_async_event() {
+    $this->event_dispatcher->add_event_listener(Dummy_Event::$DUMMY_EVENT_NAME1, $this->create_event_listener());
+
+    $dummy_event = new Dummy_Event();
+    $dummy_event->init(Dummy_Event::$DUMMY_EVENT_NAME1, 1, "1");
+    $this->event_dispatcher->async_dispatch_event($dummy_event);
+    $this->assert(false == $this->occur_dispatch_event, "do not occur dispatch event");
+
+    $this->event_dispatcher->update();
+    $this->assert(true == $this->occur_dispatch_event, "occur dispatch event");
+
+  }
+
   private function create_event_listener() {
     $other = $this;
     return function($event) use(&$other) {
@@ -71,6 +84,7 @@ class Event_Test extends Test_Case {
     $suite->add(new Event_Test('test_add_event_listener'));
     $suite->add(new Event_Test('test_remove_event_listener'));
     $suite->add(new Event_Test('test_dispatch_event'));
+    $suite->add(new Event_Test('test_async_event'));
     return $suite;
   }
 }

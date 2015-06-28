@@ -67,7 +67,7 @@ class Component extends Event_Dispatcher {
     }
     if ($value instanceof Component) {
       $other = $this;
-      $value->add_event_listener(Component_Event::$DESTROY, function($event) use(&$other) {
+      $value->add_event_listener(Component_Event::$DESTROY, function($event) use(&$other, &$name) {
         $other->set_property($name, new Null_Property($name));
       });
     }

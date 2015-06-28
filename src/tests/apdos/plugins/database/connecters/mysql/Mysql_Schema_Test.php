@@ -41,9 +41,16 @@ class Mysql_Schema_Test extends Test_Case {
 
   private function get_fields() {
     return array(
-      'title'=>array(
-        'type'=>'varchar(100)',
+      'id'=>array(
+        'type'=>'int(11)',
+        'unsigned'=>true,
+        'auto_increment'=>true,
         'null'=>false,
+        'primary_key'=>true
+      ),
+      'title'=>array(
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
         'default'=>''
       )
     );
@@ -55,7 +62,6 @@ class Mysql_Schema_Test extends Test_Case {
     $this->connecter->connect('p:localhost', 'root', ''); 
 
     $this->schema = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Schema');
-    $this->schema->set_property('connecter', $this->connecter);
   }
 
   public function tear_down() {
@@ -65,12 +71,11 @@ class Mysql_Schema_Test extends Test_Case {
   }
 
   public static function create_suite() {
-    $suite = new Test_Suite('Mysql_Connecter_Test');
-    $suite->add(new Mysql_Connecter_Test('test_create_database'));
-    $suite->add(new Mysql_Connecter_Test('test_drop_database'));
-    $suite->add(new Mysql_Connecter_Test('test_insert'));
-    $suite->add(new Mysql_Connecter_Test('test_select'));
-    $suite->add(new Mysql_Connecter_Test('test_delete'));
+    $suite = new Test_Suite('Mysql_Schema_Test');
+    $suite->add(new Mysql_Schema_Test('test_create_database'));
+    $suite->add(new Mysql_Schema_Test('test_drop_database'));
+    $suite->add(new Mysql_Schema_Test('test_create_table'));
+    $suite->add(new Mysql_Schema_Test('test_drop_table'));
     return $suite;
   }
 }

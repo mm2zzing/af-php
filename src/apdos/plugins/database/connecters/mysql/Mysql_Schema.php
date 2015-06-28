@@ -2,6 +2,7 @@
 namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\component;
+use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
 
 /**
  * @class Mysql_Schema
@@ -21,17 +22,17 @@ class Mysql_Schema extends Component {
    * @param string name 데이터베이스명
    */
   public function create_database($name, $if_not_exists = true) {
-    $query = 'create database ';
+    $query = 'CREATE DATABASE ';
     if ($if_not_exists)
-      $query .= 'if not exists ';
+      $query .= 'IF NOT EXISTS ';
     $query .= $name;
     $this->get_connecter()->simple_query($query);
   }
 
   public function drop_database($name, $if_exists = true) {
-    $query = 'drop database ';
+    $query = 'DROP DATABASE ';
     if ($if_exists)
-      $query .= 'if exists ';
+      $query .= 'IF EXISTS ';
     $query .= $name;
     $this->get_connecter()->simple_query($query);
   }
@@ -43,17 +44,15 @@ class Mysql_Schema extends Component {
    * @fields 테이블의 필드명
    */
   public function create_table($name, $fields) {
-    $query = "create table $name(\n";
-    $query .= $this->get_field_query('id', array(
-        'type'=>'int(11)',
-        'unsigned'=>true,
-        'auto_increment'=>true,
-        'null'=>false,
-        'primary_key'=>true
-    ));
+    $query = "CREATE TABLE $name(\n";
+
+    $last_index = count($fields) - 1;
+    $index = 0;
     foreach ($fields as $key=>$value) {
-      $query .= ",\n";
       $query .= $this->get_field_query($key, $value);
+      if ($index != $last_index)
+        $query .= ",\n";
+      $index++;
     }
     $query .= "\n);";
     $this->get_connecter()->simple_query($query);
@@ -64,28 +63,28 @@ class Mysql_Schema extends Component {
     $result .= $values['type'] . ' ';
     if (isset($values['unsigned'])) {
       if ($values['unsigned'])
-        $result.= 'unsigned ';
+        $result.= 'UNSIGNED ';
     }
     if (isset($values['null'])) {
       if (!$values['null'])
-        $result .= 'not null ';
+        $result .= 'NOT NULL ';
       else
-        $result .= 'null ';
+        $result .= 'NULL ';
     }
     if (isset($values['auto_increment'])) {
       if ($values['auto_increment'])
-        $result .= 'auto_increment ';
+        $result .= 'AUTO_INCREMENT ';
     }
     if (isset($values['primary_key'])) {
       if ($values['primary_key'])
-        $result .= 'primary key ';
+        $result .= 'PRIMARY KEY ';
     }
     if (isset($values['default'])) {
       $default_value = $values['default'];
       if (is_string($default_value))
-        $result .= "default '$default_value'";
+        $result .= "DEFAULT '$default_value'";
       else
-        $result .= "default $default_value";
+        $result .= "DEFAULT $default_value";
     }
     return $result;
   }
@@ -104,7 +103,7 @@ class Mysql_Schema extends Component {
   }
 
   private function get_connecter() {
-    $result = $this->get_property('connecter');
+    $result = $this->get_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
     if ($result->is_null())
       throw new Mysql_Error('Connecter is null', Mysql_Error::CONNECTER_IS_NULL);
     return $result;

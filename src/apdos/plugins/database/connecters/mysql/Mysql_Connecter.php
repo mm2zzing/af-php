@@ -25,7 +25,7 @@ class Mysql_Connecter extends Component {
   }
 
   public function has_database($name) {
-    $query = "select schema_name from information_schema.schemata where schema_name = '$name'";
+    $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
     $result = $this->query($query);
     $count = $result->get_rows_count();
     $result->close();
@@ -33,7 +33,7 @@ class Mysql_Connecter extends Component {
   }
 
   public function has_table($name) {
-    $query = "select table_name from information_schema.tables where table_schema='$this->database' AND table_name = '$name'";
+    $query = "SELECT table_name FROM information_schema.tables WHERE table_schema='$this->database' AND table_name = '$name'";
     $result = $this->query($query);
     $count = $result->get_rows_count();
     $result->close();
