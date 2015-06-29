@@ -13,4 +13,13 @@ class Object {
     }
     $this->constructor->run();
   }
+
+  /**
+   * 네임스페이스를 포함 클래스명을 조회합니다. PHP >= 5.3
+   *
+   * @return string 클래스명
+   */
+  public static function get_class_name() {
+    return get_called_class();
+  }
 }

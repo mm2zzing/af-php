@@ -5,6 +5,8 @@ use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
+use apdos\plugins\database\connecters\mysql\Mysql_Util;
+use apdos\kernel\actor\Actor;
 
 class Mysql_Util_Test extends Test_Case {
   private $connecter;
@@ -15,12 +17,11 @@ class Mysql_Util_Test extends Test_Case {
   }
 
   public function set_up() {
-    $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
-    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter'); 
-    $this->connecter->connect('p:localhost', 'root', ''); 
+    $actor = Kernel::get_instance()->new_object(Actor::get_class_name(), '/sys/db/mysql');
+    $this->connecter = $actor->add_component(Mysql_Connecter::get_class_name()); 
+    $this->util = $actor->add_component(Mysql_Util::get_class_name());
 
-    //$this->util = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Util');
-    //$this->util->set_property('connecter', $this->connecter);
+    $this->connecter->connect('p:localhost', 'root', ''); 
   }
 
   public function tear_down() {

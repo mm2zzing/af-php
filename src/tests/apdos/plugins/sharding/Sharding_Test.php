@@ -73,8 +73,8 @@ class Sharding_Test extends Test_Case {
   private function get_fields() {
     return array(
       'title'=>array(
-        'type'=>'varchar(100)',
-        'null'=>false,
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
         'default'=>''
       )
     );

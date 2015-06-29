@@ -30,7 +30,7 @@ class Event_Dispatcher extends Object {
     array_push($this->process_events, $event);
   }
 
-  public function update() {
+  public function update_event() {
     foreach ($this->process_events as $event) {
       $this->dispatch_event($event);
     }

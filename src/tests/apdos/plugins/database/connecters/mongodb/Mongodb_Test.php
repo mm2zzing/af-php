@@ -12,20 +12,20 @@ class Mongodb_Test extends Test_Case {
 
   public function test_insert() {
     $document = array('value1'=>1, 'value2'=>'1');
-    $this->connecter->select_collection('ft')->insert($document);
+    $this->connecter->select_collection('test_db')->insert($document);
     $store_document = $this->connecter->find_one(array());
     $this->assert_document($store_document, 1, '1'); 
   }
 
   public function test_find_one() {
     $document = array('value1'=>1, 'value2'=>'1');
-    $this->connecter->select_collection('ft')->insert($document);
+    $this->connecter->select_collection('test_db')->insert($document);
     $store_document = $this->connecter->where(array('_id'=>$document['_id']))->find_one();
     $this->assert_document($store_document, 1, '1'); 
   }
 
   public function test_find() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $documents = $this->connecter->find();
@@ -35,7 +35,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_limit() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->set_limit(1);
@@ -44,7 +44,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_skip() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->set_skip(1);
@@ -53,7 +53,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_update() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $documents = $this->connecter->find();
     $this->assert_document($documents[0], 1, '1');
@@ -63,7 +63,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_set() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $documents = $this->connecter->find();
     $this->assert_document($documents[0], 1, '1');
@@ -73,7 +73,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_set_all() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $this->connecter->insert(array('value1'=>1, 'value2'=>'1'));
     $documents = $this->connecter->find();
@@ -86,7 +86,7 @@ class Mongodb_Test extends Test_Case {
   }
 
   public function test_command() {
-    $this->connecter->select_collection('ft');
+    $this->connecter->select_collection('test_db');
     $res = $this->connecter->command($query);
   }
 
@@ -100,7 +100,7 @@ class Mongodb_Test extends Test_Case {
     $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mongodb\Mongodb_Connecter');
     $this->connecter->connect('mongodb://localhost:27017');
     $this->connecter->select_database('apdos_test');
-    $this->connecter->drop_collection('ft');
+    $this->connecter->drop_collection('test_db');
   }
 
   public function tear_down() {

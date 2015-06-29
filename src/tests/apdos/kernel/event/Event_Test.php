@@ -55,7 +55,7 @@ class Event_Test extends Test_Case {
     $this->event_dispatcher->async_dispatch_event($dummy_event);
     $this->assert(false == $this->occur_dispatch_event, "do not occur dispatch event");
 
-    $this->event_dispatcher->update();
+    $this->event_dispatcher->update_event();
     $this->assert(true == $this->occur_dispatch_event, "occur dispatch event");
 
   }

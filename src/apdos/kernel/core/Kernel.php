@@ -59,9 +59,6 @@ class Kernel {
     return $current_node;
   }
 
-  public function new_object_by_instance($node_class, $node_path) {
-  }
-
   /**
    * @TODO Rename to release_object
    */

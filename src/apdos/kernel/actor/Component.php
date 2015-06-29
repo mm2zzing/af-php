@@ -39,17 +39,17 @@ class Component extends Event_Dispatcher {
     return false;
   }
 
-  public function get_component($component_class_name) {
-    return $this->parent_actor->get_component($component_class_name);
+  public function get_component($class_name) {
+    return $this->parent_actor->get_component($class_name);
   }
 
-  public function get_components($component_class_name) {
-    return $this->parent_actor->get_components($component_class_name);
+  public function get_components($class_name) {
+    return $this->parent_actor->get_components($class_name);
   }
 
   /**
    * 속성값을 설정한다. Component를 속성으로 처리하는 경우
-   * 설정한 Component 객체가 삭제되면 자동으로 Null_Property로 변경된다. (Actor, Component)
+   * 설정한 Component 객체가 삭제되면 속성에서 자동으로 사라진다. 
    */
   public function set_property($name, $value) {
     $this->regist_destory_events($name, $value);
@@ -61,7 +61,7 @@ class Component extends Event_Dispatcher {
   }
 
   public function unset_property($name) {
-    $this->properties[$name] = new Null_Property($name);
+    unset($this->properties[$name]);
     $event = new Property_Event(Property_Event::$CHANGE, $name);
     $this->dispatch_event($event);
   }

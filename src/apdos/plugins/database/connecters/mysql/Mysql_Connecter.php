@@ -1,7 +1,7 @@
 <?php 
 namespace apdos\plugins\database\connecters\mysql;
 
-use apdos\kernel\actor\component;
+use apdos\kernel\actor\Component;
 use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
 
 class Mysql_Connecter extends Component {
@@ -23,7 +23,7 @@ class Mysql_Connecter extends Component {
       throw new Mysql_Error("Select database failed($name)", Mysql_Error::SELECT_DATABASE_FAIELD);
     $this->database = $name;
   }
-
+  
   public function has_database($name) {
     $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
     $result = $this->query($query);
@@ -38,7 +38,7 @@ class Mysql_Connecter extends Component {
     $count = $result->get_rows_count();
     $result->close();
     return $count  == 1 ? true : false;
-  }
+  } 
 
   public function query($sql) {
     $result = $this->mysqli->query($sql);
