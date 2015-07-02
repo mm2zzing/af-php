@@ -25,6 +25,19 @@ class Event extends Object{
     $this->set_data($data);
   }
 
+  /**
+   * 이벤트 객체를 디시리얼라이즈한다. 모든 이벤트 객체는
+   * 속성을 name, data 변수를 이용하여 저장하기 때문에 두 멤버 변수를
+   * 설정하면 디시리얼라이즈 시킬 수 있다.
+   *
+   * @param name string 디시리얼라이즈할 이벤트의 이름
+   * @param data array(object) 디시리얼라이즈할 이벤트의 데이터
+   */
+  public function deserialize($name, $data) {
+    $this->name = $name;
+    $this->data = $data;
+  }
+
   public function get_type() {
     $tokens = array_slice(explode('\\', get_class($this)), -1);
     return $tokens[0];
@@ -53,10 +66,5 @@ class Event extends Object{
    */
   protected function set_name_space($namespace) {
     $this->namespace = $namespace;
-  }
-
-  public function deserialize($name, $data) {
-    $this->name = $name;
-    $this->data = $data;
   }
 }

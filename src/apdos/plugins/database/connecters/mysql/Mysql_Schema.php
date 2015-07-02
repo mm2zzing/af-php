@@ -3,6 +3,7 @@ namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\component;
 use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
+use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
 
 /**
  * @class Mysql_Schema
@@ -16,17 +17,20 @@ use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
  * @authro Lee, Hyeon-gi
  */
 class Mysql_Schema extends Component {
+
   /**
    * 데이타베이스를 생성한다.
    *
    * @param string name 데이터베이스명
+   *
+   * @return bool 성공 여부
    */
   public function create_database($name, $if_not_exists = true) {
     $query = 'CREATE DATABASE ';
     if ($if_not_exists)
       $query .= 'IF NOT EXISTS ';
     $query .= $name;
-    $this->get_connecter()->simple_query($query);
+    return $this->get_connecter()->query($query)->is_success();
   }
 
   public function drop_database($name, $if_exists = true) {
@@ -34,7 +38,15 @@ class Mysql_Schema extends Component {
     if ($if_exists)
       $query .= 'IF EXISTS ';
     $query .= $name;
-    $this->get_connecter()->simple_query($query);
+    return $this->get_connecter()->query($query)->is_success();
+  }
+
+  public function has_database($name) {
+    $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
+    $result = $this->get_connecter()->query($query);
+    $count = $result->get_rows_count();
+    $result->close();
+    return $count == 1 ? true : false;
   }
 
   /**
@@ -42,6 +54,8 @@ class Mysql_Schema extends Component {
    *
    * @name 테이블 이름
    * @fields 테이블의 필드명
+   *
+   * @return bool 성공 여부
    */
   public function create_table($name, $fields) {
     $query = "CREATE TABLE $name(\n";
@@ -57,7 +71,7 @@ class Mysql_Schema extends Component {
         $query .= ",\n";
     }
     $query .= "\n);";
-    $this->get_connecter()->simple_query($query);
+    return $this->get_connecter()->query($query)->is_success();
   }
 
   private function get_field_query($name, $values) {
@@ -95,17 +109,19 @@ class Mysql_Schema extends Component {
    * 테이블을 삭제한다.
    *
    * @name string 테이블 이름
+   *
+   * @return bool 성공 여부
    */
   public function drop_table($name, $if_exists = true) {
     $query = "drop table ";
     if ($if_exists)
       $query .= 'if exists ';
     $query .= "$name;";
-    $this->get_connecter()->simple_query($query);
+    return $this->get_connecter()->query($query)->is_success();
   }
 
   private function get_connecter() {
-    $result = $this->get_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
+    $result = $this->get_component(Mysql_Connecter::get_class_name());
     if ($result->is_null())
       throw new Mysql_Error('Connecter is null', Mysql_Error::CONNECTER_IS_NULL);
     return $result;

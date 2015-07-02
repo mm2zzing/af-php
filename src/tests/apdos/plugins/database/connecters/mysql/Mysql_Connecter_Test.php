@@ -5,36 +5,45 @@ use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
+use apdos\tools\ash\Tool_Config;
 
 class Mysql_Connecter_Test extends Test_Case {
   const TEST_DATABASE_NAME = "test_db";
   const TEST_TABLE_NAME = "test_table";
 
   public function test_create_database() {
-    $this->assert($this->connecter->has_database(self::TEST_DATABASE_NAME), "Database is exist");
+    $this->assert($this->has_database($this->get_db_name()), "Database is exist");
   }
 
   public function test_drop_database() {
-    $this->assert($this->connecter->has_database(self::TEST_DATABASE_NAME), "Database is exist");
-    $this->connecter->simple_query($this->drop_database_query(self::TEST_DATABASE_NAME));
-    $this->assert(!$this->connecter->has_database(self::TEST_DATABASE_NAME), "Database is not exist");
+    $this->assert($this->has_database($this->get_db_name()), "Database is exist");
+    $this->connecter->query($this->drop_database_query($this->get_db_name()));
+    $this->assert(!$this->has_database($this->get_db_name()), "Database is not exist");
+  }
+
+  private function has_database($name) {
+    $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
+    $result = $this->connecter->query($query);
+    $count = $result->get_rows_count();
+    $result->close();
+    return $count == 1 ? true : false;
   }
 
   public function test_insert() {
-    $this->connecter->select_database(self::TEST_DATABASE_NAME);
+    $this->connecter->select_database($this->get_db_name());
     $this->assert(!$this->connecter->has_table(self::TEST_TABLE_NAME), "Table is not exist");
-    $this->connecter->simple_query($this->create_table_query(self::TEST_TABLE_NAME));
+    $this->connecter->query($this->create_table_query(self::TEST_TABLE_NAME));
     $this->assert($this->connecter->has_table(self::TEST_TABLE_NAME), "Table is exist");
-    $this->connecter->simple_query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
+    $this->connecter->query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
     $result = $this->connecter->query($this->create_count_query(self::TEST_TABLE_NAME));
     $rows = $result->get_result();
     $this->assert($rows[0]['count'] == 1, 'Row count is 1');
   }
 
   public function test_select() {
-    $this->connecter->select_database(self::TEST_DATABASE_NAME);
-    $this->connecter->simple_query($this->create_table_query(self::TEST_TABLE_NAME));
-    $this->connecter->simple_query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
+    $this->connecter->select_database($this->get_db_name());
+    $this->connecter->query($this->create_table_query(self::TEST_TABLE_NAME));
+    $this->connecter->query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
     $result = $this->connecter->query($this->create_select_query(self::TEST_TABLE_NAME));
     $rows = $result->get_result();
     $this->assert($result->get_rows_count() == 1, "Rows count is 1");
@@ -51,8 +60,14 @@ class Mysql_Connecter_Test extends Test_Case {
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
     $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
-    $this->connecter->connect('p:localhost', 'root', '');
-    $this->connecter->simple_query($this->create_database_query(self::TEST_DATABASE_NAME));
+
+    $host = Tool_Config::get_instance()->get('test_server.mysql-test-db.host');
+    $user = Tool_Config::get_instance()->get('test_server.mysql-test-db.user');
+    $password = Tool_Config::get_instance()->get('test_server.mysql-test-db.password');
+    $port = Tool_Config::get_instance()->get('test_server.mysql-test-db.port');
+    $persistent = Tool_Config::get_instance()->get('test_server.mysql-test-db.persistent');
+    $this->connecter->connect($host, $user, $password, $port, $persistent);
+    $this->connecter->query($this->create_database_query($this->get_db_name()));
   }
 
   private function drop_database_query($name) {
@@ -87,9 +102,13 @@ class Mysql_Connecter_Test extends Test_Case {
   }
 
   public function tear_down() {
-    $this->connecter->simple_query($this->drop_database_query(self::TEST_DATABASE_NAME));
+    $this->connecter->query($this->drop_database_query($this->get_db_name()));
     $this->connecter->close();
     Kernel::get_instance()->delete_object('/sys/db/mysql');
+  }
+
+  private function get_db_name() {
+    return Tool_Config::get_instance()->get('test_server.mysql-test-db.db_name');
   }
 
   public static function create_suite() {
@@ -99,6 +118,8 @@ class Mysql_Connecter_Test extends Test_Case {
     $suite->add(new Mysql_Connecter_Test('test_insert'));
     $suite->add(new Mysql_Connecter_Test('test_select'));
     $suite->add(new Mysql_Connecter_Test('test_delete'));   
+    $suite->add(new Mysql_Connecter_Test('test_transaction'));
+    //$suite->add(new Mysql_Connecter_Test('test_charset'));
     return $suite;
   }
 }

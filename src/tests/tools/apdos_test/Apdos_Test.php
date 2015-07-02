@@ -59,7 +59,7 @@ class Apdos_Test extends Tool {
   }
 
   private function create_line_input() {
-    $cli = Component::create('apdos\tools\ash\console\Command_Line', '/bin/cmd/run_tests');
+    $cli = Component::create(Command_Line::get_class_name(), '/bin/cmd/run_tests');
     $cli->init(array('name'=>self::NAME,
                      'description' => self::DESCRIPTION,
                      'version' => self::VERSION));
@@ -85,6 +85,7 @@ class Apdos_Test extends Tool {
     $runner->add(Rdp_Serializer_Test::create_suite());
     $runner->add(Kernel_Test::create_suite());
     $runner->add(Actor_Test::create_suite());
+    $runner->add(Property_Test::create_suite());
     $runner->add(User_Server_Test::create_suite());
     $runner->add(Actor_Accepter_Test::create_suite());
     $runner->add(Object_Converter_Test::create_suite());
@@ -104,7 +105,6 @@ class Apdos_Test extends Tool {
       $runner->add(Mongodb_Test::create_suite());
     }
     //$runner->add(Sharding_Test::create_suite());
-    $runner->add(Property_Test::create_suite());
     $runner->run();
     echo $runner->summary() . PHP_EOL;
   }
