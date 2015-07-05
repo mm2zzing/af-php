@@ -17,7 +17,7 @@ class Cache_Handler_Factory {
     if ($this->is_full_path($path))
       return $path;
     else
-      return Config::get_instance()->get_application_path() . '/' . $path;
+      return Config::get_instance()->get_application_path() . '/db/' . $path;
   }
 
   private function is_full_path($path) {

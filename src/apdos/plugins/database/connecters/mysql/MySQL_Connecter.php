@@ -2,9 +2,9 @@
 namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\Component;
-use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
+use apdos\plugins\database\connecters\mysql\errors\MySQL_Error;
 
-class Mysql_Connecter extends Component {
+class MySQL_Connecter extends Component {
   private $mysqli;
   private $database;
 
@@ -13,7 +13,7 @@ class Mysql_Connecter extends Component {
       $host = 'p:' . $host;
     $this->mysqli = new \mysqli($host, $user, $password, '', $port);
     if (mysqli_connect_errno())
-      throw new Mysql_Error(mysqli_connect_error(), Mysql_Error::CONNECT_FAIL);
+      throw new MySQL_Error(mysqli_connect_error(), MySQL_Error::CONNECT_FAIL);
   }
 
   public function close() {
@@ -22,7 +22,7 @@ class Mysql_Connecter extends Component {
 
   public function select_database($name) {
     if (!$this->mysqli->select_db($name))
-      throw new Mysql_Error("Select database failed($name)", Mysql_Error::SELECT_DATABASE_FAIELD);
+      throw new MySQL_Error("Select database failed($name)", MySQL_Error::SELECT_DATABASE_FAIELD);
     $this->database = $name;
   }
  
@@ -38,13 +38,13 @@ class Mysql_Connecter extends Component {
    * 쿼리문을 요청한 그 결과를 리턴한다.
    *
    * @param sql string sql문
-   * @return Mysql_Result is_success 함수로 성공 여부를 알 수 있다.
+   * @return MySQL_Result is_success 함수로 성공 여부를 알 수 있다.
    */
   public function query($sql) {
     $result = $this->mysqli->query($sql);
     if (!$result)
-      throw new Mysql_Error($this->get_last_error(), Mysql_Error::QUERY_FAILED);
-    return new Mysql_Result($result);
+      throw new MySQL_Error($this->get_last_error(), MySQL_Error::QUERY_FAILED);
+    return new MySQL_Result($result);
   }
 
 

@@ -11,7 +11,7 @@ use tests\apdos\plugins\test\Test_Case_Test;
 use tests\apdos\plugins\test\Test_Runner_Test;
 use tests\apdos\kernel\actor\property\Property_Test;
 use tests\apdos\kernel\event\Event_Test;
-use tests\apdos\kernel\event\Rdp_Serializer_Test;
+use tests\apdos\kernel\event\RDP_Serializer_Test;
 use tests\apdos\kernel\core\Kernel_Test;
 use tests\apdos\kernel\actor\Actor_Test;
 use tests\apdos\kernel\user\User_Server_Test;
@@ -27,9 +27,9 @@ use apdos\tools\ash\console\error\Command_Line_Error;
 use tests\apdos\plugins\cache\Cache_Test;
 use tests\apdos\plugins\input\Input_Test;
 use tests\apdos\plugins\sharding\Sharding_Test;
-use tests\apdos\plugins\database\connecters\mysql\Mysql_Connecter_Test;
-use tests\apdos\plugins\database\connecters\mysql\Mysql_Schema_Test;
-use tests\apdos\plugins\database\connecters\mysql\Mysql_Util_Test;
+use tests\apdos\plugins\database\connecters\mysql\MySQL_Connecter_Test;
+use tests\apdos\plugins\database\connecters\mysql\MySQL_Schema_Test;
+use tests\apdos\plugins\database\connecters\mysql\MySQL_Util_Test;
 
 /**
  * @class Apdos_Test
@@ -82,7 +82,7 @@ class Apdos_Test extends Tool {
     $runner->add(Test_Runner_Test::create_suite());
     $runner->add(Object_Test::create_suite());
     $runner->add(Event_Test::create_suite());
-    $runner->add(Rdp_Serializer_Test::create_suite());
+    $runner->add(RDP_Serializer_Test::create_suite());
     $runner->add(Kernel_Test::create_suite());
     $runner->add(Actor_Test::create_suite());
     $runner->add(Property_Test::create_suite());
@@ -96,9 +96,9 @@ class Apdos_Test extends Tool {
     $runner->add(Input_Test::create_suite());
 
     if ($this->cli->has_option('dmysql')) {
-      $runner->add(Mysql_Connecter_Test::create_suite());
-      $runner->add(Mysql_Schema_Test::create_suite());
-      $runner->add(Mysql_Util_Test::create_suite());
+      $runner->add(MySQL_Connecter_Test::create_suite());
+      $runner->add(MySQL_Schema_Test::create_suite());
+      $runner->add(MySQL_Util_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {

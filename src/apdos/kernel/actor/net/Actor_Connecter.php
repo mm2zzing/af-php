@@ -4,7 +4,7 @@ namespace apdos\kernel\actor\net;
 use apdos\kernel\actor\Component;
 use apdos\kernel\event\Event;
 use apdos\kernel\actor\events\Proxy_Event;
-use apdos\kernel\event\serializer\Rdp_Serializer;
+use apdos\kernel\event\serializer\RDP_Serializer;
 
 class Actor_Connecter extends Component {
   private $host;
@@ -12,7 +12,7 @@ class Actor_Connecter extends Component {
   public function send($url, $remote_event) {
     $proxy_event = new Proxy_Event(array($remote_event, $this->get_parent()->get_path(), ''));
 
-    $rdp = new Rdp_Serializer();
+    $rdp = new RDP_Serializer();
     $post_data = http_build_query(
       array('event'=>$rdp->write($proxy_event))
     );

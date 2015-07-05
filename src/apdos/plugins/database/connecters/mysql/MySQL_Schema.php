@@ -2,13 +2,13 @@
 namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\component;
-use apdos\plugins\database\connecters\mysql\errors\Mysql_Error;
-use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
+use apdos\plugins\database\connecters\mysql\errors\MySQL_Error;
+use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
 
 /**
- * @class Mysql_Schema
+ * @class MySQL_Schema
  *
- * @brieif Mysql 데이타베이스와 테이블을 생성하는 방법들을 제공
+ * @brieif MySQL 데이타베이스와 테이블을 생성하는 방법들을 제공
 
            http://codeigniter-kr.org/user_guide_2.1.0/database/index.html와 같이
            
@@ -16,7 +16,7 @@ use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
  *
  * @authro Lee, Hyeon-gi
  */
-class Mysql_Schema extends Component {
+class MySQL_Schema extends Component {
 
   /**
    * 데이타베이스를 생성한다.
@@ -121,9 +121,9 @@ class Mysql_Schema extends Component {
   }
 
   private function get_connecter() {
-    $result = $this->get_component(Mysql_Connecter::get_class_name());
+    $result = $this->get_component(MySQL_Connecter::get_class_name());
     if ($result->is_null())
-      throw new Mysql_Error('Connecter is null', Mysql_Error::CONNECTER_IS_NULL);
+      throw new MySQL_Error('Connecter is null', MySQL_Error::CONNECTER_IS_NULL);
     return $result;
   }
 }

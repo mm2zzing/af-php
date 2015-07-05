@@ -100,7 +100,7 @@ class Config extends Component {
 
   private function delete($config_name) {
     $env = $this->get_enviroment();
-    $file_path = "$this->application_path/config/$env/$config_name.json";
+    $file_path = "$this->application_path/db/config/$env/$config_name.json";
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     $file->delete($file_path);
     $file->get_parent()->release();
@@ -131,7 +131,7 @@ class Config extends Component {
 
   private function load($config_name) {
     $env = $this->get_enviroment();
-    $file_path = "$this->application_path/config/$env/$config_name.json";
+    $file_path = "$this->application_path/db/config/$env/$config_name.json";
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     try {
       $file->load($file_path);
@@ -173,7 +173,7 @@ class Config extends Component {
 
   private function save($config_name) {
     $env = $this->get_enviroment();
-    $file_path = "$this->application_path/config/$env/$config_name.json";
+    $file_path = "$this->application_path/db/config/$env/$config_name.json";
     $file = Component::create('apdos\plugins\resource\File', '/app/files/' . $config_name);
     try {
       $encode_data = json_encode($this->configs[$config_name], JSON_PRETTY_PRINT);

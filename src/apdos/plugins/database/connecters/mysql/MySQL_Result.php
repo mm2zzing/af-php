@@ -2,7 +2,7 @@
 namespace apdos\plugins\database\connecters\mysql;
 
 /**
- * @class Mysql_Result
+ * @class MySQL_Result
  *
  * @brief 쿼리에 대한 결과를 표현하는 객체이다. 데이타베이스 API 사용시
  *        갱신 관련 쿼리는 성공 여부만 리턴하고 
@@ -10,7 +10,7 @@ namespace apdos\plugins\database\connecters\mysql;
  *
  * @author Lee, Hyeon-gi
  */
-class Mysql_Result {
+class MySQL_Result {
   private $result;
   private $rows = array();
 

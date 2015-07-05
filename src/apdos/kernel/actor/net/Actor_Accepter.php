@@ -8,7 +8,7 @@ use apdos\kernel\event\errors\Event_Error;
 use apdos\kernel\actor\events\Proxy_Event;
 use apdos\kernel\actor\net\Remote_Actor;
 use apdos\kernel\actor\errors\Actor_Error;
-use apdos\kernel\event\serializer\Rdp_Deserializer;
+use apdos\kernel\event\serializer\RDP_Deserializer;
 
 /**
  * @class Actor_Accepter
@@ -21,7 +21,7 @@ use apdos\kernel\event\serializer\Rdp_Deserializer;
 class Actor_Accepter extends Component {
   public function recv($json_string) {
     try {
-      $rdp = new Rdp_Deserializer();
+      $rdp = new RDP_Deserializer();
       $proxy_event = $rdp->read($json_string);
       
       $target_event = $proxy_event->deserialize_remote_event();

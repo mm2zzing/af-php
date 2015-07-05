@@ -4,10 +4,10 @@ namespace tests\apdos\plugins\database\connecters\mysql;
 use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
-use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
+use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
 use apdos\tools\ash\Tool_Config;
 
-class Mysql_Schema_Test extends Test_Case {
+class MySQL_Schema_Test extends Test_Case {
   private $connecter;
   private $schema;
 
@@ -59,7 +59,7 @@ class Mysql_Schema_Test extends Test_Case {
 
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
-    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter'); 
+    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\MySQL_Connecter'); 
     $host = Tool_Config::get_instance()->get('test_server.mysql-test-db.host');
     $user = Tool_Config::get_instance()->get('test_server.mysql-test-db.user');
     $password = Tool_Config::get_instance()->get('test_server.mysql-test-db.password');
@@ -67,7 +67,7 @@ class Mysql_Schema_Test extends Test_Case {
     $persistent = Tool_Config::get_instance()->get('test_server.mysql-test-db.persistent');
     $this->connecter->connect($host, $user, $password, $port, $persistent);
 
-    $this->schema = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Schema');
+    $this->schema = $actor->add_component('apdos\plugins\database\connecters\mysql\MySQL_Schema');
   }
 
   public function tear_down() {
@@ -81,11 +81,11 @@ class Mysql_Schema_Test extends Test_Case {
   }
 
   public static function create_suite() {
-    $suite = new Test_Suite('Mysql_Schema_Test');
-    $suite->add(new Mysql_Schema_Test('test_create_database'));
-    $suite->add(new Mysql_Schema_Test('test_drop_database'));
-    $suite->add(new Mysql_Schema_Test('test_create_table'));
-    $suite->add(new Mysql_Schema_Test('test_drop_table'));
+    $suite = new Test_Suite('MySQL_Schema_Test');
+    $suite->add(new MySQL_Schema_Test('test_create_database'));
+    $suite->add(new MySQL_Schema_Test('test_drop_database'));
+    $suite->add(new MySQL_Schema_Test('test_create_table'));
+    $suite->add(new MySQL_Schema_Test('test_drop_table'));
     return $suite;
   }
 }

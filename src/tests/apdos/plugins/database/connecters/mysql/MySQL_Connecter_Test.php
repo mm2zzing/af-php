@@ -4,10 +4,10 @@ namespace tests\apdos\plugins\database\connecters\mysql;
 use apdos\plugins\test\Test_Suite;
 use apdos\kernel\core\kernel;
 use apdos\plugins\test\Test_Case;
-use apdos\plugins\database\connecters\mysql\Mysql_Connecter;
+use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
 use apdos\tools\ash\Tool_Config;
 
-class Mysql_Connecter_Test extends Test_Case {
+class MySQL_Connecter_Test extends Test_Case {
   const TEST_DATABASE_NAME = "test_db";
   const TEST_TABLE_NAME = "test_table";
 
@@ -59,7 +59,7 @@ class Mysql_Connecter_Test extends Test_Case {
   
   public function set_up() {
     $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/db/mysql');
-    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\Mysql_Connecter');
+    $this->connecter = $actor->add_component('apdos\plugins\database\connecters\mysql\MySQL_Connecter');
 
     $host = Tool_Config::get_instance()->get('test_server.mysql-test-db.host');
     $user = Tool_Config::get_instance()->get('test_server.mysql-test-db.user');
@@ -112,14 +112,14 @@ class Mysql_Connecter_Test extends Test_Case {
   }
 
   public static function create_suite() {
-    $suite = new Test_Suite('Mysql_Connecter_Test');
-    $suite->add(new Mysql_Connecter_Test('test_create_database'));
-    $suite->add(new Mysql_Connecter_Test('test_drop_database'));
-    $suite->add(new Mysql_Connecter_Test('test_insert'));
-    $suite->add(new Mysql_Connecter_Test('test_select'));
-    $suite->add(new Mysql_Connecter_Test('test_delete'));   
-    $suite->add(new Mysql_Connecter_Test('test_transaction'));
-    //$suite->add(new Mysql_Connecter_Test('test_charset'));
+    $suite = new Test_Suite('MySQL_Connecter_Test');
+    $suite->add(new MySQL_Connecter_Test('test_create_database'));
+    $suite->add(new MySQL_Connecter_Test('test_drop_database'));
+    $suite->add(new MySQL_Connecter_Test('test_insert'));
+    $suite->add(new MySQL_Connecter_Test('test_select'));
+    $suite->add(new MySQL_Connecter_Test('test_delete'));   
+    $suite->add(new MySQL_Connecter_Test('test_transaction'));
+    //$suite->add(new MySQL_Connecter_Test('test_charset'));
     return $suite;
   }
 }
