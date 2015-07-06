@@ -1,6 +1,8 @@
 <?php
 namespace apdos\plugins\database\connecters\mysql;
 
+use apdos\plugins\database\base\rdb\RDB_Result;
+
 /**
  * @class MySQL_Result
  *
@@ -10,7 +12,7 @@ namespace apdos\plugins\database\connecters\mysql;
  *
  * @author Lee, Hyeon-gi
  */
-class MySQL_Result {
+class MySQL_Result extends RDB_Result {
   private $result;
   private $rows = array();
 
@@ -24,6 +26,7 @@ class MySQL_Result {
       while($row = $result->fetch_assoc()) {
         array_push($this->rows, $row);
       }
+      $this->result->close();
     }
   }
 
@@ -37,16 +40,11 @@ class MySQL_Result {
   public function get_rows_count() {
     if ($this->result_data_query())
       return 0;
-    return $this->result->num_rows;
+    return count($this->rows);
   }
 
   public function get_result() {
     return $this->rows;
-  }
-
-  public function close() {
-    if (!$this->result_data_query())
-      $this->result->close();
   }
 
   private function result_data_query() {

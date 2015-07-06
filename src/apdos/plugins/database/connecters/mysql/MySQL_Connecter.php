@@ -3,8 +3,9 @@ namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\Component;
 use apdos\plugins\database\connecters\mysql\errors\MySQL_Error;
+use apdos\plugins\database\base\rdb\RDB_Connecter;
 
-class MySQL_Connecter extends Component {
+class MySQL_Connecter extends RDB_Connecter {
   private $mysqli;
   private $database;
 
@@ -30,7 +31,6 @@ class MySQL_Connecter extends Component {
     $query = "SELECT table_name FROM information_schema.tables WHERE table_schema='$this->database' AND table_name = '$name'";
     $result = $this->query($query);
     $count = $result->get_rows_count();
-    $result->close();
     return $count  == 1 ? true : false;
   } 
 

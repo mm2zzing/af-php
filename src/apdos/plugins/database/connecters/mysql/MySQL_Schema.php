@@ -1,8 +1,8 @@
 <?php
 namespace apdos\plugins\database\connecters\mysql;
 
-use apdos\kernel\actor\component;
-use apdos\plugins\database\connecters\mysql\errors\MySQL_Error;
+use apdos\plugins\database\base\rdb\RDB_Schema;
+use apdos\plugins\database\base\rdb\errors\RDB_Error;
 use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
 
 /**
@@ -16,7 +16,7 @@ use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
  *
  * @authro Lee, Hyeon-gi
  */
-class MySQL_Schema extends Component {
+class MySQL_Schema extends RDB_Schema {
 
   /**
    * 데이타베이스를 생성한다.
@@ -30,7 +30,7 @@ class MySQL_Schema extends Component {
     if ($if_not_exists)
       $query .= 'IF NOT EXISTS ';
     $query .= $name;
-    return $this->get_connecter()->query($query)->is_success();
+    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
   }
 
   public function drop_database($name, $if_exists = true) {
@@ -38,14 +38,13 @@ class MySQL_Schema extends Component {
     if ($if_exists)
       $query .= 'IF EXISTS ';
     $query .= $name;
-    return $this->get_connecter()->query($query)->is_success();
+    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
   }
 
   public function has_database($name) {
     $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
-    $result = $this->get_connecter()->query($query);
+    $result = $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
     $count = $result->get_rows_count();
-    $result->close();
     return $count == 1 ? true : false;
   }
 
@@ -71,7 +70,7 @@ class MySQL_Schema extends Component {
         $query .= ",\n";
     }
     $query .= "\n);";
-    return $this->get_connecter()->query($query)->is_success();
+    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
   }
 
   private function get_field_query($name, $values) {
@@ -117,13 +116,6 @@ class MySQL_Schema extends Component {
     if ($if_exists)
       $query .= 'if exists ';
     $query .= "$name;";
-    return $this->get_connecter()->query($query)->is_success();
-  }
-
-  private function get_connecter() {
-    $result = $this->get_component(MySQL_Connecter::get_class_name());
-    if ($result->is_null())
-      throw new MySQL_Error('Connecter is null', MySQL_Error::CONNECTER_IS_NULL);
-    return $result;
+    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
   }
 }

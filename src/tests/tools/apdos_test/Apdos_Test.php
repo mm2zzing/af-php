@@ -30,6 +30,7 @@ use tests\apdos\plugins\sharding\Sharding_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Connecter_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Schema_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Util_Test;
+use tests\apdos\plugins\database\connecters\mysql\MySQL_Session_Test;
 
 /**
  * @class Apdos_Test
@@ -105,6 +106,7 @@ class Apdos_Test extends Tool {
       $runner->add(MySQL_Connecter_Test::create_suite());
       $runner->add(MySQL_Schema_Test::create_suite());
       $runner->add(MySQL_Util_Test::create_suite());
+      $runner->add(MySQL_Session_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {

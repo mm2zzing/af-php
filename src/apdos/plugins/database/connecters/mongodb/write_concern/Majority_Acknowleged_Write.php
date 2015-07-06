@@ -1,5 +1,5 @@
 <?php
-namespace apdos\plugins\database\connecters\mongodb;
+namespace apdos\plugins\database\connecters\mongodb\write_concern;
 
 /**
  * @class Majority_Acknowleged

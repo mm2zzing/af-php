@@ -25,7 +25,6 @@ class MySQL_Connecter_Test extends Test_Case {
     $query = "SELECT schema_name FROM information_schema.schemata WHERE schema_name = '$name'";
     $result = $this->connecter->query($query);
     $count = $result->get_rows_count();
-    $result->close();
     return $count == 1 ? true : false;
   }
 
