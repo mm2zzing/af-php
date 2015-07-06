@@ -1,17 +1,17 @@
 {
-  "shard_tables": [
+  "tables": [
     {
-      "id": "mytable1",
-      "type": "sharding",
-      "data_shard_id":"data*"
+      "id": "table_a",
+      "lookup_shard_ids":["lookup01", "lookup02"],
+      "data_shard_ids":["table_a01", "table_a02"]
     },
     {
-      "id": "mytable2",
-      "type": "static",
-      "data_shard_id": "public01"
+      "id": "table_b",
+      "lookup_shard_ids":["lookup01", "lookup02"],
+      "data_shard_ids":["table_b01"]
     }
   ],
-  "lookup_shards": [
+  "shards": [
     {
       "id": "lookup01",
       "master": {
@@ -57,18 +57,16 @@
         "charset": "utf8",
         "persistent": true
       }
-    }
-  ],
-  "data_shards": [
+    },
     {
-      "id": "data01",
+      "id": "table_a01",
       "master": {
         "connecter": "mysql",
         "host": "localhost",
         "port": 3306,
         "user": "root",
         "password": "",
-        "db_name": "test_data01",
+        "db_name": "test_data_a01",
         "charset": "utf8",
         "persistent": true
       },
@@ -78,20 +76,20 @@
         "port": 3306,
         "user": "root",
         "password": "",
-        "db_name": "test_data01",
+        "db_name": "test_data_a01",
         "charset": "utf8",
         "persistent": true
       }
     },
     {
-      "id": "data02",
+      "id": "table_a02",
       "master": {
         "connecter": "mysql",
         "host": "localhost",
         "port": 3306,
         "user": "root",
         "password": "",
-        "db_name": "test_data02",
+        "db_name": "test_data_a02",
         "charset": "utf8",
         "persistent": true
       },
@@ -101,32 +99,34 @@
         "port": 3306,
         "user": "root",
         "password": "",
-        "db_name": "test_data02",
+        "db_name": "test_data_a02",
         "charset": "utf8",
         "persistent": true
       }
     },
     {
-      "id": "public01",
-      "master": {
-        "connecter": "mysql",
-        "host": "localhost",
-        "port": 3306,
-        "user": "root",
-        "password": "",
-        "db_name": "test_public01",
-        "charset": "utf8",
-        "persistent": true
-      },
-      "slave": {
-        "connecter": "mysql",
-        "host": "localhost",
-        "port": 3306,
-        "user": "root",
-        "password": "",
-        "db_name": "test_public01",
-        "charset": "utf8",
-        "persistent": true
+      "id": "table_b01",
+      "config": {
+        "master": {
+          "connecter": "mysql",
+          "host": "localhost",
+          "port": 3306,
+          "user": "root",
+          "password": "",
+          "db_name": "test_data_b01",
+          "charset": "utf8",
+          "persistent": true
+        },
+        "slave": {
+          "connecter": "mysql",
+          "host": "localhost",
+          "port": 3306,
+          "user": "root",
+          "password": "",
+          "db_name": "test_data_b01",
+          "charset": "utf8",
+          "persistent": true
+        }
       }
     }
   ]

@@ -35,6 +35,10 @@ class Component extends Event_Dispatcher {
     return $this->parent_actor;
   }
 
+  public function get_parent_path() {
+    return $this->parent_actor->get_path();
+  }
+
   public function is_null() {
     return false;
   }

@@ -25,61 +25,74 @@ class Sharding_Test extends Test_Case {
   }
 
   public function set_up() {
-    $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/srouter');
-    $this->shard_router = $actor->add_component('apdos\plugins\sharding\Shard_Router');
-    $this->shard_router->load($this->get_shard_tables(), $this->get_lookup_shards(), $this->get_data_shards());
-
-    $this->shard_schema = Component::create('/tests/sharding/shard_schema', 'apdos\plugins\sharding\Shard_Schema');
+    $this->actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/srouter');
+    $this->shard_router = $this->actor->add_component('apdos\plugins\sharding\Shard_Router');
+    $this->shard_router->load($this->get_shard_tables(), $this->get_shard_sets());
+    $this->shard_schema = $this->actor->add_component('apdos\plugins\sharding\Shard_Schema');
     $this->shard_schema->set_property('router', $this->shard_router);
+
+    $this->shard_schema->create_database('lookup01', 'test_lookup01');
+    $this->shard_schema->create_database('lookup02', 'test_lookup02');
   }
 
   public function get_shard_tables() {
-    return Tool_Config::get_instance()->get('test_sharding.shard_tables');
+    return Tool_Config::get_instance()->get('test_sharding.tables');
   }
 
-  public function get_lookup_shards() {
-    return Tool_Config::get_instance()->get('test_sharding.lookup_shards');
-  }
-
-  public function get_data_shards() {
-    return Tool_Config::get_instance()->get('test_sharding.data_shards');
+  public function get_shard_sets() {
+    return Tool_Config::get_instance()->get('test_sharding.shards');
   }
 
   public function tear_down() {
+    $db_connecter = $this->shard_router->get_db_connecter('lookup01');
+    $this->shard_schema->drop_database('lookup01', 'test_lookup01');
+    $db_connecter = $this->shard_router->get_db_connecter('lookup02');
+    $this->shard_schema->drop_database('lookup02', 'test_lookup02');
+
+    $this->actor->release();
   }
 
-  /**
-   * Mock_Sql_Connecter를 이용하여 테스트.
-   * Shard_Router에서 shard connecter와 매칭되는 Sql_Connecter종류를 설정할 수 있는 방법을 제공하여
-   * 이를 Mock 객체로 설정하여 테스트
-   */
-  public function test_create_lookup_shards() {
-    $this->shard_schema->create_shard();
+  public function test_create_lookup_shards() { 
+    $db_schema = $this->shard_router->get_db_schema('lookup01');
+    $this->assert(true == $db_schema->has_database('test_lookup01'), 'test_lookup01 is exist');
+    $db_schema = $this->shard_router->get_db_schema('lookup02');
+    $this->assert(true == $db_schema->has_database('test_lookup02'), 'test_lookup02 is exist');
 
-    $db_util = $shard_router->get_db_util('lookup01');
-    $this->assert(true == $db_util->database_exists('test_lookup01'));
-    $db_util = $shard_router->get_db_util('lookup02');
-    $this->assert(true == $db_util->database_exists('test_lookup02'));
-    $db_util = $shard_router->get_db_util('data01');
-    $this->assert(true == $db_util->database_exists('test_data01'));
-    $db_util = $shard_router->get_db_util('data02');
-    $this->assert(true == $db_util->database_exists('test_data02'));
-    $db_util = $shard_router->get_db_util('public01');
-    $this->assert(true == $db_util->database_exists('test_public01'));
 
-    $this->shard_schema->drop_shard();
+    $db_connecter = $this->shard_router->get_db_connecter('lookup01');
+    $db_connecter->select_database('test_lookup01');
+
+    $db_connecter = $this->shard_router->get_db_connecter('lookup02');
+    $db_connecter->select_database('test_lookup02');
+
+    $this->shard_schema->create_table('lookup01', 'lookup', $this->get_lookup_fields());
+    $this->shard_schema->create_table('lookup02', 'lookup', $this->get_lookup_fields());
+
+    $db_connecter = $this->shard_router->get_db_connecter('lookup01');
+    $this->assert(true == $db_connecter->has_table('lookup'), 'lookup table is exist');
+    $db_connecter = $this->shard_router->get_db_connecter('lookup02');
+    $this->assert(true == $db_connecter->has_table('lookup'), 'lookup table is exist'); 
   }
 
-  private function get_fields() {
+  private function get_lookup_fields() {
     return array(
-      'title'=>array(
+      'object_id'=>array(
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
+        'default'=>''
+      ),
+      'title_id'=>array(
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
+        'default'=>''
+      ),
+      'state'=>array(
         'type'=>'VARCHAR(100)',
         'null'=>FALSE,
         'default'=>''
       )
     );
-  }
-
+  } 
   public function test_create_data_shards() {
   }
 
@@ -92,9 +105,8 @@ class Sharding_Test extends Test_Case {
 
   public static function create_suite() {
     $suite = new Test_Suite('Sharding_Test');
-    $suite->add(new Sharding_Test('test_create_shard'));
-    //$suite->add(new Sharding_Test('test_create_lookup_shards')):
-    //$suite->add(new Sharding_Test('test_create_data_shards'));
+    $suite->add(new Sharding_Test('test_create_lookup_shards'));
+    $suite->add(new Sharding_Test('test_create_data_shards'));
     //$suite->add(new Sharding_Test('test_insert'));
     return $suite;
   }

@@ -73,6 +73,12 @@ class Apdos_Test extends Tool {
         'description'=>'include mongodb dependency tests.',
         'action'=>'StoreTrue',
     ));
+    $cli->add_option('shortsummary', array(
+        'long_name'=>'--short-summary',
+        'description'=>'',
+        'action'=>'StoreTrue',
+    ));
+
     return $cli;
   }
 
@@ -104,8 +110,11 @@ class Apdos_Test extends Tool {
     if ($this->cli->has_option('dmongodb')) {
       $runner->add(Mongodb_Test::create_suite());
     }
-    //$runner->add(Sharding_Test::create_suite());
+    $runner->add(Sharding_Test::create_suite());
     $runner->run();
-    echo $runner->summary() . PHP_EOL;
+    if ($this->cli->has_option('shortsummary')) 
+      echo $runner->short_summary() . PHP_EOL;
+    else
+      echo $runner->summary() . PHP_EOL;
   }
 }
