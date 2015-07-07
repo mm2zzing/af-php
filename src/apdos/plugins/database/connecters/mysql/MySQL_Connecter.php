@@ -2,19 +2,19 @@
 namespace apdos\plugins\database\connecters\mysql;
 
 use apdos\kernel\actor\Component;
-use apdos\plugins\database\connecters\mysql\errors\MySQL_Error;
+use apdos\plugins\database\base\rdb\errors\RDB_Error;
 use apdos\plugins\database\base\rdb\RDB_Connecter;
 
 class MySQL_Connecter extends RDB_Connecter {
   private $mysqli;
   private $database;
 
-  public function connect($host, $user, $password, $port = "3306", $is_persistent = false) {
+  public function connect($host, $user, $password, $port = "3306", $is_persistent = false, $db_name = '') {
     if ($is_persistent)
       $host = 'p:' . $host;
-    $this->mysqli = new \mysqli($host, $user, $password, '', $port);
+    $this->mysqli = new \mysqli($host, $user, $password, $db_name, $port);
     if (mysqli_connect_errno())
-      throw new MySQL_Error(mysqli_connect_error(), MySQL_Error::CONNECT_FAIL);
+      throw new RDB_Error(mysqli_connect_error(), RDB_Error::CONNECT_FAIL);
   }
 
   public function close() {
@@ -23,7 +23,7 @@ class MySQL_Connecter extends RDB_Connecter {
 
   public function select_database($name) {
     if (!$this->mysqli->select_db($name))
-      throw new MySQL_Error("Select database failed($name)", MySQL_Error::SELECT_DATABASE_FAIELD);
+      throw new RDB_Error("Select database failed($name)", RDB_Error::SELECT_DATABASE_FAIELD);
     $this->database = $name;
   }
  
@@ -43,7 +43,7 @@ class MySQL_Connecter extends RDB_Connecter {
   public function query($sql) {
     $result = $this->mysqli->query($sql);
     if (!$result)
-      throw new MySQL_Error($this->get_last_error(), MySQL_Error::QUERY_FAILED);
+      throw new RDB_Error($this->get_last_error(), RDB_Error::QUERY_FAILED);
     return new MySQL_Result($result);
   }
 

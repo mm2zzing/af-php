@@ -94,8 +94,13 @@ class Actor extends Root_Node {
   }
 
   public function update() {
+    $this->update_events();
+  }
+
+  public function update_events() {
     foreach ($this->components as $component)
       $component->update_event();
     parent::update_event(); 
+
   }
 }

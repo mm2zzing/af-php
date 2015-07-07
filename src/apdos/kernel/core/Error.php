@@ -9,8 +9,7 @@ use apdos\kernel\log\Logger;
  *
  * @bireif PHP 시스템 에러를 캐치해서 알려주는 역할을 한다.
  * 
- * @author Error
- */
+ * @author Error */
 class Error {
   public function __construct() {
   }

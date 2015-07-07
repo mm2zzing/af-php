@@ -8,7 +8,6 @@ use apdos\plugins\database\connecters\mysql\MySQL_Connecter;
 use apdos\tools\ash\Tool_Config;
 
 class MySQL_Connecter_Test extends Test_Case {
-  const TEST_DATABASE_NAME = "test_db";
   const TEST_TABLE_NAME = "test_table";
 
   public function test_create_database() {

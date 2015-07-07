@@ -26,11 +26,12 @@ use apdos\tools\ash\console\Command_Line;
 use apdos\tools\ash\console\error\Command_Line_Error;
 use tests\apdos\plugins\cache\Cache_Test;
 use tests\apdos\plugins\input\Input_Test;
-use tests\apdos\plugins\sharding\Sharding_Test;
+use tests\apdos\plugins\sharding\Sharding_Schema_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Connecter_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Schema_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Util_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Session_Test;
+use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Test;
 
 /**
  * @class Apdos_Test
@@ -107,12 +108,13 @@ class Apdos_Test extends Tool {
       $runner->add(MySQL_Schema_Test::create_suite());
       $runner->add(MySQL_Util_Test::create_suite());
       $runner->add(MySQL_Session_Test::create_suite());
+      $runner->add(MySQL_Active_Record_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {
       $runner->add(Mongodb_Test::create_suite());
     }
-    $runner->add(Sharding_Test::create_suite());
+    $runner->add(Sharding_Schema_Test::create_suite());
     $runner->run();
     if ($this->cli->has_option('shortsummary')) 
       echo $runner->short_summary() . PHP_EOL;
