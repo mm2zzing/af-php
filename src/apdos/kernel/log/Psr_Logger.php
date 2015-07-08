@@ -83,6 +83,15 @@ class Psr_Logger implements LoggerInterface {
     array_push($this->logger_handlers, $logger_handler);
   }
 
+  public function remove_logger_handler($class_name) {
+    for ($i = 0; $i < count($this->logger_handlers); $i++) {
+      if (get_class($this->logger_handlers[$i]) == $class_name) {
+        array_splice($this->logger_handlers, $i, 1);
+        return;
+      }
+    }
+  }
+
   /**
    * 출력할 로그 레벨을 선택한다.
    *

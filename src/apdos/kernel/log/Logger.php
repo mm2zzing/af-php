@@ -108,6 +108,10 @@ class Logger extends Component {
     $this->psr_logger->add_logger_handler($logger_handler);
   }
 
+  public function remove_logger_handler($class_name) {
+    $this->psr_logger->remove_logger_handler($class_name);
+  }
+
   public static function get_instance() {
     static $instance = null;
     if (null == $instance) {

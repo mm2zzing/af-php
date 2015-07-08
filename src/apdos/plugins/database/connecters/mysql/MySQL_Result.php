@@ -15,13 +15,16 @@ use apdos\plugins\database\base\rdb\RDB_Result;
 class MySQL_Result extends RDB_Result {
   private $result;
   private $rows = array();
+  private $time;
 
   /**
    *
-   * @param result mysqli_result
+   * @param result mysqli_result or boolean
+   * @param time float query process time
    */
-  public function __construct($result) {
+  public function __construct($result, $time = 0) {
     $this->result = $result;
+    $this->time = $time;
     if (!$this->result_data_query()) {
       while($row = $result->fetch_assoc()) {
         array_push($this->rows, $row);
@@ -45,6 +48,10 @@ class MySQL_Result extends RDB_Result {
 
   public function get_result() {
     return $this->rows;
+  }
+  
+  public function get_time() {
+    return $this->time;
   }
 
   private function result_data_query() {

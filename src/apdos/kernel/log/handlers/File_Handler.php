@@ -1,10 +1,7 @@
 <?php
 namespace apdos\kernel\log\handlers;
 
-class File_Handler implements Logger_Handler {
-  private $log_dir;
-  private $max_size;
-
+class File_Handler extends Logger_Handler { 
   /**
    *
    * @param log_dir 로그를 저장할 파일 위치 
@@ -49,4 +46,7 @@ class File_Handler implements Logger_Handler {
     }
     rename($file_path, $file_path. '.' . ($number + 1));
   }
+
+  private $log_dir;
+  private $max_size;
 }

@@ -1,11 +1,13 @@
 <?php
 namespace apdos\kernel\log\handlers;
 
-interface Logger_Handler {
+use apdos\kernel\core\Object;
+
+abstract class Logger_Handler extends Object {
   /**
    * 로그를 쓴다
    * 
    * @param log Log_DTO
    */
-  public function write($log); 
+  abstract public function write($log); 
 }

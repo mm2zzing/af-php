@@ -1,7 +1,7 @@
 <?php
 namespace apdos\kernel\log\handlers;
 
-class Logd_Handler implements Logger_Handler {
+class Logd_Handler extends Logger_Handler {
   public function write($log) {
     $time = $log->get_time();
     $tag = $log->get_tag();

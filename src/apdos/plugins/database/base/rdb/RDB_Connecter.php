@@ -10,7 +10,10 @@ abstract class RDB_Connecter extends Component {
   abstract public function has_table($name);
 
   abstract public function query($sql);
+  abstract public function insert($table_name, $data);
+
   abstract public function begin_trans();
   abstract public function end_trans();
   abstract public function get_last_error();
+
 }

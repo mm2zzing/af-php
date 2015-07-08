@@ -58,10 +58,6 @@ class MySQL_Schema extends RDB_Schema {
    */
   public function create_table($name, $fields) {
     $query = "CREATE TABLE $name(\n";
-
-    $last_index = count($fields) - 1;
-    $index = 0;
-
     end($fields);
     $last_key = key($fields);
     foreach ($fields as $key=>$value) {

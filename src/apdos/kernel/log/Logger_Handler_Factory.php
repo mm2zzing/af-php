@@ -2,6 +2,7 @@
 namespace apdos\kernel\log;
 
 use apdos\kernel\log\handlers\File_Handler;
+use apdos\kernel\log\handlers\Console_Handler;
 use apdos\kernel\log\handlers\Null_Logger_Handler;
 use apdos\plugins\config\Config;
 

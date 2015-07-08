@@ -7,8 +7,7 @@ use apdos\tools\ashconsole\Command_Line;
 use apdos\tools\ash\console\error\Command_Line_Error;
 use apdos\tools\ash\error\Ash_Error;
 use apdos\kernel\log\Logger;
-use apdos\kernel\actor\Component;
-use apdos\kernel\actor\net\Actor_Connecter;
+use apdos\kernel\actor\Component; use apdos\kernel\actor\net\Actor_Connecter;
 use apdos\tools\ash\events\Shell_Command;
 use apdos\tools\ash\dto\Argument_DTO;
 
@@ -23,15 +22,6 @@ class Ash extends Tool {
   const NAME = 'ash';
   const DESCRIPTION = 'Actor Framework/PHP shell';
   const VERSION = '0.0.1';
-
-  private $actor_connecter;
-  private $prompt = '';
-  private $host = 'root@localhost';
-
-  private $user;
-  private $address;
-  private $port;
-
 
   public function __construct() {
     $this->actor_connecter = Component::create('apdos\kernel\actor\net\Actor_Connecter', '/bin/actor_connecter');
@@ -49,6 +39,10 @@ class Ash extends Tool {
       $this->user = $this->get_user();
       $this->address = $this->get_address();
       $this->prompt = $this->get_prompt();
+
+      $this->is_debug = false;
+      if ($cli->has_option('debug'))
+        $this->is_debug = true;
 
       if ($cli->has_option('run_cmd')) {
         $this->display_version();
@@ -146,6 +140,12 @@ class Ash extends Tool {
         'action'=>'StoreInt',
         'default'=>80
     ));
+    $result->add_option('debug', array(
+        'short_name'=>'-d',
+        'long_name'=>'--debug',
+        'description'=>'Display server-side logs of command dispatching',
+        'action'=>'StoreTrue'
+    ));
     return $result;
   }
 
@@ -155,7 +155,11 @@ class Ash extends Tool {
 
   private function run_command($argument_dto) {
     try {
-      $shell_command = new Shell_Command(array($argument_dto->get_count(), $argument_dto->gets(), $this->user));
+      $shell_command = new Shell_Command(array(
+          $argument_dto->get_count(), 
+          $argument_dto->gets(), 
+          $this->user, 
+          $this->is_debug));
       $address = 'http://' . $this->address . ':' . $this->port;
       $this->actor_connecter->send($address, $shell_command);
 
@@ -171,4 +175,13 @@ class Ash extends Tool {
       Logger::get_instance()->error('ASH', $e->getMessage());
     }
   } 
+
+  private $is_debug;
+  private $actor_connecter;
+  private $prompt = '';
+  private $host = 'root@localhost';
+
+  private $user;
+  private $address;
+  private $port;
 }
