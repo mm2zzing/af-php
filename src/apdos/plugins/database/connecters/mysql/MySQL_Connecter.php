@@ -47,14 +47,16 @@ class MySQL_Connecter extends RDB_Connecter {
    * @throw RDB_Error 잘못된 쿼리 요청시에 예외 발생
    */
   public function query($sql) {
+    Logger::get_instance()->debug('RDB-MYSQL', "$sql");
     $before = Time::get_instance()->get_timestamp();
     $result = $this->mysqli->query($sql);
     $time = Time::get_instance()->get_timestamp() - $before;
-    Logger::get_instance()->info('QUERY', "$sql");
-    Logger::get_instance()->info('QUERY', "(host: $this->host_info, db: $this->database, time: $time)");
+    Logger::get_instance()->debug('RDB-MYSQL', "(host: $this->host_info, db: $this->database, time: $time)");
     if (!$result)
       throw new RDB_Error($this->get_last_error(), RDB_Error::QUERY_FAILED);
-    return new MySQL_Result($result, $time);
+    $mysql_result = new MySQL_Result($result, $time);
+    Logger::get_instance()->debug('RDB-MYSQL', var_export($mysql_result->get_rows(), true));
+    return $mysql_result;
   }
 
   /**
@@ -113,26 +115,30 @@ class MySQL_Connecter extends RDB_Connecter {
     $query = '(';
     foreach ($data as $key=>$value) {
       if ($key != $last_key) {
-        $query .= ($this->convert_insert_value($value) . ',');
+        $query .= ($this->convert_value_format($value) . ',');
       }
       else {
-        $query .= ($this->convert_insert_value($value) . ')');
+        $query .= ($this->convert_value_format($value) . ')');
       } 
     }
     return $query;
   }
 
-  private function convert_insert_value($value) {
-    return is_string($value) ? "'$value'" : $value;
-  }
-
   public function get($table_name, $limit = -1, $offset = -1) {
     $this->limit($limit, $offset);
-
     if ($this->limit != -1 && $this->offset != -1)
       $query = "SELECT * FROM $table_name LIMIT $this->offset, $this->limit";
     else
       $query = "SELECT * FROM $table_name";
+    return $this->query($query);
+  }
+
+  public function get_where($table_name, $wheres, $limit = -1, $offset = -1) {
+    $this->limit($limit, $offset);
+    $query = "SELECT * FROM $table_name";
+    $query .= $this->create_where_query($wheres);
+    if ($this->limit != -1 && $this->offset != -1)
+      $query .= " LIMIT $this->offset, $this->limit";
     return $this->query($query);
   }
 
@@ -142,6 +148,22 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->offset = $offset;
     }
     return $this;
+  }
+
+  private function create_where_query($wheres) {
+    $query = ' WHERE ';
+    end($wheres);
+    $last_key = key($wheres);
+    foreach ($wheres as $key=>$value) {
+      $query .= ($key . '=' . $this->convert_value_format($value));
+      if ($key != $last_key)
+        $query .= ' AND ';
+    }
+    return $query;
+  }
+
+  private function convert_value_format($value) {
+    return is_string($value) ? "'$value'" : $value;
   }
 
   public function begin_trans() {

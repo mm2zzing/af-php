@@ -34,7 +34,7 @@ class MySQL_Connecter_Test extends Test_Case {
     $this->assert($this->connecter->has_table(self::TEST_TABLE_NAME), "Table is exist");
     $this->connecter->query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
     $result = $this->connecter->query($this->create_count_query(self::TEST_TABLE_NAME));
-    $rows = $result->get_result();
+    $rows = $result->get_rows();
     $this->assert($rows[0]['count'] == 1, 'Row count is 1');
   }
 
@@ -43,7 +43,7 @@ class MySQL_Connecter_Test extends Test_Case {
     $this->connecter->query($this->create_table_query(self::TEST_TABLE_NAME));
     $this->connecter->query($this->create_insert_query(self::TEST_TABLE_NAME, '11111'));
     $result = $this->connecter->query($this->create_select_query(self::TEST_TABLE_NAME));
-    $rows = $result->get_result();
+    $rows = $result->get_rows();
     $this->assert($result->get_rows_count() == 1, "Rows count is 1");
     $this->assert($rows[0]['id'] == 1, "Id is 1");
     $this->assert($rows[0]['title'] == '11111', "Title is 11111");

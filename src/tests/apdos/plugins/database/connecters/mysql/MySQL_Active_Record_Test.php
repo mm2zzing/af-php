@@ -92,6 +92,9 @@ class MySQL_Active_Record_Test extends Test_Case {
 
     $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME, 222, 1);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
+
+    $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME, 1, 9999);
+    $this->assert($result->get_rows_count() == 0, "Get rows count is 0");
   }
 
   public function test_limit() {
@@ -99,7 +102,24 @@ class MySQL_Active_Record_Test extends Test_Case {
 
     $result = $this->session->get_connecter()->limit(1, 0)->get(self::TEST_TABLE_NAME);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
+  }
 
+  public function test_get_where() {
+    $this->insert_test_data();
+    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'));
+    $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
+    $data = $result->get_rows();
+    $this->assert($data[0]['title'] == 'test_title1', 'title value is test_title1');
+
+    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'), 999, 0);
+    $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
+    $data = $result->get_rows();
+    $this->assert($data[0]['title'] == 'test_title1', 'title value is test_title1');
+
+    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title2'));
+    $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
+    $data = $result->get_rows();
+    $this->assert($data[0]['title'] == 'test_title2', 'title value is test_title1');
   }
 
   private function insert_test_data() {
@@ -109,7 +129,7 @@ class MySQL_Active_Record_Test extends Test_Case {
         'count'=>100
       ),
       array(
-        'title'=>'test_title1',
+        'title'=>'test_title2',
         'count'=>200
       )
     );
@@ -177,6 +197,7 @@ class MySQL_Active_Record_Test extends Test_Case {
     $suite->add(new MySQL_Active_Record_Test('test_insert_batch_fail'));
     $suite->add(new MySQL_Active_Record_Test('test_get'));
     $suite->add(new MySQL_Active_Record_Test('test_limit'));
+    $suite->add(new MySQL_Active_Record_Test('test_get_where'));
     $suite->add(new MySQL_Active_Record_Test('test_delete'));
     return $suite;
   }

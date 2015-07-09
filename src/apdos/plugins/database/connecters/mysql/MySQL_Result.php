@@ -46,7 +46,7 @@ class MySQL_Result extends RDB_Result {
     return count($this->rows);
   }
 
-  public function get_result() {
+  public function get_rows() {
     return $this->rows;
   }
   
