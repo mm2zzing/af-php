@@ -47,15 +47,15 @@ class MySQL_Connecter extends RDB_Connecter {
    * @throw RDB_Error 잘못된 쿼리 요청시에 예외 발생
    */
   public function query($sql) {
-    Logger::get_instance()->debug('RDB-MYSQL', "$sql");
+    Logger::get_instance()->debug('RDB-MYSQL', "Query: $sql");
     $before = Time::get_instance()->get_timestamp();
     $result = $this->mysqli->query($sql);
     $time = Time::get_instance()->get_timestamp() - $before;
-    Logger::get_instance()->debug('RDB-MYSQL', "(host: $this->host_info, db: $this->database, time: $time)");
+    Logger::get_instance()->debug('RDB-MYSQL', "Connecter: host: $this->host_info, db: $this->database, time: $time");
     if (!$result)
       throw new RDB_Error($this->get_last_error(), RDB_Error::QUERY_FAILED);
     $mysql_result = new MySQL_Result($result, $time);
-    Logger::get_instance()->debug('RDB-MYSQL', var_export($mysql_result->get_rows(), true));
+    Logger::get_instance()->debug('RDB-MYSQL', 'Result: '. var_export($mysql_result->get_rows(), true));
     return $mysql_result;
   }
 
@@ -126,21 +126,56 @@ class MySQL_Connecter extends RDB_Connecter {
 
   public function get($table_name, $limit = -1, $offset = -1) {
     $this->limit($limit, $offset);
-    if ($this->limit != -1 && $this->offset != -1)
-      $query = "SELECT * FROM $table_name LIMIT $this->offset, $this->limit";
+    if ($this->select_function == '')
+      $select_fields = $this->create_select_field_query();
     else
-      $query = "SELECT * FROM $table_name";
+      $select_fields = $this->create_select_function_field_query();
+    if ($this->limit != -1 && $this->offset != -1)
+      $query = "SELECT $select_fields FROM $table_name LIMIT $this->offset, $this->limit";
+    else
+      $query = "SELECT $select_fields FROM $table_name";
+    $this->reset_limit();
+    $this->reset_select();
     return $this->query($query);
   }
 
   public function get_where($table_name, $wheres, $limit = -1, $offset = -1) {
     $this->limit($limit, $offset);
-    $query = "SELECT * FROM $table_name";
+    if ($this->select_function == '')
+      $select_fields = $this->create_select_field_query();
+    else
+      $select_fields = $this->create_select_function_field_query();
+    $query = "SELECT $select_fields FROM $table_name";
     $query .= $this->create_where_query($wheres);
     if ($this->limit != -1 && $this->offset != -1)
       $query .= " LIMIT $this->offset, $this->limit";
+    $this->reset_limit();
+    $this->reset_select();
     return $this->query($query);
   }
+
+  private function create_select_field_query() {
+    end($this->select_fields);
+    $last_key = key($this->select_fields);
+    $query = '';
+    foreach ($this->select_fields as $key=>$value) {
+      if ($key != $last_key) {
+        $query .= ($this->convert_value_format($value) . ',');
+      }
+      else {
+        $query .= ($this->convert_value_format($value));
+      } 
+    }
+    return $query == '' ? '*' : $query;
+  }
+
+  private function create_select_function_field_query() {
+    if ($this->select_function_as_field_name == '')
+      return "$this->select_function($this->select_function_field) as $this->select_function_field";
+    else
+      return "$this->select_function($this->select_function_field) as $this->select_function_as_field_name";
+  }
+
 
   public function limit($limit, $offset) {
     if ($limit != -1 && $offset != -1) {
@@ -148,6 +183,61 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->offset = $offset;
     }
     return $this;
+  } 
+
+  public function select($select_fields) {
+    $this->select_fields = $select_fields;
+    return $this;
+  }
+
+  public function select_max($max_field, $as_field_name = '') {
+    $this->select_function = 'MAX';
+    $this->select_function_field = $max_field;
+    $this->select_function_as_field_name = $as_field_name;
+    return $this;
+  }
+
+  public function select_min($min_field, $as_field_name = '') {
+    $this->select_function = 'MIN';
+    $this->select_function_field = $min_field;
+    $this->select_function_as_field_name = $as_field_name;
+    return $this;
+  }
+
+  public function select_avg($min_field, $as_field_name = '') {
+    $this->select_function = 'AVG';
+    $this->select_function_field = $min_field;
+    $this->select_function_as_field_name = $as_field_name;
+    return $this;
+  }
+
+  public function select_sum($min_field, $as_field_name = '') {
+    $this->select_function = 'SUM';
+    $this->select_function_field = $min_field;
+    $this->select_function_as_field_name = $as_field_name;
+    return $this;
+  }
+
+  /**
+   * 특정 테이블의 데이타 갯수를 조회한다.
+   *
+   * @param string table_name 테이블 명
+   *
+   * @return int 데이터의 갯수
+   *
+   * @throw RDB_Error 잘못된 쿼리 요청시에 예외 발생
+   */
+  public function count($table_name) {
+    $select = "COUNT(*)";
+    $query = "SELECT $select FROM $table_name";
+    $result = $this->query($query);
+    return $result->get_row(0, $select);
+  }
+
+  public function delete($table_name, $wheres) {
+    $query = "DELETE FROM $table_name";
+    $query .= $this->create_where_query($wheres);
+    return $this->query($query);
   }
 
   private function create_where_query($wheres) {
@@ -176,6 +266,23 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this->mysqli->error;
   }
 
+  private function reset_limit() {
+    $this->limit = -1;
+    $this->offset = -1;
+  }
+
+  private function reset_select() {
+    $this->select_fields = array();
+    $this->select_function = '';
+    $this->select_function_field = '';
+    $this->select_function_as_field_name = '';
+  }
+
   private $limit = -1;
   private $offset = -1;
+  private $select_fields = array();
+  private $select_function = '';
+  private $select_function_field = '';
+  private $select_function_as_field_name = '';
+
 }

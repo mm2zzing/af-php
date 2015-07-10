@@ -49,6 +49,14 @@ class MySQL_Result extends RDB_Result {
   public function get_rows() {
     return $this->rows;
   }
+
+  public function get_row($index, $row_key = '') {
+    if ($index >= count($this->rows))
+      return array();
+    else {
+      return $row_key == '' ? $this->rows[$index] : $this->rows[$index][$row_key];
+    }
+  }
   
   public function get_time() {
     return $this->time;
