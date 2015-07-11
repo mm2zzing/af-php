@@ -31,12 +31,14 @@ class Root_Node extends Node {
       $current_node = $parent_node;
     }
     while (!$parent_node->is_null());
+
     $nodes = array_reverse($nodes);
+    end($nodes);
+    $last_key = key($nodes);
     $result = '';
-    $last_index = count($nodes) - 1;
-    for ($i = 0; $i < count($nodes); $i++) {
-      $result .= $nodes[$i]->get_name();
-      if ($nodes[$i]->get_name() != '/' && $i != $last_index)
+    foreach ($nodes as $key=>$node) {
+      $result .= $node->get_name();
+      if ($node->get_name() != '/' && $key != $last_key)
         $result .= '/';
     }
     return $result;
