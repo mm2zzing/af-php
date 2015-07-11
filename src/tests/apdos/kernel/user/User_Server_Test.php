@@ -5,8 +5,11 @@ use apdos\plugins\test\Test_Case;
 use apdos\plugins\test\Test_Suite;
 use apdos\kernel\user\User_Server;
 use apdos\kernel\user\errors\Impossible_Login_User_Error;
+use apdos\kernel\user\errors\Not_Exist_User_Error;
 use apdos\kernel\etc\Etc;
 use apdos\kernel\user\handlers\Etc_Handler;
+use apdos\kernel\actor\Actor;
+use apdos\kernel\core\Kernel;
 
 class User_Server_Test extends Test_Case {
   private $server;
@@ -25,36 +28,36 @@ class User_Server_Test extends Test_Case {
     $user = $this->server->get_login_user();
     $this->assert($user->get_name() == User_Server::ROOT_USER, "user is root");
     $this->assert($user->get_password() == '', 'password is \'\'');
-    $this->assert($user->is_possible_login() == true, 'root is login possible'); 
   }
 
   public function test_change_app_user() {
     $this->server->change_user('launcher');
     $user = $this->server->get_login_user();
     $this->assert($user->get_name() == 'launcher', "user is launcher");
-    $this->assert($user->get_password() == '*', 'password is \'*\'');
-    $this->assert($user->is_possible_login() == false, 'launcher is login impossible');
+    $this->assert($user->get_password() == '', 'password is \'\'');
   }
 
-  public function test_user_login() {
+  public function test_root_login() {
     $user = $this->server->login(User_Server::ROOT_USER, '');
     $this->assert($user->get_name() == User_Server::ROOT_USER, "user is root");
     $this->assert($user->get_password() == '', 'password is \'\'');
-    $this->assert($user->is_possible_login() == true, 'root is login possible'); 
 
     $user = $this->server->get_login_user();
     $this->assert($user->get_name() == User_Server::ROOT_USER, "user is root");
   }
 
-  public function test_app_user_login() {
-    $occur_exception = false;
+  public function test_user_login() {
+    $user = $this->server->login('launcher', '');
+    $this->assert($user->get_name() == 'launcher', 'user is launcher');
+
+    $occur_failed = false;
     try {
-      $this->server->login('launcher', '*');
+      $user = $this->server->login('foo', '');
     }
-    catch (Impossible_Login_User_Error $e) {
-      $occur_exception = true;
+    catch (Not_Exist_User_Error $e) {
+      $occur_failed = true;
     }
-    $this->assert($occur_exception == true, 'application user is impossible login');
+    $this->assert($occur_failed == true, 'not exist user login is fail');
   }
 
   public function test_logout() {
@@ -68,12 +71,25 @@ class User_Server_Test extends Test_Case {
     $this->assert($user->get_name() == 'test', 'register user name is test');
   }
 
+  public function test_permission() {
+    $user = $this->server->login(User_Server::ROOT_USER, '');
+
+    $actor = Kernel::get_instance()->new_object(Actor::get_class_name(), '/test/actor');
+    $owner = $actor->get_owner();
+    $this->assert($owner->get_name() == User_Server::ROOT_USER, 'Owner is root');
+
+    echo $actor->get_permission()->to_string();
+    //$this->assert($actor->get_permission() == 'rwxr--', 'Owner is root');
+  }
+
   public function set_up() {
     $this->server = User_Server::get_instance();
+    // @TODO config 데이터 로드하기
     $this->server->load(new Test_Data_Handler());
   }
 
   public function tear_down() {
+    $this->server->login('launcher', '');
   }
 
   public static function create_suite() {
@@ -81,10 +97,11 @@ class User_Server_Test extends Test_Case {
     $suite->add(new User_Server_Test('test_create'));
     $suite->add(new User_Server_Test('test_change_user'));
     $suite->add(new User_Server_Test('test_change_app_user'));
+    $suite->add(new User_Server_Test('test_root_login'));
     $suite->add(new User_Server_Test('test_user_login'));
-    $suite->add(new User_Server_Test('test_app_user_login'));
     $suite->add(new User_Server_Test('test_logout'));
     $suite->add(new User_Server_Test('test_register'));
+    $suite->add(new User_Server_Test('test_permission'));
     return $suite;
   }
 }

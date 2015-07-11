@@ -1,15 +1,22 @@
 <?php
 namespace apdos\kernel\user;
 
-use apdos\kernel\actor\Component;
 use apdos\kernel\core\Kernel;
+use apdos\kernel\core\Object;
 use apdos\kernel\user\errors\Not_Exist_User_Error;
 use apdos\kernel\user\errors\Password_Invalid_Error;
 use apdos\kernel\user\errors\Impossible_Login_User_Error;
 use apdos\kernel\core\Time;
 use apdos\kernel\etc\Etc;
 
-class User_Server extends Component {
+/**
+ * @class User_Server
+ * 
+ * @brief
+ *
+ * @author Lee, Hyeon-gi
+ */
+class User_Server extends Object {
   const ROOT_USER = "root";
 
   private $users;
@@ -58,8 +65,6 @@ class User_Server extends Component {
     $find_user = $this->find_user($name);
     if ($find_user->is_null())
       throw new Not_Exist_User_Error("$name is not exist user");
-    if (!$find_user->is_possible_login())
-      throw new Impossible_Login_User_Error($name);
     if ($find_user->get_password() != '') {
       //
       // throw new Password_Invalid_Error("$name user password invalid");
@@ -96,8 +101,7 @@ class User_Server extends Component {
   public static function get_instance() {
     static $instance = null;
     if (null == $instance) {
-      $actor = Kernel::get_instance()->new_object('apdos\kernel\actor\Actor', '/sys/user_server');
-      $instance = $actor->add_component('apdos\kernel\user\User_Server');
+      $instance = new User_Server();
     }
     return $instance;
   }

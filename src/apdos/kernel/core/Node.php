@@ -4,32 +4,27 @@ namespace apdos\kernel\core;
 use apdos\kernel\event\Event_Dispatcher;
 use apdos\kernel\log\Logger;
 
-class Node extends Event_Dispatcher {
+abstract class Node extends Event_Dispatcher {
 
-  public function get_name() {
-  }
+  abstract public function get_name();
 
-  public function get_path() {
-  }
+  abstract public function get_path();
 
-  public function add_child($node) {
-  }
+  abstract public function add_child($node);
 
-  public function find_child($name) {
-  }
+  abstract public function find_child($name);
 
-  public function remove_child($name) {
-  }
+  abstract public function remove_child($name);
 
-  public function get_childs() {
-  }
+  abstract public function get_childs();
 
-  public function set_parent($node) {
-  }
+  abstract public function set_parent($node);
 
-  public function get_parent() {
-  }
+  abstract public function get_parent();
 
-  public function release() {
-  }
+  abstract public function get_owner();
+
+  abstract public function get_permission();
+
+  abstract public function release();
 }

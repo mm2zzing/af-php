@@ -36,7 +36,7 @@ class Test_Data_Handler extends User_Data_Handler{
 
     $user = new \stdClass();
     $user->name = 'launcher';
-    $user->password = '*';
+    $user->password = '';
     $user->create_date = '';
     array_push($result, $user);
 

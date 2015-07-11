@@ -7,18 +7,16 @@ use apdos\kernel\core\Null_Node;
 use apdos\kernel\core\Kernel;
 
 class Root_Node extends Node {
-  private $name;
-  private $parent;
-  private $childs;
-
   public function __construct($args) {
-    parent::__construct($args, array('', 'construct2'));
+    parent::__construct($args, array('', '', 'construct3'));
   }
 
-  public function construct2($name, $path) {
+  public function construct3($name, $owner, $permission) {
     $this->name = $name;
     $this->parent = new Null_Node();
     $this->childs = array();
+    $this->owner = $owner;
+    $this->permission = $permission;
   }
 
   public function get_name() {
@@ -26,8 +24,7 @@ class Root_Node extends Node {
   }
 
   public function get_path() {
-    $nodes = array();
-    $current_node = $this;
+    $nodes = array(); $current_node = $this;
     do {
       $parent_node = $current_node->get_parent();
       array_push($nodes, $current_node);
@@ -83,6 +80,33 @@ class Root_Node extends Node {
     return $this->parent;
   }
 
+  /**
+   * 액터의 소유자 명을 설정한다.
+   *
+   * @param owner Owner 소유자
+   */
+  public function set_owner($owner) {
+    $this->owner = $owner;
+  }
+
+  public function get_owner() {
+    return $this->owner;
+  }
+
+
+  /**
+   * 액터의 접근권한을 설정한다.
+   *
+   * @param permission Permission 접근 권한
+   */
+  public function set_permission($permission) {
+    $this->permission = $permission;
+  } 
+
+  public function get_permission() {
+    return $this->permission;
+  }
+
   public function release() {
     // 부모에서 나를 제거
     $this->parent->remove_child($this->get_name());
@@ -104,4 +128,10 @@ class Root_Node extends Node {
   public function is_null() {
     return false;
   }
+
+  private $name;
+  private $parent;
+  private $childs;
+  private $owner;
+  private $permission;
 }

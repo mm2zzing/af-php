@@ -2,21 +2,28 @@
 namespace apdos\kernel\core;
 
 use apdos\kernel\core\Node;
+use apdos\kernel\core\Object;
 use apdos\kernel\core\Null_Node;
 use apdos\kernel\core\Root_Node;
 use apdos\kernel\core\errors\Node_Is_Exist_Error;
 use apdos\kernel\core\Kernel;
+use apdos\kernel\user\User_Server;
+use apdos\kernel\core\permission\Owner;
+use apdos\kernel\core\permission\Permission;
+use apdos\kernel\core\permission\enums\Access_Type;
 
 /**
  * @class Kernel
  *
  * @brieif Node 객체를 생성 관리하는 클래스
  */
-class Kernel {
-  private $root;
-
+class Kernel extends Object {
   public function __construct() {
-    $this->root = new Root_Node(array('/', ''));
+    $this->root = new Root_Node(array(
+        '/', 
+        new Owner(User_Server::ROOT_USER),
+        $this->create_permission()
+    ));
   }
 
   public function has_object($node_path) {
@@ -37,18 +44,21 @@ class Kernel {
     $current_node = $this->root;
     $tokens = explode('/', $node_path);
 
-    $start_index = 1;
-    $last_index = count($tokens) - 1;
-    for ($i = $start_index; $i < count($tokens); $i++) {
-      $node = $current_node->find_child($tokens[$i]);
-      if ($i == $last_index) {
-        $new_node = new $node_class_name(array($tokens[$i], ''));
+    $first_key = key($tokens);
+    end($tokens);
+    $last_key = key($tokens);
+    foreach ($tokens as $key=>$token) {
+      if ($key == $first_key)
+        continue;
+      $node = $current_node->find_child($token);
+      if ($key == $last_key) {
+        $new_node = new $node_class_name(array($token, $this->create_owner(), $this->create_permission()));
         $current_node->add_child($new_node);
         $current_node = $new_node;
       }
       else {
         if ($node->is_null()) {
-          $new_node = new Root_Node(array($tokens[$i], ''));
+          $new_node = new Root_Node(array($token, $this->create_owner(), $this->create_permission()));
           $current_node->add_child($new_node);
           $current_node = $new_node;
         }
@@ -57,6 +67,18 @@ class Kernel {
       }
     }
     return $current_node;
+  }
+
+  private function create_owner() {
+    $current_user = User_Server::get_instance()->get_login_user();
+    return new Owner($current_user->get_name());
+  }
+
+  private function create_permission() {
+    return new Permission(array(
+        Access_Type::FLAG_ALL, 
+        Access_Type::FLAG_ALL, 
+        Access_Type::FLAG_READ));
   }
 
   /**
@@ -74,14 +96,16 @@ class Kernel {
       return $this->root;
     else {
       $tokens = explode('/', $node_path);
-      $start_index = 1;
+      $first_key = key($tokens);
       $current_node = $this->root;
       if (count($tokens) == 1) {
         $current_node = $current_node->find_child($tokens[0]);
       }
       else {
-        for ($i = $start_index; $i < count($tokens); $i++) {
-          $find_node = $current_node->find_child($tokens[$i]);
+        foreach ($tokens as $key=>$token) {
+          if ($key == $first_key)
+            continue;
+          $find_node = $current_node->find_child($token);
           if ($find_node->is_null())
             return $find_node;
           $current_node = $find_node;
@@ -106,4 +130,6 @@ class Kernel {
     }
     return $instance;
   }
+
+  private $root;
 }
