@@ -133,7 +133,7 @@ class MySQL_Active_Record_Test extends Test_Case {
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
     $data = $result->get_rows();
     $this->assert($data[0]['title'] == 'test_title2', 'title value is test_title1');
-  }
+  } 
 
   public function test_count() {
     $this->insert_test_data();
@@ -157,7 +157,6 @@ class MySQL_Active_Record_Test extends Test_Case {
     $this->insert_test_data();
     $this->session->get_connecter()->delete_all(self::TABLE);
     $count = $this->session->get_connecter()->count(self::TABLE);
-    var_dump($count);
     $this->assert($count == 0, 'Data count is 1');
   }
 
@@ -242,6 +241,30 @@ class MySQL_Active_Record_Test extends Test_Case {
     $data = $result->get_row(0);
     $this->assert(array_key_exists('sum_count', $data), 'Count key exists');
     $this->assert($data['sum_count'] == 1500, 'Count sum is 1500');
+  }
+
+  public function test_order_by() {
+    $this->insert_test_select_data();
+
+    $result = $this->session->get_connecter()->order_by_asc('count')->get(self::TABLE);
+    $this->assert($result->get_rows_count() == 3, 'Rows count is 3');
+    $this->assert($result->get_row(0, 'count') == 100, 'count is 100');
+    $this->assert($result->get_row(1, 'count') == 500, 'count is 500');
+    $this->assert($result->get_row(2, 'count') == 900, 'count is 900');
+
+    $result = $this->session->get_connecter()->order_by_desc('count')->get(self::TABLE);
+    $this->assert($result->get_rows_count() == 3, 'Rows count is 3');
+    $this->assert($result->get_row(0, 'count') == 900, 'count is 900');
+    $this->assert($result->get_row(1, 'count') == 500, 'count is 500');
+    $this->assert($result->get_row(2, 'count') == 100, 'count is 100');
+
+    $this->session->get_connecter()->order_by_desc('count');
+    $this->session->get_connecter()->order_by_desc('title');
+    $result = $this->session->get_connecter()->get(self::TABLE);
+    $this->assert($result->get_rows_count() == 3, 'Rows count is 3');
+    $this->assert($result->get_row(0, 'count') == 900, 'count is 900');
+    $this->assert($result->get_row(1, 'count') == 500, 'count is 500');
+    $this->assert($result->get_row(2, 'count') == 100, 'count is 100');
   }
 
   private function insert_test_data() {
@@ -343,6 +366,7 @@ class MySQL_Active_Record_Test extends Test_Case {
     $suite->add(new MySQL_Active_Record_Test('test_count'));
     $suite->add(new MySQL_Active_Record_Test('test_delete'));
     $suite->add(new MySQL_Active_Record_Test('test_delete_all'));
+    $suite->add(new MySQL_Active_Record_Test('test_order_by'));
     return $suite;
   }
 

@@ -78,8 +78,7 @@ class User_Server_Test extends Test_Case {
     $owner = $actor->get_owner();
     $this->assert($owner->get_name() == User_Server::ROOT_USER, 'Owner is root');
 
-    echo $actor->get_permission()->to_string();
-    //$this->assert($actor->get_permission() == 'rwxr--', 'Owner is root');
+    $this->assert($actor->get_permission()->to_string() == 'rwxrwxr--', 'Owner permission is rwxrwxr--');
   }
 
   public function set_up() {

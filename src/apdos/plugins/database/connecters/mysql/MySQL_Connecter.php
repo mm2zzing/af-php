@@ -66,9 +66,9 @@ class MySQL_Connecter extends RDB_Connecter {
    * @param data array(key=>value) 데이터
    */
   public function insert($table_name, $data) {
-    $query = $this->create_insert_key_query($table_name, $data); 
+    $query = $this->create_insert_key_clause($table_name, $data); 
     $query .= ' VALUES';
-    $query .= $this->create_insert_value_query($data);
+    $query .= $this->create_insert_value_clause($data);
     return $this->query($query);
   }
 
@@ -86,17 +86,17 @@ class MySQL_Connecter extends RDB_Connecter {
     $query = '';
     for ($i = 0; $i < count($data); $i++) {
       if ($i == 0) {
-        $query .= $this->create_insert_key_query($table_name, $data[$i]); 
+        $query .= $this->create_insert_key_clause($table_name, $data[$i]); 
         $query .= ' VALUES';
       }
-      $query .= $this->create_insert_value_query($data[$i]);
+      $query .= $this->create_insert_value_clause($data[$i]);
       if ($i != $last_index)
         $query .= ', ';
     }
     return $this->query($query);
   }
 
-  private function create_insert_key_query($table_name, $data) {
+  private function create_insert_key_clause($table_name, $data) {
     end($data);
     $last_key = key($data);
     $query = "INSERT INTO $table_name (";
@@ -109,7 +109,7 @@ class MySQL_Connecter extends RDB_Connecter {
     return $query;
   }
 
-  private function create_insert_value_query($data) {
+  private function create_insert_value_clause($data) {
     end($data);
     $last_key = key($data);
     $query = '(';
@@ -124,40 +124,237 @@ class MySQL_Connecter extends RDB_Connecter {
     return $query;
   }
 
+  public function where($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name=" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name=" .$this->convert_value_format($value));
+  }
+
+  public function where_lt($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name<" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name<" .$this->convert_value_format($value));
+  }
+
+  public function where_lte($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name<=" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name<=" .$this->convert_value_format($value));
+  }
+
+  public function where_gt($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name>" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name>" .$this->convert_value_format($value));
+  }
+
+  public function where_gte($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name>=" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name>=" .$this->convert_value_format($value));
+  }
+
+  public function where_not($name, $value) {
+    if (strlen($this->where_query))
+      $this->where_query .= ("AND $name!=" . $this->convert_value_format($value));
+    else
+      $this->where_query .= ("$name!=" .$this->convert_value_format($value));
+  }
+
+  public function or_where($name, $value) {
+    $this->where_query .= ("OR $name=" .$this->convert_value_format($value));
+  }
+
+  public function or_where_lt($name, $value) {
+    $this->where_query .= ("OR $name<" .$this->convert_value_format($value));
+  }
+
+  public function or_where_lte($name, $value) {
+    $this->where_query .= ("OR $name<=" .$this->convert_value_format($value));
+  }
+
+  public function or_where_gt($name, $value) {
+    $this->where_query .= ("OR $name>" .$this->convert_value_format($value));
+  }
+
+  public function or_where_gte($name, $value) {
+    $this->where_query .= ("OR $name>=" .$this->convert_value_format($value));
+  }
+
+  public function or_where_not($name, $value) {
+    $this->where_query .= ("OR $name!=" .$this->convert_value_format($value));
+  }
+
+  /**
+   * 와일드카드(%)를 사용하지 않는 LIKE 쿼리를 생성한다.
+   *
+   * @param name string 필드명
+   * @param value string 필드 비교값
+   */
+  public function like($name, $value) {
+    $this->_like($name, $value, 'AND', 'none');
+  }
+
+  public function or_like($name, $value) {
+    $this->_like($name, $value, 'OR', 'none');
+  } 
+
+  public function not_like($name, $value) {
+    $this->_not_like($name, $value, 'AND', 'none');
+  }
+
+  public function or_not_like($name, $value) {
+    $this->_not_like($name, $value, 'OR', 'none');
+  }
+
+  /**
+   * 와일드카드(%)를 헤더에만 사용하는 LIKE 쿼리를 생성한다.
+   *
+   * @param name string 필드명
+   * @param value string 필드 비교값
+   */
+  public function w_like($name, $value) {
+    $this->_like($name, $value, 'AND', 'before');
+  }
+
+  public function or_w_like($name, $value) {
+    $this->_like($name, $value, 'OR', 'before');
+  }
+
+  public function not_w_like($name, $value) {
+    $this->_not_like($name, $value, 'AND', 'before');
+  }
+
+  public function or_not_w_like($name, $value) {
+    $this->_not_like($name, $value, 'OR', 'before');
+  }
+
+  /**
+   * 와일드카드(%)를 풋터에만 사용하는 LIKE 쿼리를 생성한다.
+   *
+   * @param name string 필드명
+   * @param value string 필드 비교값
+   */
+  public function like_w($name, $value) {
+    $this->_like($name, $value, 'AND', 'after');
+  }
+
+  public function or_like_w($name, $value) {
+    $this->_like($name, $value, 'OR', 'after');
+  }
+
+  public function not_like_w($name, $value) {
+    $this->_not_like($name, $value, 'AND', 'after');
+  }
+
+  public function or_not_like_w($name, $value) {
+    $this->_not_like($name, $value, 'OR', 'after');
+  }
+
+  /**
+   * 와일드카드(%)를 사용하는 LIKE 쿼리를 생성한다.
+   *
+   * @param name string 필드명
+   * @param value string 필드 비교값
+   */
+
+  public function w_like_w($name, $value) {
+    $this->_like($name, $value, 'AND', 'both');
+  }
+
+  public function or_w_like_w($name, $value) {
+    $this->_like($name, $value, 'OR', 'both');
+  }
+
+  public function not_w_like_w($name, $value) {
+    $this->_not_like($name, $value, 'AND', 'both');
+  }
+
+  public function or_not_w_like_w($name, $value) {
+    $this->_not_like($name, $value, 'OR', 'both');
+  }
+
+  private function _like($name, $value, $operator, $wildcard) {
+    $this->convert_wild_card_value($value, $wildcard);
+    if (strlen($this->where_query) == 0)
+      $this->where_query .= ("$name LIKE '$value'");
+    else
+      $this->where_query .= ("$operator $name LIKE '$value'");
+  }
+
+  private function _not_like($name, $value, $operator, $wildcard) {
+    $this->convert_wild_card_value($value, $wildcard);
+    if (strlen($this->where_query) == 0)
+      $this->where_query .= ("$name NOT LIKE '$value'");
+    else
+      $this->where_query .= ("$operator $name NOT LIKE '$value'");
+  }
+
+  private function convert_wild_card_value(&$value, $wildcard) {
+    if ($wildcard == 'before')
+      $value = "%$value";
+    if ($wildcard == 'after')
+      $value = "$value%";
+    if ($wildcard == 'both')
+      $value = "%$value%";
+  }
+
   public function get($table_name, $limit = -1, $offset = -1) {
     $this->limit($limit, $offset);
     if ($this->select_function == '')
-      $select_fields = $this->create_select_field_query();
+      $select_fields = $this->create_select_field_clause();
     else
-      $select_fields = $this->create_select_function_field_query();
+      $select_fields = $this->create_select_function_field_clause();
     $query = "SELECT $select_fields FROM $table_name";
     if (strlen($this->join_query))
       $query .= " $this->join_query";
+    if (strlen($this->where_query))
+      $query .= " WHERE $this->where_query";
     if ($this->limit != -1 && $this->offset != -1)
       $query .= " LIMIT $this->offset, $this->limit";
-    $this->reset_limit();
-    $this->reset_select();
+    if (count($this->order_clauses))
+      $query .= $this->create_order_clause();
+    $this->reset_query();
     return $this->query($query);
   }
 
   public function get_where($table_name, $wheres, $limit = -1, $offset = -1) {
     $this->limit($limit, $offset);
     if ($this->select_function == '')
-      $select_fields = $this->create_select_field_query();
+      $select_fields = $this->create_select_field_clause();
     else
-      $select_fields = $this->create_select_function_field_query();
+      $select_fields = $this->create_select_function_field_clause();
     $query = "SELECT $select_fields FROM $table_name";
     if (strlen($this->join_query))
       $query .= " $this->join_query";
     $query .= $this->create_where_query($wheres);
     if ($this->limit != -1 && $this->offset != -1)
       $query .= " LIMIT $this->offset, $this->limit";
-    $this->reset_limit();
-    $this->reset_select();
+    if (count($this->order_clauses))
+      $query .= $this->create_order_clause();
+    $this->reset_query();
     return $this->query($query);
   }
 
-  private function create_select_field_query() {
+  private function create_order_clause() {
+    $clause = " ORDER BY ";
+    end($this->order_clauses);
+    $last_key = key($this->order_clauses);
+    foreach ($this->order_clauses as $key=>$value) {
+      if ($key != $last_key)
+        $clause .= ($value . ', ');
+      else
+        $clause .= $value;
+    }
+    return $clause;
+  }
+
+  private function create_select_field_clause() {
     end($this->select_fields);
     $last_key = key($this->select_fields);
     $query = '';
@@ -172,7 +369,7 @@ class MySQL_Connecter extends RDB_Connecter {
     return $query == '' ? '*' : $query;
   }
 
-  private function create_select_function_field_query() {
+  private function create_select_function_field_clause() {
     if ($this->select_function_as_field_name == '')
       return "$this->select_function($this->select_function_field) as $this->select_function_field";
     else
@@ -280,6 +477,16 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this;
   }
 
+  public function order_by_asc($field_name) {
+    array_push($this->order_clauses, "$field_name ASC");
+    return $this;
+  }
+
+  public function order_by_desc($field_name) {
+    array_push($this->order_clauses, "$field_name DESC");
+    return $this;
+  }
+
   private function select_join($type) {
     if ($type == 'inner')
       return 'INNER JOIN';
@@ -307,16 +514,15 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this->mysqli->error;
   }
 
-  private function reset_limit() {
+  private function reset_query() {
     $this->limit = -1;
     $this->offset = -1;
-  }
-
-  private function reset_select() {
     $this->select_fields = array();
     $this->select_function = '';
     $this->select_function_field = '';
     $this->select_function_as_field_name = '';
+    $this->where_query = '';
+    $this->order_clauses = array();
   }
 
   private $limit = -1;
@@ -326,5 +532,7 @@ class MySQL_Connecter extends RDB_Connecter {
   private $select_function = '';
   private $select_function_field = '';
   private $select_function_as_field_name = '';
+  private $where_query = '';
+  private $order_clauses = array();
 
 }
