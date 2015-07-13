@@ -9,15 +9,15 @@ use apdos\tools\ash\Tool_Config;
 use apdos\plugins\database\base\rdb\errors\RDB_Error;
 
 class MySQL_Active_Record_Test extends Test_Case {
-  const TEST_TABLE_NAME = 'test_table';
+  const TABLE = 'test_table';
 
   public function test_insert() {
     $data = array(
       'title'=>'test_title'
     );
-    $result = $this->session->get_connecter()->insert(self::TEST_TABLE_NAME, $data);
+    $result = $this->session->get_connecter()->insert(self::TABLE, $data);
     $this->assert($result->is_success(), 'Insert result is success');
-    $query = 'SELECT title FROM ' . self::TEST_TABLE_NAME . ' WHERE title=\'test_title\'';
+    $query = 'SELECT title FROM ' . self::TABLE . ' WHERE title=\'test_title\'';
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 1, 'Insert count is 1');
   }
@@ -29,7 +29,7 @@ class MySQL_Active_Record_Test extends Test_Case {
     );
     $query_faield = false;
     try {
-      $result = $this->session->get_connecter()->insert(self::TEST_TABLE_NAME, $data);
+      $result = $this->session->get_connecter()->insert(self::TABLE, $data);
     }
     catch (RDB_Error $e) {
       $query_faield = true;
@@ -46,9 +46,9 @@ class MySQL_Active_Record_Test extends Test_Case {
         'title'=>'test_title1'
       )
     );
-    $result = $this->session->get_connecter()->insert_batch(self::TEST_TABLE_NAME, $data);
+    $result = $this->session->get_connecter()->insert_batch(self::TABLE, $data);
     $this->assert($result->is_success(), "Insert result is success");
-    $query = 'SELECT title FROM ' . self::TEST_TABLE_NAME;
+    $query = 'SELECT title FROM ' . self::TABLE;
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 2, 'Insert count is 2');
   }
@@ -67,16 +67,16 @@ class MySQL_Active_Record_Test extends Test_Case {
 
     $query_faield = false;
     try {
-      $result = $this->session->get_connecter()->insert_batch(self::TEST_TABLE_NAME, $data);
+      $result = $this->session->get_connecter()->insert_batch(self::TABLE, $data);
     }
     catch (RDB_Error $e) {
       $query_faield = true;
     }
     $this->assert($query_faield == true, "Unknown field is occur error");
 
-    $result = $this->session->get_connecter()->insert_batch(self::TEST_TABLE_NAME, array());
+    $result = $this->session->get_connecter()->insert_batch(self::TABLE, array());
     $this->assert($result->is_success() == false, "Insert result is failed");
-    $query = 'SELECT title FROM ' . self::TEST_TABLE_NAME;
+    $query = 'SELECT title FROM ' . self::TABLE;
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 0, 'Insert count is 0');
   }
@@ -84,39 +84,52 @@ class MySQL_Active_Record_Test extends Test_Case {
   public function test_get() {
     $this->insert_test_data();
   
-    $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->get(self::TABLE);
     $this->assert($result->get_rows_count() == 2, "Get rows count is 2");
 
-    $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME, 1, 0);
+    $result = $this->session->get_connecter()->get(self::TABLE, 1, 0);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
 
-    $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME, 222, 1);
+    $result = $this->session->get_connecter()->get(self::TABLE, 222, 1);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
 
-    $result = $this->session->get_connecter()->get(self::TEST_TABLE_NAME, 1, 9999);
+    $result = $this->session->get_connecter()->get(self::TABLE, 1, 9999);
     $this->assert($result->get_rows_count() == 0, "Get rows count is 0");
+  }
+
+  public function test_join() {
+    $this->insert_test_join_data();
+
+    $table_name = self::TABLE;
+    $join_table_name = self::TEST_JOIN_TABLE;
+    $join_compare = "$join_table_name.test_table_id = $table_name.id";
+    $result = $this->session->get_connecter()->join($join_table_name, $join_compare)->get($table_name);
+
+    $this->assert($result->get_rows_count() == 1, "Join row count is 1");
+    $row = $result->get_row(0);
+    $this->assert($row['id' ] == 1, 'Join row id is 1');
   }
 
   public function test_limit() {
     $this->insert_test_data();
 
-    $result = $this->session->get_connecter()->limit(1, 0)->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->limit(1, 0)->get(self::TABLE);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
   }
 
   public function test_get_where() {
     $this->insert_test_data();
-    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'));
+    $result = $this->session->get_connecter()->get_where(self::TABLE, array('title'=>'test_title1'));
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
     $data = $result->get_rows();
     $this->assert($data[0]['title'] == 'test_title1', 'title value is test_title1');
 
-    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'), 999, 0);
+    $result = $this->session->get_connecter()->get_where(self::TABLE, array('title'=>'test_title1'), 999, 0);
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
     $data = $result->get_rows();
     $this->assert($data[0]['title'] == 'test_title1', 'title value is test_title1');
 
-    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title2'));
+    $result = $this->session->get_connecter()->get_where(self::TABLE, array('title'=>'test_title2'));
     $this->assert($result->get_rows_count() == 1, "Get rows count is 1");
     $data = $result->get_rows();
     $this->assert($data[0]['title'] == 'test_title2', 'title value is test_title1');
@@ -124,58 +137,69 @@ class MySQL_Active_Record_Test extends Test_Case {
 
   public function test_count() {
     $this->insert_test_data();
-    $count = $this->session->get_connecter()->count(self::TEST_TABLE_NAME);
+    $count = $this->session->get_connecter()->count(self::TABLE);
     $this->assert($count == 2, 'Data count is 2');
   }
 
   public function test_delete() {
     $this->insert_test_data();
-    $count = $this->session->get_connecter()->count(self::TEST_TABLE_NAME);
+    $count = $this->session->get_connecter()->count(self::TABLE);
     $this->assert($count == 2, 'Data count is 2');
 
-    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'));
+    $result = $this->session->get_connecter()->get_where(self::TABLE, array('title'=>'test_title1'));
     $id = $result->get_row(0, 'id');
-    $this->session->get_connecter()->delete(self::TEST_TABLE_NAME, array('id'=>$id));
-    $count = $this->session->get_connecter()->count(self::TEST_TABLE_NAME);
+    $this->session->get_connecter()->delete(self::TABLE, array('id'=>$id));
+    $count = $this->session->get_connecter()->count(self::TABLE);
     $this->assert($count == 1, 'Data count is 1');
+  }
+
+  public function test_delete_all() {
+    $this->insert_test_data();
+    $this->session->get_connecter()->delete_all(self::TABLE);
+    $count = $this->session->get_connecter()->count(self::TABLE);
+    var_dump($count);
+    $this->assert($count == 0, 'Data count is 1');
   }
 
   public function test_select() {
     $this->insert_test_data();
-    $result = $this->session->get_connecter()->get_where(self::TEST_TABLE_NAME, array('title'=>'test_title1'));
+    $result = $this->session->get_connecter()->get_where(self::TABLE, array('title'=>'test_title1'));
     $data = $result->get_row(0);
     $this->assert(array_key_exists('id', $data), "Id field exists");
+    $this->assert($data['id'] == 1, "Id is 1");
     $this->assert(array_key_exists('title', $data), "Title field exists");
     $this->assert(array_key_exists('count', $data), "Count field exists");
 
     $result = $this->session->get_connecter()->select(array('id', 'title'))->get_where(
-      self::TEST_TABLE_NAME, array('title'=>'test_title1'));
+      self::TABLE, array('title'=>'test_title1'));
     $data = $result->get_row(0);
     $this->assert(array_key_exists('id', $data), "Id field exists");
+    $this->assert($data['id'] == 1, "Id is 1");
     $this->assert(array_key_exists('title', $data), "Title field exists");
     $this->assert(!array_key_exists('count', $data), "Count field not exists");
 
-    $result = $this->session->get_connecter()->select(array('id', 'title'))->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select(array('id', 'title'))->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('id', $data), "Id field exists");
+    $this->assert($data['id'] == 1, "Id is 1");
     $this->assert(array_key_exists('title', $data), "Title field exists");
     $this->assert(!array_key_exists('count', $data), "Count field not exists");
   }
 
   public function test_select_max() {
     $this->insert_test_select_data();
-    $result = $this->session->get_connecter()->select_max('count')->get_where(self::TEST_TABLE_NAME, 
+    $result = $this->session->get_connecter()->select_max('count')->get_where(self::TABLE, 
                                                                               array('title'=>'test_title1'));
     $data = $result->get_row(0);
     $this->assert(array_key_exists('count', $data), 'Count key exists');
     $this->assert($data['count'] == 500, 'Count max is 500');
 
-    $result = $this->session->get_connecter()->select_max('count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_max('count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('count', $data), 'Count key exists');
     $this->assert($data['count'] == 900, 'Count max is 900');
 
-    $result = $this->session->get_connecter()->select_max('count', 'max_count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_max('count', 'max_count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('max_count', $data), 'Count key exists');
     $this->assert($data['max_count'] == 900, 'Count max is 900');
@@ -183,12 +207,12 @@ class MySQL_Active_Record_Test extends Test_Case {
 
   public function test_select_min() {
     $this->insert_test_select_data();
-    $result = $this->session->get_connecter()->select_min('count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_min('count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('count', $data), 'Count key exists');
     $this->assert($data['count'] == 100, 'Count min is 100');
 
-    $result = $this->session->get_connecter()->select_min('count', 'min_count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_min('count', 'min_count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('min_count', $data), 'Count key exists');
     $this->assert($data['min_count'] == 100, 'Count min is 100');
@@ -196,12 +220,12 @@ class MySQL_Active_Record_Test extends Test_Case {
 
   public function test_select_avg() {
     $this->insert_test_select_data();
-    $result = $this->session->get_connecter()->select_avg('count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_avg('count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('count', $data), 'Count key exists');
     $this->assert($data['count'] == 500, 'Count avg is 500');
 
-    $result = $this->session->get_connecter()->select_avg('count', 'avg_count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_avg('count', 'avg_count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('avg_count', $data), 'Count key exists');
     $this->assert($data['avg_count'] == 500, 'Count avg is 500');
@@ -209,12 +233,12 @@ class MySQL_Active_Record_Test extends Test_Case {
 
   public function test_select_sum() {
     $this->insert_test_select_data();
-    $result = $this->session->get_connecter()->select_sum('count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_sum('count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('count', $data), 'Count key exists');
     $this->assert($data['count'] == 1500, 'Count sum is 1500');
 
-    $result = $this->session->get_connecter()->select_sum('count', 'sum_count')->get(self::TEST_TABLE_NAME);
+    $result = $this->session->get_connecter()->select_sum('count', 'sum_count')->get(self::TABLE);
     $data = $result->get_row(0);
     $this->assert(array_key_exists('sum_count', $data), 'Count key exists');
     $this->assert($data['sum_count'] == 1500, 'Count sum is 1500');
@@ -231,7 +255,7 @@ class MySQL_Active_Record_Test extends Test_Case {
         'count'=>200
       )
     );
-    $this->session->get_connecter()->insert_batch(self::TEST_TABLE_NAME, $data);
+    $this->session->get_connecter()->insert_batch(self::TABLE, $data);
   }
 
   private function insert_test_select_data() {
@@ -249,7 +273,7 @@ class MySQL_Active_Record_Test extends Test_Case {
         'count'=>900
       )
     );
-    $this->session->get_connecter()->insert_batch(self::TEST_TABLE_NAME, $data);
+    $this->session->get_connecter()->insert_batch(self::TABLE, $data);
   }
 
   public function set_up() {
@@ -267,10 +291,10 @@ class MySQL_Active_Record_Test extends Test_Case {
     $this->session->get_schema()->create_database($this->get_db_name());
     $this->session->get_connecter()->select_database($this->get_db_name());
 
-    $this->session->get_schema()->create_table(self::TEST_TABLE_NAME, $this->get_fields());
+    $this->session->get_schema()->create_table(self::TABLE, $this->get_test_fields());
   }
 
-  private function get_fields() {
+  private function get_test_fields() {
     return array(
       'id'=>array(
         'type'=>'INT(11)',
@@ -318,6 +342,7 @@ class MySQL_Active_Record_Test extends Test_Case {
     $suite->add(new MySQL_Active_Record_Test('test_select_sum'));
     $suite->add(new MySQL_Active_Record_Test('test_count'));
     $suite->add(new MySQL_Active_Record_Test('test_delete'));
+    $suite->add(new MySQL_Active_Record_Test('test_delete_all'));
     return $suite;
   }
 

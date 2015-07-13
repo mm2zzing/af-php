@@ -130,10 +130,11 @@ class MySQL_Connecter extends RDB_Connecter {
       $select_fields = $this->create_select_field_query();
     else
       $select_fields = $this->create_select_function_field_query();
+    $query = "SELECT $select_fields FROM $table_name";
+    if (strlen($this->join_query))
+      $query .= " $this->join_query";
     if ($this->limit != -1 && $this->offset != -1)
-      $query = "SELECT $select_fields FROM $table_name LIMIT $this->offset, $this->limit";
-    else
-      $query = "SELECT $select_fields FROM $table_name";
+      $query .= " LIMIT $this->offset, $this->limit";
     $this->reset_limit();
     $this->reset_select();
     return $this->query($query);
@@ -146,6 +147,8 @@ class MySQL_Connecter extends RDB_Connecter {
     else
       $select_fields = $this->create_select_function_field_query();
     $query = "SELECT $select_fields FROM $table_name";
+    if (strlen($this->join_query))
+      $query .= " $this->join_query";
     $query .= $this->create_where_query($wheres);
     if ($this->limit != -1 && $this->offset != -1)
       $query .= " LIMIT $this->offset, $this->limit";
@@ -160,10 +163,10 @@ class MySQL_Connecter extends RDB_Connecter {
     $query = '';
     foreach ($this->select_fields as $key=>$value) {
       if ($key != $last_key) {
-        $query .= ($this->convert_value_format($value) . ',');
+        $query .= ($value . ',');
       }
       else {
-        $query .= ($this->convert_value_format($value));
+        $query .= ($value);
       } 
     }
     return $query == '' ? '*' : $query;
@@ -240,6 +243,11 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this->query($query);
   }
 
+  public function delete_all($table_name) {
+    $query = "DELETE FROM $table_name";
+    return $this->query($query);
+  }
+
   private function create_where_query($wheres) {
     $query = ' WHERE ';
     end($wheres);
@@ -254,6 +262,39 @@ class MySQL_Connecter extends RDB_Connecter {
 
   private function convert_value_format($value) {
     return is_string($value) ? "'$value'" : $value;
+  }
+
+
+  /**
+   * JOIN 쿼리를 생성한다.
+   *
+   * @param table_name string 조인 대상이되는 테이블 네임
+   * @param condition string 조인 조건
+   * @param type string 조인 종류(inner(default), outer, left(=left_outer), right(=right_outer), left_outer, right_outer)
+   */
+  public function join($table_name, $condition, $type = '') {
+    $this->join_query .= $this->select_join($type);
+    $this->join_query .= " $table_name";
+    if (strlen($condition))
+      $this->join_query .= " ON $condition";
+    return $this;
+  }
+
+  private function select_join($type) {
+    if ($type == 'inner')
+      return 'INNER JOIN';
+    else if($type == 'outer')
+      return 'OUTER JOIN';
+    else if($type == 'left')
+      return 'LEFT JOIN';
+    else if($type == 'right')
+      return 'RIGHT JOIN';
+    else if($type == 'left_outer')
+      return 'LEFT OUTER JOIN';
+    else if($type == 'right_outer')
+      return 'RIGHT OUTER JOIN';
+    else
+      return 'JOIN';
   }
 
   public function begin_trans() {
@@ -280,6 +321,7 @@ class MySQL_Connecter extends RDB_Connecter {
 
   private $limit = -1;
   private $offset = -1;
+  private $join_query = '';
   private $select_fields = array();
   private $select_function = '';
   private $select_function_field = '';
