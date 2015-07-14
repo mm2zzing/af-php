@@ -308,7 +308,7 @@ class MySQL_Connecter extends RDB_Connecter {
   }
 
   private function _like($name, $value, $operator, $wildcard) {
-    $this->convert_wild_card_value($value, $wildcard);
+    $value = $this->convert_wild_card_value($value, $wildcard);
     if (strlen($this->where_query) == 0)
       $this->where_query .= ("$name LIKE '$value'");
     else
@@ -323,13 +323,15 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("$operator $name NOT LIKE '$value'");
   }
 
-  private function convert_wild_card_value(&$value, $wildcard) {
+  private function convert_wild_card_value($value, $wildcard) {
+    $value = $this->escape_str($value, true);
     if ($wildcard == 'before')
       $value = "%$value";
     if ($wildcard == 'after')
       $value = "$value%";
     if ($wildcard == 'both')
       $value = "%$value%";
+    return $value;
   }
 
   public function get($table_name, $limit = -1, $offset = -1) {
@@ -563,9 +565,13 @@ class MySQL_Connecter extends RDB_Connecter {
   /**
    * 특수 문자열을 이스케이프하여 실행되지 않도록 막아준다.(\x00,\n,\r,\,',",\x1a)
    */
-  private function escape_str($str) {
-    if ($this->escape_query)
-      return mysqli_real_escape_string($this->mysqli, $str);
+  private function escape_str($str, $like = false) {
+    if ($this->escape_query) {
+      $str = mysqli_real_escape_string($this->mysqli, $str);
+      if ($like)
+        $str = str_replace(array('%', '_'), array('\\%', '\\_'), $str);
+      return $str;
+    }
     else
       return $str;
   }
