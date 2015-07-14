@@ -129,6 +129,7 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name=" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function where_lt($name, $value) {
@@ -136,6 +137,7 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name<" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name<" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function where_lte($name, $value) {
@@ -143,6 +145,7 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name<=" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name<=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function where_gt($name, $value) {
@@ -150,6 +153,7 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name>" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name>" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function where_gte($name, $value) {
@@ -157,6 +161,7 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name>=" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name>=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function where_not($name, $value) {
@@ -164,30 +169,37 @@ class MySQL_Connecter extends RDB_Connecter {
       $this->where_query .= ("AND $name!=" . $this->convert_value_format($value));
     else
       $this->where_query .= ("$name!=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where($name, $value) {
     $this->where_query .= ("OR $name=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where_lt($name, $value) {
     $this->where_query .= ("OR $name<" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where_lte($name, $value) {
     $this->where_query .= ("OR $name<=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where_gt($name, $value) {
     $this->where_query .= ("OR $name>" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where_gte($name, $value) {
     $this->where_query .= ("OR $name>=" .$this->convert_value_format($value));
+    return $this;
   }
 
   public function or_where_not($name, $value) {
     $this->where_query .= ("OR $name!=" .$this->convert_value_format($value));
+    return $this;
   }
 
   /**
@@ -198,18 +210,22 @@ class MySQL_Connecter extends RDB_Connecter {
    */
   public function like($name, $value) {
     $this->_like($name, $value, 'AND', 'none');
+    return $this;
   }
 
   public function or_like($name, $value) {
     $this->_like($name, $value, 'OR', 'none');
+    return $this;
   } 
 
   public function not_like($name, $value) {
     $this->_not_like($name, $value, 'AND', 'none');
+    return $this;
   }
 
   public function or_not_like($name, $value) {
     $this->_not_like($name, $value, 'OR', 'none');
+    return $this;
   }
 
   /**
@@ -220,18 +236,22 @@ class MySQL_Connecter extends RDB_Connecter {
    */
   public function w_like($name, $value) {
     $this->_like($name, $value, 'AND', 'before');
+    return $this;
   }
 
   public function or_w_like($name, $value) {
     $this->_like($name, $value, 'OR', 'before');
+    return $this;
   }
 
   public function not_w_like($name, $value) {
     $this->_not_like($name, $value, 'AND', 'before');
+    return $this;
   }
 
   public function or_not_w_like($name, $value) {
     $this->_not_like($name, $value, 'OR', 'before');
+    return $this;
   }
 
   /**
@@ -242,18 +262,22 @@ class MySQL_Connecter extends RDB_Connecter {
    */
   public function like_w($name, $value) {
     $this->_like($name, $value, 'AND', 'after');
+    return $this;
   }
 
   public function or_like_w($name, $value) {
     $this->_like($name, $value, 'OR', 'after');
+    return $this;
   }
 
   public function not_like_w($name, $value) {
     $this->_not_like($name, $value, 'AND', 'after');
+    return $this;
   }
 
   public function or_not_like_w($name, $value) {
     $this->_not_like($name, $value, 'OR', 'after');
+    return $this;
   }
 
   /**
@@ -265,18 +289,22 @@ class MySQL_Connecter extends RDB_Connecter {
 
   public function w_like_w($name, $value) {
     $this->_like($name, $value, 'AND', 'both');
+    return $this;
   }
 
   public function or_w_like_w($name, $value) {
     $this->_like($name, $value, 'OR', 'both');
+    return $this;
   }
 
   public function not_w_like_w($name, $value) {
     $this->_not_like($name, $value, 'AND', 'both');
+    return $this;
   }
 
   public function or_not_w_like_w($name, $value) {
     $this->_not_like($name, $value, 'OR', 'both');
+    return $this;
   }
 
   private function _like($name, $value, $operator, $wildcard) {
@@ -332,7 +360,7 @@ class MySQL_Connecter extends RDB_Connecter {
     $query = "SELECT $select_fields FROM $table_name";
     if (strlen($this->join_query))
       $query .= " $this->join_query";
-    $query .= $this->create_where_query($wheres);
+    $query .= $this->create_where_clause($wheres);
     if ($this->limit != -1 && $this->offset != -1)
       $query .= " LIMIT $this->offset, $this->limit";
     if (count($this->order_clauses))
@@ -436,7 +464,7 @@ class MySQL_Connecter extends RDB_Connecter {
 
   public function delete($table_name, $wheres) {
     $query = "DELETE FROM $table_name";
-    $query .= $this->create_where_query($wheres);
+    $query .= $this->create_where_clause($wheres);
     return $this->query($query);
   }
 
@@ -445,7 +473,7 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this->query($query);
   }
 
-  private function create_where_query($wheres) {
+  private function create_where_clause($wheres) {
     $query = ' WHERE ';
     end($wheres);
     $last_key = key($wheres);
@@ -456,11 +484,6 @@ class MySQL_Connecter extends RDB_Connecter {
     }
     return $query;
   }
-
-  private function convert_value_format($value) {
-    return is_string($value) ? "'$value'" : $value;
-  }
-
 
   /**
    * JOIN 쿼리를 생성한다.
@@ -487,6 +510,35 @@ class MySQL_Connecter extends RDB_Connecter {
     return $this;
   }
 
+  public function update($table_name, $values) {
+    $query = "UPDATE $table_name";
+    $query .= $this->create_set_clause($values);
+    if (strlen($this->where_query))
+      $query .= " WHERE $this->where_query";
+    $this->reset_query();
+    return $this->query($query);
+  }
+
+  public function update_where($table_name, $values, $wheres) {
+    $query = "UPDATE $table_name";
+    $query .= $this->create_set_clause($values);
+    $query .= $this->create_where_clause($wheres);
+    $this->reset_query();
+    return $this->query($query);
+  }
+
+  private function create_set_clause($set_values) {
+    $query = ' SET ';
+    end($set_values);
+    $last_key = key($set_values);
+    foreach ($set_values as $key=>$value) {
+      $query .= ($key . '=' . $this->convert_value_format($value));
+      if ($key != $last_key)
+        $query .= ', ';
+    }
+    return $query;
+  }
+
   private function select_join($type) {
     if ($type == 'inner')
       return 'INNER JOIN';
@@ -502,6 +554,20 @@ class MySQL_Connecter extends RDB_Connecter {
       return 'RIGHT OUTER JOIN';
     else
       return 'JOIN';
+  } 
+
+  private function convert_value_format($value) {
+    return is_string($value) ? '\''. $this->escape_str($value) . '\'' : $this->escape_str($value);
+  }
+
+  /**
+   * 특수 문자열을 이스케이프하여 실행되지 않도록 막아준다.(\x00,\n,\r,\,',",\x1a)
+   */
+  private function escape_str($str) {
+    if ($this->escape_query)
+      return mysqli_real_escape_string($this->mysqli, $str);
+    else
+      return $str;
   }
 
   public function begin_trans() {
@@ -525,6 +591,11 @@ class MySQL_Connecter extends RDB_Connecter {
     $this->order_clauses = array();
   }
 
+
+  public function toggle_escape_query($enable) {
+    $this->escape_query = $enable;
+  }
+
   private $limit = -1;
   private $offset = -1;
   private $join_query = '';
@@ -534,5 +605,6 @@ class MySQL_Connecter extends RDB_Connecter {
   private $select_function_as_field_name = '';
   private $where_query = '';
   private $order_clauses = array();
+  private $escape_query = true;
 
 }

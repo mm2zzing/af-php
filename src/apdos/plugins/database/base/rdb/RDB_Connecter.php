@@ -27,8 +27,13 @@ abstract class RDB_Connecter extends Component {
 
   abstract public function join($table_name, $condition);
 
+  abstract public function order_by_asc($field_name);
+  abstract public function order_by_desc($field_name);
+  abstract public function update($table_name, $update_fields);
+
   abstract public function begin_trans();
   abstract public function end_trans();
   abstract public function get_last_error();
 
+  abstract public function toggle_escape_query($enable);
 }
