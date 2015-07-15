@@ -11,9 +11,14 @@ use apdos\plugins\database\connecters\mysql\MySQL_Schema;
 use apdos\plugins\database\connecters\mysql\MySQL_Util;
 use apdos\plugins\sharding\dtos\DB_DTO;
 use apdos\plugins\sharding\dtos\Shard_DTO;
+use apdos\plugins\sharding\errors\Sharding_Error;
 
 class Shard_Session extends Component { 
   public function __construct() {
+    $other = $this;
+    $this->add_event_listener(Component_Event::$START, function($event) use(&$other) {
+      $other->db_session_class_name = $other->get_property('db_session_class_name')->get_value();
+    });
   }
 
   public function get_db_connecter($shard_id, $master = true) {
@@ -37,7 +42,7 @@ class Shard_Session extends Component {
   private function build_shard_db($shard_id) {
     $shard = $this->get_config()->get_shard($shard_id);
     if ($shard->is_null())
-      throw new \Exception('shard dto is null. shard is ' . $shard_id->get_value());
+      throw new Sharding_Error('shard dto is null. shard is ' . $shard_id->get_value(), Sharding_Error::CONFIG_FAILED);
 
     $master_name = $this->get_db_session_name($shard_id, true); 
     if ($this->get_property($master_name)->is_null()) {
@@ -60,7 +65,7 @@ class Shard_Session extends Component {
   private function create_db_session($name, $db_dto) {
     $path = $this->get_parent_path() . '/db_sessions/' . $name;
     $actor = Kernel::get_instance()->new_object(Actor::get_class_name(), $path); 
-    $session = $actor->add_component(MySQL_Session::get_class_name());
+    $session = $actor->add_component($this->db_session_class_name);
     $session->add_event_listener(Component_Event::$START, function($event) use(&$db_dto, &$session) {
       $session->get_connecter()->connect($db_dto->host, 
                                          $db_dto->user, 
@@ -70,7 +75,6 @@ class Shard_Session extends Component {
       if ($session->get_schema()->has_database($db_dto->db_name))
         $session->get_connecter()->select_database($db_dto->db_name);
     });
-    // 동기적으로 실행하고 싶은 경우 적절한 시점에 이벤츠 업데이트 함수를 호출하여 이벤트를 발생시킨다.
     $actor->update_events();
     return $session;
   }
@@ -78,7 +82,9 @@ class Shard_Session extends Component {
   private function get_config() {
     $component = $this->get_component(Shard_Config::get_class_name());
     if ($component->is_null())
-      throw new \Exception('Shard_Config is null');
+      throw new Sharding_Error("Shard_Config is null", Sharding_Error::COMPONENT_FAILED);
     return $component;
   }
+
+  private $db_session_class_name;
 }

@@ -16,7 +16,7 @@ class MySQL_Active_Record_Escape_Test extends Test_Case {
 
     $this->session->get_connecter()->toggle_escape_query(false);
     $result = $this->update_injection_case1();
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
     $this->assert_update_all_row();
     
 
@@ -26,7 +26,7 @@ class MySQL_Active_Record_Escape_Test extends Test_Case {
     $this->insert_test_data();
     $this->session->get_connecter()->toggle_escape_query(true);
     $result = $this->update_injection_case1();
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
     $this->assert_update_protection();
   }
 
@@ -50,7 +50,7 @@ class MySQL_Active_Record_Escape_Test extends Test_Case {
 
     $this->session->get_connecter()->toggle_escape_query(false);
     $result = $this->update_injection_case2();
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
     $this->assert_update_all_row();
     
 
@@ -60,7 +60,7 @@ class MySQL_Active_Record_Escape_Test extends Test_Case {
     $this->insert_test_data();
     $this->session->get_connecter()->toggle_escape_query(true);
     $result = $this->update_injection_case2();
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
     $this->assert_update_protection();
 
   }

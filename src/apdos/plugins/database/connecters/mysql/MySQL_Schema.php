@@ -23,22 +23,28 @@ class MySQL_Schema extends RDB_Schema {
    *
    * @param string name 데이터베이스명
    *
-   * @return bool 성공 여부
+   * @throw RDB_Error
    */
   public function create_database($name, $if_not_exists = true) {
     $query = 'CREATE DATABASE ';
     if ($if_not_exists)
       $query .= 'IF NOT EXISTS ';
     $query .= $name;
-    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
+    $result = true;
+    $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 
+  /**
+   * 데이터베이스를 삭제한다.
+   *
+   * @throw RDB_Error
+   */
   public function drop_database($name, $if_exists = true) {
     $query = 'DROP DATABASE ';
     if ($if_exists)
       $query .= 'IF EXISTS ';
     $query .= $name;
-    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
+    $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 
   public function has_database($name) {
@@ -54,7 +60,7 @@ class MySQL_Schema extends RDB_Schema {
    * @name 테이블 이름
    * @fields 테이블의 필드명
    *
-   * @return bool 성공 여부
+   * @throw RDB_Error
    */
   public function create_table($name, $fields) {
     $query = "CREATE TABLE $name(\n";
@@ -66,7 +72,7 @@ class MySQL_Schema extends RDB_Schema {
         $query .= ",\n";
     }
     $query .= "\n);";
-    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
+    $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 
   private function get_field_query($name, $values) {
@@ -105,13 +111,13 @@ class MySQL_Schema extends RDB_Schema {
    *
    * @name string 테이블 이름
    *
-   * @return bool 성공 여부
+   * @throw RDB_Error
    */
   public function drop_table($name, $if_exists = true) {
     $query = "drop table ";
     if ($if_exists)
       $query .= 'if exists ';
     $query .= "$name;";
-    return $this->get_connecter(MySQL_Connecter::get_class_name())->query($query)->is_success();
+    $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 }

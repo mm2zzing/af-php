@@ -1,7 +1,7 @@
 <?php
 namespace apdos\plugins\sharding\adts;
 
-class Table_ID {
+class Shard_Set_ID {
   /** 
    * constructor
    * 

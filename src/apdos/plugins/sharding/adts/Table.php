@@ -15,5 +15,13 @@ class Table {
     return false;
   }
 
+  public function get_id() {
+    return $this->dto->id;
+  }
+
+  public function get_shard_set_id() {
+    return $this->dto->shard_set_id;
+  }
+
   private $dto;
 }

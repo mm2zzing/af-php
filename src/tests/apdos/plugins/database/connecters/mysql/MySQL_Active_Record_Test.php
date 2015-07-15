@@ -16,7 +16,7 @@ class MySQL_Active_Record_Test extends Test_Case {
       'title'=>'test_title'
     );
     $result = $this->session->get_connecter()->insert(self::TABLE, $data);
-    $this->assert($result->is_success(), 'Insert result is success');
+    $this->assert($result->get_rows_count() == 1, 'Insert result is success');
     $query = 'SELECT title FROM ' . self::TABLE . ' WHERE title=\'test_title\'';
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 1, 'Insert count is 1');
@@ -27,14 +27,15 @@ class MySQL_Active_Record_Test extends Test_Case {
       'title'=>'test_title',
       'name'=>'test_name'
     );
-    $query_faield = false;
+
+    $exception = false;
     try {
-      $result = $this->session->get_connecter()->insert(self::TABLE, $data);
+      $this->session->get_connecter()->insert(self::TABLE, $data);
     }
     catch (RDB_Error $e) {
-      $query_faield = true;
+      $exception = true;
     }
-    $this->assert($query_faield == true, "Unknown field is occur error");
+    $this->assert($exception == true, "Unknown field is occur error");
   }
 
   public function test_insert_batch() {
@@ -47,7 +48,7 @@ class MySQL_Active_Record_Test extends Test_Case {
       )
     );
     $result = $this->session->get_connecter()->insert_batch(self::TABLE, $data);
-    $this->assert($result->is_success(), "Insert result is success");
+    $this->assert($result->get_row(0) == TRUE, "Insert result is success");
     $query = 'SELECT title FROM ' . self::TABLE;
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 2, 'Insert count is 2');
@@ -65,17 +66,23 @@ class MySQL_Active_Record_Test extends Test_Case {
       )
     );
 
-    $query_faield = false;
+    $exception = false;
     try {
       $result = $this->session->get_connecter()->insert_batch(self::TABLE, $data);
     }
     catch (RDB_Error $e) {
-      $query_faield = true;
+      $exception = true;
     }
-    $this->assert($query_faield == true, "Unknown field is occur error");
+    $this->assert($exception == true, "Unknown field is occur error");
 
-    $result = $this->session->get_connecter()->insert_batch(self::TABLE, array());
-    $this->assert($result->is_success() == false, "Insert result is failed");
+    $exception = false;
+    try {
+      $result = $this->session->get_connecter()->insert_batch(self::TABLE, array());
+    }
+    catch (RDB_Error $e) {
+      $exception = true;
+    }
+    $this->assert($exception == true, "Insert result is failed");
     $query = 'SELECT title FROM ' . self::TABLE;
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 0, 'Insert count is 0');

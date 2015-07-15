@@ -37,10 +37,12 @@ class File_Handler extends Logger_Handler {
   }
 
   private function rename_log_file($file_name, $file_path) {
-    $log_files = scandir($this->log_dir);
+    $log_file_names = scandir($this->log_dir);
     $number = 1;
-    foreach ($log_files as $log_file) {
-      $log_number = substr($log_file, strlen($file_name) + 1);
+    foreach ($log_file_names as $name) {
+      if (strpos($name, $file_name) === false)
+        continue;
+      $log_number = substr($name, strlen($file_name) + 1);
       if ($log_number > $number)
         $number = $log_number;
     }

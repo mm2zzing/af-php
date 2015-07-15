@@ -42,9 +42,7 @@ class MySQL_Connecter extends RDB_Connecter {
    * 쿼리문을 요청한 그 결과를 리턴한다.
    *
    * @param sql string sql문
-   * @return MySQL_Result is_success 함수로 성공 여부를 알 수 있다.
-   *
-   * @throw RDB_Error 잘못된 쿼리 요청시에 예외 발생
+   * @return MySQL_Result 수행 결과 정보 
    */
   public function query($sql) {
     Logger::get_instance()->debug('RDB-MYSQL', "Query: $sql");
@@ -52,8 +50,11 @@ class MySQL_Connecter extends RDB_Connecter {
     $result = $this->mysqli->query($sql);
     $time = Time::get_instance()->get_timestamp() - $before;
     Logger::get_instance()->debug('RDB-MYSQL', "Connecter: host: $this->host_info, db: $this->database, time: $time");
-    if (!$result)
+    // TRUE or FALSE or mysqli_result object
+    if (!$result) {
+      Logger::get_instance()->error('RDB-MYSQL', "Query: $sql Error: " . $this->get_last_error());
       throw new RDB_Error($this->get_last_error(), RDB_Error::QUERY_FAILED);
+    }
     $mysql_result = new MySQL_Result($result, $time);
     Logger::get_instance()->debug('RDB-MYSQL', 'Result: '. var_export($mysql_result->get_rows(), true));
     return $mysql_result;
@@ -80,7 +81,7 @@ class MySQL_Connecter extends RDB_Connecter {
    */
   public function insert_batch($table_name, $data) { 
     if (count($data) == 0)
-      return new MySQL_Result(FALSE);
+      throw new RDB_Error('insert data count is 0', RDB_Error::QUERY_FAILED);
 
     $last_index = count($data) - 1;
     $query = '';

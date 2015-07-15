@@ -6,17 +6,11 @@ use apdos\plugins\database\base\rdb\RDB_Result;
 /**
  * @class MySQL_Result
  *
- * @brief 쿼리에 대한 결과를 표현하는 객체이다. 데이타베이스 API 사용시
- *        갱신 관련 쿼리는 성공 여부만 리턴하고 
- *        조회 쿼리는 조회한 데이터 내용을 리턴하는데 이 두가지 경우를 추상화
+ * @brief 쿼리에 대한 결과를 표현하는 객체이다.
  *
  * @author Lee, Hyeon-gi
  */
-class MySQL_Result extends RDB_Result {
-  private $result;
-  private $rows = array();
-  private $time;
-
+class MySQL_Result extends RDB_Result { 
   /**
    *
    * @param result mysqli_result or boolean
@@ -25,24 +19,17 @@ class MySQL_Result extends RDB_Result {
   public function __construct($result, $time = 0) {
     $this->result = $result;
     $this->time = $time;
-    if (!$this->result_data_query()) {
+    if (!$this->bool_result()) {
       while($row = $result->fetch_assoc()) {
         array_push($this->rows, $row);
       }
       $this->result->close();
     }
-  }
-
-  public function is_success() {
-    if ($this->result_data_query())
-      return $this->result === TRUE ? true : false;
     else
-      return true;
+      array_push($this->rows, TRUE);
   }
 
   public function get_rows_count() {
-    if ($this->result_data_query())
-      return 0;
     return count($this->rows);
   }
 
@@ -62,7 +49,13 @@ class MySQL_Result extends RDB_Result {
     return $this->time;
   }
 
-  private function result_data_query() {
+  private function bool_result() {
     return $this->result === TRUE || $this->result === FALSE;
   }
+
+  private $result;
+  private $rows = array();
+  private $time;
+  private $error_message;
+
 }

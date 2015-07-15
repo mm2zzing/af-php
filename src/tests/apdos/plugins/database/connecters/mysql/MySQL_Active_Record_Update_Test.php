@@ -21,7 +21,7 @@ class MySQL_Active_Record_Update_Test extends Test_Case {
 
     $data = array('count'=>1000);
     $result = $this->session->get_connecter()->where('id', 1)->update(self::TABLE, $data);
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
 
     $result = $this->session->get_connecter()->where('id', 1)->get(self::TABLE);
     $this->assert($result->get_rows_count() == 1, 'Rows count is 1');
@@ -39,7 +39,7 @@ class MySQL_Active_Record_Update_Test extends Test_Case {
 
     $data = array('count'=>1000);
     $result = $this->session->get_connecter()->update_where(self::TABLE, $data, array('id'=>1));
-    $this->assert($result->is_success() == true, 'Update exists success');
+    $this->assert($result->get_row(0) == true, 'Update exists success');
 
     $result = $this->session->get_connecter()->where('id', 1)->get(self::TABLE);
     $this->assert($result->get_rows_count() == 1, 'Rows count is 1');

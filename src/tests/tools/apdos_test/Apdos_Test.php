@@ -117,12 +117,12 @@ class Apdos_Test extends Tool {
       $runner->add(MySQL_Active_Record_Update_Test::create_suite());
       $runner->add(MySQL_Active_Record_Join_Test::create_suite());
       $runner->add(MySQL_Active_Record_Escape_Test::create_suite());
+      $runner->add(Sharding_Schema_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {
       $runner->add(Mongodb_Test::create_suite());
     }
-    $runner->add(Sharding_Schema_Test::create_suite());
     $runner->run();
     if ($this->cli->has_option('shortsummary')) 
       echo $runner->short_summary() . PHP_EOL;
