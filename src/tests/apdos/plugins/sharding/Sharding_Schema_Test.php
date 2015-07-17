@@ -20,11 +20,6 @@ use apdos\plugins\database\connecters\mysql\MySQL_Session;
  * @class Sharding_Schema_Test
  *
  * @brief 샤딩 유닛 테스트
- *        $shard_schema->create_shard_database();
- *        $shard_schema->create_lookup_table();
- *        $shard_schema->create_data_table('mytable1', $this->get_fields());
- *        $shard_schema->drop_data_table('mytable');
- *        $shard_schema->drop_shard_database();
  */
 class Sharding_Schema_Test extends Test_Case {
   public function __construct($method_name) {
@@ -38,11 +33,10 @@ class Sharding_Schema_Test extends Test_Case {
 
     $this->shard_schema = $this->actor->add_component(Shard_Schema::get_class_name());
     $this->shard_config = $this->actor->add_component(Shard_Config::get_class_name());
-    $this->shard_router = $this->actor->add_component(Shard_Router::get_class_name());
 
     $this->shard_config->load($this->get_shard_tables(), $this->get_shard_sets(), $this->get_shards()); 
-    // 동기적으로 테스트를 진행하기 위해서 호출
-    $this->actor->update();
+
+    $this->actor->update_events();
   }
 
   public function get_shard_tables() {
@@ -90,7 +84,6 @@ class Sharding_Schema_Test extends Test_Case {
 
   public function test_create_lookup_table() {
     $this->shard_schema->create_database();
-    $this->shard_router->select_database();
 
     $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup01'));
     $this->assert(false == $db_schema->has_table('lookup'), 'lookup table is exist');
@@ -107,7 +100,6 @@ class Sharding_Schema_Test extends Test_Case {
 
   public function test_drop_lookup_table() {
     $this->shard_schema->create_database();
-    $this->shard_router->select_database();
 
     $result = $this->create_lookup_table();
     $this->assert(true == $result, 'craete lookup table is success');
@@ -126,7 +118,6 @@ class Sharding_Schema_Test extends Test_Case {
 
   public function test_create_table() { 
     $this->shard_schema->create_database();
-    $this->shard_router->select_database();
 
     $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_a01'));
     $this->assert(false == $db_connecter->has_table('table_a'), 'data table is not exist');
@@ -160,7 +151,6 @@ class Sharding_Schema_Test extends Test_Case {
 
   public function test_drop_table() {
     $this->shard_schema->create_database();
-    $this->shard_router->select_database();
     $this->create_lookup_table();
     $this->create_table(new Table_ID('table_a'), $this->get_data_fields());
     $this->create_table(new Table_ID('table_b'), $this->get_data_fields());
@@ -180,25 +170,6 @@ class Sharding_Schema_Test extends Test_Case {
     $this->assert(false == $db_connecter->has_table('table_a'), 'data table is not exist');
     $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_b01'));
     $this->assert(true == $db_connecter->has_table('table_b'), 'data table is exist');
-
-  }
-
-  public function test_has_table() {
-    $this->shard_schema->create_database();
-    $this->shard_router->select_database();
-    $this->assert(false == $this->shard_router->has_lookup_table());
-    $this->assert(false == $this->shard_router->has_lookup_table());
-
-    $this->create_lookup_table();
-    $this->assert(true == $this->shard_router->has_lookup_table());
-    $this->assert(true == $this->shard_router->has_lookup_table());
-    $this->assert(false == $this->shard_router->has_table(new Table_ID('table_a')));
-    $this->assert(false == $this->shard_router->has_table(new Table_ID('table_b')));
-
-    $this->create_table(new Table_ID('table_a'), $this->get_data_fields());
-    $this->create_table(new Table_ID('table_b'), $this->get_data_fields());
-    $this->assert(true == $this->shard_router->has_table(new Table_ID('table_a')));
-    $this->assert(true == $this->shard_router->has_table(new Table_ID('table_b')));
   }
 
   private function get_data_fields() {
@@ -247,7 +218,6 @@ class Sharding_Schema_Test extends Test_Case {
   }
 
   private $shard_session; 
-  private $shard_router;
   private $shard_schema;
 
   public static function create_suite() {
@@ -259,7 +229,6 @@ class Sharding_Schema_Test extends Test_Case {
     $suite->add(new Sharding_Schema_Test('test_drop_lookup_table'));
     $suite->add(new Sharding_Schema_Test('test_create_table'));
     $suite->add(new Sharding_Schema_Test('test_drop_table'));
-    $suite->add(new Sharding_Schema_Test('test_has_table'));
     return $suite;
   }
 }

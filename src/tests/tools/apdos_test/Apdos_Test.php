@@ -18,6 +18,7 @@ use tests\apdos\kernel\user\User_Server_Test;
 use tests\apdos\kernel\core\Object_Test;
 use tests\apdos\kernel\core\Object_Converter_Test;
 use tests\apdos\kernel\actor\Actor_Accepter_Test;
+use tests\apdos\kernel\objectid\Object_ID_Test;
 use tests\apdos\plugins\prereg\Prereg_Manager_Test;
 use tests\apdos\plugins\database\connecters\mongodb\Mongodb_Test;
 use tests\apdos\plugins\prereg\Prereg_Test;
@@ -26,7 +27,6 @@ use apdos\tools\ash\console\Command_Line;
 use apdos\tools\ash\console\error\Command_Line_Error;
 use tests\apdos\plugins\cache\Cache_Test;
 use tests\apdos\plugins\input\Input_Test;
-use tests\apdos\plugins\sharding\Sharding_Schema_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Connecter_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Schema_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Util_Test;
@@ -36,6 +36,8 @@ use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Where_Test
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Update_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Join_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Escape_Test;
+use tests\apdos\plugins\sharding\Sharding_Schema_Test;
+use tests\apdos\plugins\sharding\Sharding_Router_Test;
 
 /**
  * @class Apdos_Test
@@ -101,6 +103,7 @@ class Apdos_Test extends Tool {
     $runner->add(User_Server_Test::create_suite());
     $runner->add(Actor_Accepter_Test::create_suite());
     $runner->add(Object_Converter_Test::create_suite());
+    $runner->add(Object_ID_Test::create_suite());
     $runner->add(Auth_Test::create_suite());
     $runner->add(Prereg_Test::create_suite());
     $runner->add(Prereg_Manager_Test::create_suite());
@@ -118,6 +121,7 @@ class Apdos_Test extends Tool {
       $runner->add(MySQL_Active_Record_Join_Test::create_suite());
       $runner->add(MySQL_Active_Record_Escape_Test::create_suite());
       $runner->add(Sharding_Schema_Test::create_suite());
+      $runner->add(Sharding_Router_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {

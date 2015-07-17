@@ -71,7 +71,8 @@ class MySQL_Schema extends RDB_Schema {
       if($key != $last_key)
         $query .= ",\n";
     }
-    $query .= "\n);";
+    $query .= "\n)";
+    $query .= " ENGINE=MyISAM";
     $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 

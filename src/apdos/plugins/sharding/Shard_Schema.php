@@ -22,6 +22,8 @@ class Shard_Schema extends Component {
       try {
         $db_schema = $this->get_session()->get_db_schema($shard->get_id());
         $db_schema->create_database($shard->get_master()->db_name, $if_not_exists);
+        $db_connecter = $this->get_session()->get_db_connecter($shard->get_id());
+        $db_connecter->select_database($shard->get_master()->db_name);
       }
       catch (RDB_Error $e) {
         $message = 'Create database failed. shard id ' . $shard->get_id()->to_string();

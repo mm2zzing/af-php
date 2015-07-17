@@ -145,5 +145,15 @@
         "persistent": true
       }
     }
+  ],
+  "routers": [
+    {
+      "id": "machine01",
+      "url":"http://localhost"
+    },
+    {
+      "id": "machine02",
+      "url":"http://localhost"
+    }
   ]
 }

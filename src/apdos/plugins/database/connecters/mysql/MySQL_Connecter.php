@@ -46,18 +46,16 @@ class MySQL_Connecter extends RDB_Connecter {
    */
   public function query($sql) {
     Logger::get_instance()->debug('RDB-MYSQL', "Query: $sql");
-    $before = Time::get_instance()->get_timestamp();
+    $before = Time::get_instance()->get_micro_timestamp();
     $result = $this->mysqli->query($sql);
-    $time = Time::get_instance()->get_timestamp() - $before;
+    $time = Time::get_instance()->get_micro_timestamp() - $before;
     Logger::get_instance()->debug('RDB-MYSQL', "Connecter: host: $this->host_info, db: $this->database, time: $time");
     // TRUE or FALSE or mysqli_result object
     if (!$result) {
       Logger::get_instance()->error('RDB-MYSQL', "Query: $sql Error: " . $this->get_last_error());
       throw new RDB_Error($this->get_last_error(), RDB_Error::QUERY_FAILED);
     }
-    $mysql_result = new MySQL_Result($result, $time);
-    Logger::get_instance()->debug('RDB-MYSQL', 'Result: '. var_export($mysql_result->get_rows(), true));
-    return $mysql_result;
+    return new MySQL_Result($result, $time);
   }
 
   /**

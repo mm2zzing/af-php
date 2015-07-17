@@ -13,7 +13,7 @@ class File_Handler implements Cache_Handler {
   }
 
   public function set($key, $value, $cache_time) {
-    $data = array("value"=>$value, "expire_time"=>Time::get_instance()->get_timestamp() + $cache_time);
+    $data = array("value"=>$value, "expire_time"=>Time::get_instance()->get_micro_timestamp() + $cache_time);
     if (!file_put_contents($this->get_cache_path($key), serialize($data)))
       throw new Cache_Error('Write failed. Key=>' . $key, Cache_Error::CACHE_WRITE_FAILED);
   }
@@ -25,7 +25,7 @@ class File_Handler implements Cache_Handler {
     if (!$contents)
       throw new Cache_Error("Value is null. Key: $key", Cache_Error::CACHE_VALUE_IS_NULL);
     $data = unserialize($contents);  
-    if (Time::get_instance()->get_timestamp() >= $data['expire_time']) {
+    if (Time::get_instance()->get_micro_timestamp() >= $data['expire_time']) {
       unlink($this->get_cache_path($key));
       throw new Cache_Error("Value is null. Key: $key", Cache_Error::CACHE_VALUE_IS_NULL);
     }

@@ -14,7 +14,7 @@ class Time extends Component {
    */
   public function load($timezone) {
     date_default_timezone_set($timezone);
-    $this->start_time = $this->get_timestamp();
+    $this->start_time = $this->get_micro_timestamp();
   }
 
   /**
@@ -22,15 +22,24 @@ class Time extends Component {
    *
    * @return float OS시스템에 따라 32/64비트 float형이 결정됨
    */
-  public function get_timestamp() {
+  public function get_micro_timestamp() {
     return microtime(true);
+  }
+
+  /**
+   * 현재 유닉스타임스탬프값을 반환
+   *
+   * @return int OS시스템에 따라 32/64비트 int형이 결정됨
+   */
+  public function get_timestamp() {
+    return time();
   }
 
   /** 
    * 시스템 구동후 지나간 시작 출력
    */
   public function get_passed_timestamp() {
-    return $this->get_timestamp() - $this->start_time;
+    return $this->get_micro_timestamp() - $this->start_time;
   }
 
   public function get_ymd_his() {
