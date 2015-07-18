@@ -20,13 +20,19 @@ class Object_ID_Test extends Test_Case {
   }
 
   public function test_create_id() {
-    $timestamp = Time::get_instance()->get_micro_timestamp();
+    $timestamp = Time::get_instance()->get_timestamp();
+    $id = Object_ID::create($timestamp);
+    $this->assert($id->get_timestamp_segment() == $timestamp, "Get unpack timestamp");
+  }
+
+  public function test_not_duplicated_ids() {
+    $timestamp = Time::get_instance()->get_timestamp();
     $ids = $this->generate_ids($this->get_max_generate_count(), $timestamp);
     $this->assert(count($ids) == $this->get_max_generate_count(), 'Not duplicated ids');
   }
 
   public function test_reset_increment() {
-    $timestamp = Time::get_instance()->get_micro_timestamp();
+    $timestamp = Time::get_instance()->get_timestamp();
     $id = Object_ID::create($timestamp);
     $this->assert(1 == ID::get_instance()->get_current_increment(), 'Inc is 1');
     $id = Object_ID::create($timestamp);
@@ -38,14 +44,14 @@ class Object_ID_Test extends Test_Case {
   }
 
   public function test_throw_backward_timestamp() {
-    $timestamp = Time::get_instance()->get_micro_timestamp();
+    $timestamp = Time::get_instance()->get_timestamp();
     $this->assert(true == $this->process_generate_ids(1, $timestamp));
     $backward_timestamp = $timestamp - 1;
     $this->assert(false == $this->process_generate_ids(1, $backward_timestamp));
   }
 
   public function test_throw_increment_count_overflow() {
-    $timestamp = Time::get_instance()->get_micro_timestamp();
+    $timestamp = Time::get_instance()->get_timestamp();
     $this->assert(false == $this->process_generate_ids($this->get_max_generate_count() + 1, $timestamp));
   }
 
@@ -85,6 +91,7 @@ class Object_ID_Test extends Test_Case {
   public static function create_suite() {
     $suite = new Test_Suite('Object_ID_Test');
     $suite->add(new Object_ID_Test('test_create_id'));
+    $suite->add(new Object_ID_Test('test_not_duplicated_ids'));
     $suite->add(new Object_ID_Test('test_reset_increment'));
     $suite->add(new Object_ID_Test('test_throw_backward_timestamp'));
     $suite->add(new Object_ID_Test('test_throw_increment_count_overflow'));

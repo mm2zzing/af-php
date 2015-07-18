@@ -11,7 +11,7 @@ use apdos\plugins\sharding\Shard_Router;
 use apdos\plugins\sharding\Shard_Session;
 use apdos\plugins\sharding\Shard_Schema;
 use apdos\plugins\sharding\Shard_Config;
-use apdos\plugins\sharding\adts\Shard_ID;
+use apdos\kernel\objectid\Shard_ID;
 use apdos\plugins\sharding\adts\Shard_IDs;
 use apdos\plugins\sharding\adts\Table_ID;
 use apdos\plugins\database\connecters\mysql\MySQL_Session;

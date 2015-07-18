@@ -1,5 +1,5 @@
 <?php
-namespace apdos\plugins\sharding\adts;
+namespace apdos\kernel\objectid;
 
 class Null_Shard_ID extends Shard_ID {
   public function __construct() {

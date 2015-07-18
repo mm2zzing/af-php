@@ -1,10 +1,50 @@
 <?php
 namespace apdos\kernel\objectid;
 
+/**
+ * @class Object_ID
+ *
+ * @brieif 머신, 프로세스간 겹치지 않는 유니크 아이디 객체
+ *
+ *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte)
+ * @authoer Lee, Hyeon-gi
+ */ 
 class Object_ID {
   public function __construct() {
   }
-  
+
+  public function init($current_time = -1, $max_generate_count = ID::MAX_GENERATE_COUNT_PER_SEC) {
+    $this->current_time = $current_time;
+    $this->max_generate_count = $max_generate_count;
+    $this->pack_segments();
+  }
+
+  /**
+   * 바이너리 형태로 아이디 필드 정보드를 팩한다
+   *
+   * @virtual
+   */ 
+  protected function pack_segments() {
+    $this->binary = ID::get_instance()->generate_id($this->current_time, $this->max_generate_count);
+  }
+
+  /**
+   * 원본 데이터 형태로  아이디 필드 정보드를 언팩한다
+   *
+   * @virtual
+   */ 
+  protected function unpack_segments() {
+    if (!$this->unpacked) {
+      $unpack = ID::get_instance()->unpack($this->binary);
+      $this->timestamp_segment = $unpack['timestamp_segment'];
+      $this->machine_id_segment = $unpack['machine_id_segment'];
+      $this->process_id_segment = $unpack['process_id_segment'];
+      $this->increment_count_segment = $unpack['increment_count_segment'];
+
+      $this->unpacked != $this->unpacked;
+    }
+  }
+
   /**
    * 헥스 스트링을 통한 객체 초기화
    *
@@ -25,46 +65,25 @@ class Object_ID {
   public function init_by_binary($data) {
     $this->binary = $data;
   }
-
-  public function get_current_time() {
+ 
+  public function get_timestamp_segment() {
     $this->unpack_segments();
-    return $this->current_time;
+    return $this->timestamp_segment;
   }
 
-  public function get_machine_id() {
+  public function get_machine_id_segment() {
     $this->unpack_segments();
-    return $this->machine_id;
+    return $this->machine_id_segment;
   }
 
-  public function get_process_id() {
+  public function get_process_id_segment() {
     $this->unpack_segments();
-    return $this->process_id;
+    return $this->process_id_segment;
   }
 
-  public function get_increment_count() {
+  public function get_increment_count_segment() {
     $this->unpack_segments();
-    return $this->increment_count;
-  }
-
-  private function unpack_segments() {
-    if (!$this->unpacked) {
-      $offset = 0;
-      $data = unpack(ID::ULONG_4BYTE_LE, substr($this->binary, $offset, ID::TIMESTAMPE_BYTE));
-      $this->current_time = $data[1];
-      $offset += ID::TIMESTAMPE_BYTE;
-
-      $this->machine_id = substr($this->binary, $offset, ID::MACHINE_ID_BYTE);
-      $offset += ID::MACHINE_ID_BYTE;
-
-      $data = unpack(ID::USHORT_2BYTE_LE, substr($this->binary, $offset, ID::PROCESS_ID_BYTE));
-      $this->process_id = $data[1];
-      $offset += ID::PROCESS_ID_BYTE;
-
-      $data = unpack(ID::USHORT_2BYTE_LE, substr($this->binary, $offset, ID::INCREMENT_COUNT_BYTE));
-      $this->increment_count = $data[1];
-
-      $this->unpacked != $this->unpacked;
-    }
+    return $this->increment_count_segment;
   }
 
   public function to_string() {
@@ -75,17 +94,27 @@ class Object_ID {
     return $hex;
   }
 
+  /**
+   * Object_ID를 생성한다.
+   *
+   * @param current_time int 유닉스 타임 스탬프
+   * @param max_generate_count int 초당 생성할 수 있는 아이디 최대 갯수
+   *
+   * @return Object_ID
+   */
   public static function create($current_time = -1, $max_generate_count = ID::MAX_GENERATE_COUNT_PER_SEC) {
-    $binary = ID::get_instance()->generate_id($current_time, $max_generate_count);
     $result = new Object_ID();
-    $result->init_by_binary($binary);
+    $result->init($current_time, $max_generate_count);
     return $result;
   }
 
-  private $binary;
-  private $unpacked = false;
-  private $current_time;
-  private $machine_id;
-  private $process_id;
-  private $increment_count;
+  protected $binary;
+  protected $unpacked = false;
+  protected $timestamp_segment;
+  protected $machine_id_segment;
+  protected $process_id_segment;
+  protected $increment_count_segment;
+
+  protected $current_time = 0;
+  protected $max_generate_count = 0;
 }

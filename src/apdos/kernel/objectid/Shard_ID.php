@@ -28,6 +28,17 @@ class Shard_ID {
     return $this->id;
   }
 
+  /**
+   * 문자열 타입으로 해시한 값을 되돌려준다.
+   *
+   * @param size string 해시 사이즈
+   *
+   * @return string 해시한 문자열
+   */
+  public function to_string_hash($size) {
+    return substr(md5($this->id), 0, $size);
+  }
+
   private $id;
 }
 

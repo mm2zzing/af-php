@@ -63,17 +63,18 @@ class Shard_Router extends Component {
    * @throw Sharding_Error
    */
   public function has_lookup_table() {
-    $shard_ids = $this->get_config()->get_lookup_shard_ids();
-    if (0 == count($shard_ids))
-      throw new Sharding_Error('Lookup shard ids count is 0', Sharding_Error::CONFIG_FAILED);
-    foreach ($shard_ids as $id) {
-      try {
-        $connecter = $this->get_session()->get_db_connecter($id);
-        if (!$connecter->has_table('lookup'))
-          return false;
-      }
-      catch (RDB_Error $e) {
-        throw new Sharding_Error($e->getMessage(), Sharding_Error::QUERY_FAILED);
+    foreach ($this->get_config()->get_tables() as $table) {
+      $shard_set = $this->get_config()->get_shard_set($table->get_shard_set_id());
+      $lookup_shard_ids = $shard_set->get_lookup_shard_ids();
+      foreach ($lookup_shard_ids as $shard_id_str) {
+        try {
+          $db_connecter = $this->get_session()->get_db_connecter($shard_id_str);
+          if (!$db_connecter->has_table($table->get_id()->to_string()))
+            return false;
+        }
+        catch (RDB_Error $e) {
+          throw new Sharding_Error($e->getMessage(), Sharding_Error::QUERY_FAILED);
+        }
       }
     }
     return true;

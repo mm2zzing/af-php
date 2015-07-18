@@ -48,15 +48,36 @@ class ID {
       $this->increment = 0; 
     }
     $this->increment++;
-    $count = $this->increment;
     $this->last_timestamp = $current_time;
+    return $this->pack($current_time, $this->increment);
+  }
 
+  public function pack($current_time, $count) {
     $buf = '';
     $buf .= pack(self::ULONG_4BYTE_LE, $current_time);
     $buf .= $this->get_hashed_machine_name();
     $buf .= pack(self::USHORT_2BYTE_LE, Environment::get_instance()->get_process_id());
     $buf .= pack(self::USHORT_2BYTE_LE, $count);
     return $buf;
+  }
+
+  public function unpack($binary) {
+    $result = array();
+    $offset = 0;
+    $data = unpack(self::ULONG_4BYTE_LE, substr($binary, $offset, self::TIMESTAMPE_BYTE));
+    $result['timestamp_segment'] = $data[1];
+    $offset += self::TIMESTAMPE_BYTE;
+
+    $result['machine_id_segment'] = substr($binary, $offset, self::MACHINE_ID_BYTE);
+    $offset += self::MACHINE_ID_BYTE;
+
+    $data = unpack(self::USHORT_2BYTE_LE, substr($binary, $offset, self::PROCESS_ID_BYTE));
+    $result['process_id_segment'] = $data[1];
+    $offset += self::PROCESS_ID_BYTE;
+
+    $data = unpack(self::USHORT_2BYTE_LE, substr($binary, $offset, self::INCREMENT_COUNT_BYTE));
+    $result['increment_count_segment'] = $data[1];
+    return $result;
   }
 
 

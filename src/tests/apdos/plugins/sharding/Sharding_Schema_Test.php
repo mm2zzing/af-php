@@ -11,7 +11,7 @@ use apdos\plugins\sharding\Shard_Router;
 use apdos\plugins\sharding\Shard_Session;
 use apdos\plugins\sharding\Shard_Schema;
 use apdos\plugins\sharding\Shard_Config;
-use apdos\plugins\sharding\adts\Shard_ID;
+use apdos\kernel\objectid\Shard_ID;
 use apdos\plugins\sharding\adts\Shard_IDs;
 use apdos\plugins\sharding\adts\Table_ID;
 use apdos\plugins\database\connecters\mysql\MySQL_Session;
@@ -85,17 +85,13 @@ class Sharding_Schema_Test extends Test_Case {
   public function test_create_lookup_table() {
     $this->shard_schema->create_database();
 
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup01'));
-    $this->assert(false == $db_schema->has_table('lookup'), 'lookup table is exist');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup02'));
-    $this->assert(false == $db_schema->has_table('lookup'), 'lookup table is exist');
+    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), false));
+    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), false));
 
     $result = $this->create_lookup_table();
     $this->assert(true == $result, 'craete lookup table is success');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup01'));
-    $this->assert(true == $db_schema->has_table('lookup'), 'lookup table is exist');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup02'));
-    $this->assert(true == $db_schema->has_table('lookup'), 'lookup table is exist');
+    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), true));
+    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), true));
   }
 
   public function test_drop_lookup_table() {
@@ -103,18 +99,14 @@ class Sharding_Schema_Test extends Test_Case {
 
     $result = $this->create_lookup_table();
     $this->assert(true == $result, 'craete lookup table is success');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup01'));
-    $this->assert(true == $db_schema->has_table('lookup'), 'lookup table is exist');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup02'));
-    $this->assert(true == $db_schema->has_table('lookup'), 'lookup table is exist');
+    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), true));
+    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), true));
 
     $result = $this->drop_lookup_table(); 
     $this->assert(true == $result, 'drop lookup table is success');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup01'));
-    $this->assert(false == $db_schema->has_table('lookup'), 'lookup table is exist');
-    $db_schema = $this->shard_session->get_db_connecter(new Shard_ID('lookup02'));
-    $this->assert(false == $db_schema->has_table('lookup'), 'lookup table is exist');
-  }
+    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), false));
+    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), false));
+  } 
 
   public function test_create_table() { 
     $this->shard_schema->create_database();
@@ -152,24 +144,29 @@ class Sharding_Schema_Test extends Test_Case {
   public function test_drop_table() {
     $this->shard_schema->create_database();
     $this->create_lookup_table();
+
+    $this->assert_has_tables(new Shard_ID('table_a01'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_a02'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_b01'), array('table_b'), false);
+
     $this->create_table(new Table_ID('table_a'), $this->get_data_fields());
     $this->create_table(new Table_ID('table_b'), $this->get_data_fields());
-    
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_a01'));
-    $this->assert(true == $db_connecter->has_table('table_a'), 'data table is exist');
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_a02'));
-    $this->assert(true == $db_connecter->has_table('table_a'), 'data table is exist');
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_b01'));
-    $this->assert(true == $db_connecter->has_table('table_b'), 'data table is exist');
+
+    $this->assert_has_tables(new Shard_ID('table_a01'), array('table_a'), true);
+    $this->assert_has_tables(new Shard_ID('table_a02'), array('table_a'), true);
+    $this->assert_has_tables(new Shard_ID('table_b01'), array('table_b'), true);
 
     $this->shard_schema->drop_table(new Table_ID('table_a'));
 
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_a01'));
-    $this->assert(false == $db_connecter->has_table('table_a'), 'data table is not exist');
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_a02'));
-    $this->assert(false == $db_connecter->has_table('table_a'), 'data table is not exist');
-    $db_connecter = $this->shard_session->get_db_connecter(new Shard_ID('table_b01'));
-    $this->assert(true == $db_connecter->has_table('table_b'), 'data table is exist');
+    $this->assert_has_tables(new Shard_ID('table_a01'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_a02'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_b01'), array('table_b'), true);
+
+    $this->shard_schema->drop_table(new Table_ID('table_b'));
+    $this->assert_has_tables(new Shard_ID('table_a01'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_a02'), array('table_a'), false);
+    $this->assert_has_tables(new Shard_ID('table_b01'), array('table_b'), false);
+
   }
 
   private function get_data_fields() {
@@ -215,6 +212,13 @@ class Sharding_Schema_Test extends Test_Case {
       return false;
     }
     return true;
+  }
+
+  private function assert_has_tables($shard_id, $table_names, $result) {
+    $db_schema = $this->shard_session->get_db_connecter($shard_id);
+    foreach ($table_names as $name) {
+      $this->assert($result == $db_schema->has_table($name), $name . ' table is ' . $result);
+    }
   }
 
   private $shard_session; 

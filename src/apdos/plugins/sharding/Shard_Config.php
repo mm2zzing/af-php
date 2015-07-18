@@ -12,7 +12,7 @@ use apdos\plugins\sharding\dtos\Shard_DTO;
 use apdos\plugins\sharding\dtos\Shard_Set_DTO;
 use apdos\plugins\sharding\dtos\Table_DTO;
 use apdos\plugins\sharding\adts\Table_ID;
-use apdos\plugins\sharding\adts\Shard_ID;
+use apdos\kernel\objectid\Shard_ID;
 use apdos\plugins\sharding\adts\Shard_Set_ID;
 use apdos\plugins\sharding\adts\Shard;
 use apdos\plugins\sharding\adts\Null_Shard;
@@ -138,6 +138,11 @@ class Shard_Config extends Component {
     return new Null_Table();
   }
 
+  /**
+   * 모든 테이블 정보를 조회한다.
+   *
+   * @return array(Table)
+   */
   public function get_tables() {
     return $this->tables;
   }

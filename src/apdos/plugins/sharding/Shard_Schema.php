@@ -6,7 +6,7 @@ use apdos\kernel\actor\Component;
 use apdos\plugins\sharding\Shard_Router;
 use apdos\plugins\sharding\errors\Sharding_Error;
 use apdos\plugins\sharding\Shard_Config;
-use apdos\plugins\sharding\adts\Shard_ID;
+use apdos\kernel\objectid\Shard_ID;
 use apdos\kernel\log\Logger;
 use apdos\plugins\database\rdb\errors\RDB_Error;
 
@@ -57,27 +57,36 @@ class Shard_Schema extends Component {
   }
 
   public function create_lookup_table() {
-    foreach ($this->get_config()->get_lookup_shard_ids() as $shard_id) {
-      try {
-        $db_schema = $this->get_session()->get_db_schema($shard_id);
-        $result = $db_schema->create_table('lookup', $this->get_lookup_fields());
-      }
-      catch (RDB_Error $e) {
-        $message = 'Create lookup table failed. shard id ' . $shard_id->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+    foreach ($this->get_config()->get_tables() as $table) {
+      $shard_set = $this->get_config()->get_shard_set($table->get_shard_set_id());
+      $lookup_shard_ids = $shard_set->get_lookup_shard_ids();
+      foreach ($lookup_shard_ids as $shard_id_str) {
+        try {
+          $db_schema = $this->get_session()->get_db_schema($shard_id_str);
+          $db_schema->create_table($table->get_id()->to_string(), $this->get_lookup_fields()); 
+        }
+        catch (RDB_Error $e) {
+          $message = 'Create lookup table failed. shard id ' . $shard_id_str;
+          throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        }
       }
     }
   }
 
   public function drop_lookup_table($if_exists = true) {
-    foreach ($this->get_config()->get_lookup_shard_ids() as $shard_id) {
-      try {
-        $db_schema = $this->get_session()->get_db_schema($shard_id);
-        $db_schema->drop_table('lookup', $if_exists);
-      }
-      catch (RDB_Error $e) {
-        $message = 'Drop lookup table failed. shard id ' . $shard_id->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+    foreach ($this->get_config()->get_tables() as $table) {
+      $shard_set = $this->get_config()->get_shard_set($table->get_shard_set_id());
+      $lookup_shard_ids = $shard_set->get_lookup_shard_ids();
+      foreach ($lookup_shard_ids as $shard_id_str) {
+        try {
+          $db_schema = $this->get_session()->get_db_schema($shard_id_str);
+          $db_schema->drop_table($table->get_id()->to_string()); 
+        }
+        catch (RDB_Error $e) {
+          $message = 'Drop lookup table failed. shard id ' . $shard_id_str;
+          throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+
+        }
       }
     }
   }
@@ -111,8 +120,8 @@ class Shard_Schema extends Component {
     $lookup_shard_ids = $shard_set->get_lookup_shard_ids();
     foreach ($lookup_shard_ids as $shard_id) {
       try {
-        $db_connecter = $this->get_session()->get_db_connecter($shard_id);
-        $db_connecter->delete('lookup', array('table_id'=>$table_id->to_string()));
+        $db_schema = $this->get_session()->get_db_schema($shard_id);
+        $db_schema->drop_table($table_id->to_string());
       }
       catch (RDB_Error $e) {
         $message = 'Delete lookup row failed. shard id ' . $shard_id->to_string();
@@ -142,7 +151,7 @@ class Shard_Schema extends Component {
         'null'=>FALSE,
         'default'=>''
       ),
-      'table_id'=>array(
+      'data_shard_id'=>array(
         'type'=>'VARCHAR(100)',
         'null'=>FALSE,
         'default'=>''

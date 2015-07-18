@@ -148,12 +148,16 @@
   ],
   "routers": [
     {
-      "id": "machine01",
-      "url":"http://localhost"
+      "id": "router01",
+      "host":"http://localhost",
+      "user":"root",
+      "password":""
     },
     {
-      "id": "machine02",
-      "url":"http://localhost"
+      "id": "router02",
+      "url":"http://localhost",
+      "user":"root",
+      "password":""
     }
   ]
 }
