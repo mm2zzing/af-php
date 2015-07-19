@@ -1,85 +1,39 @@
 <?php
 namespace apdos\kernel\objectid;
 
-use apdos\kernel\core\Time;
-use apdos\kernel\objectid\errors\Backward_Timestamp;
-use apdos\kernel\objectid\errors\Increment_Count_Overflow;
 use apdos\kernel\env\Environment;
 
-
-class ID {
-  const MAX_GENERATE_COUNT_PER_SEC = 65535;
-  const TIMESTAMPE_BYTE = 4;
-  const MACHINE_ID_BYTE = 3;
-  const PROCESS_ID_BYTE = 2;
-  const INCREMENT_COUNT_BYTE = 2;
-
+abstract class ID {
   const ULONG_4BYTE_LE = "V";
   const USHORT_2BYTE_LE = "v";
 
-  public function __construct() {
+  /** 
+   * 헥스 스트링을 통한 객체 초기화 *
+   * @hex string 헥스 스트링 데이터
+   */
+  public function init_by_string($hex) {
+    $this->binary = '';
+    for ($i=0; $i < strlen($hex) - 1; $i += 2) {
+      $this->binary .= chr(hexdec($hex[$i].$hex[$i+1]));
+    }
   }
- 
+
   /**
-   * 머신, 프로세스간 거의 겹치지 않는 11byte 바이너리 데이터를 생성. 
-   * 절대 중복되지 않는건 아니지만 Unique value로 쓸만큼 충분한 수준이다. 
-   * 
-   * Mongodb의 ObjectID도 이와 유사한 방식을 사용한다. 하지만 서버에서 겹치는지 체크를 하므로 안전하다.
+   * 바이너리 데이터를 통한 객체 초기화
    *
-   * Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte)
-   *
-   * @param current_time int 현재 유닉스타임스탬프
-   * @return string 바이너리 문자열
-   *
-   * @throw Object_ID_Error
-   */ 
-  public function generate_id($current_time = -1, $max_generate_count = self::MAX_GENERATE_COUNT_PER_SEC) {
-    if (-1 == $current_time)
-      $current_time = Time::get_instance()->get_timestamp();
+   * @data string 바이너리 데이터
+   */
+  public function init_by_binary($data) {
+    $this->binary = $data;
+  }
 
-    if ($current_time < $this->last_timestamp)
-      throw new Backward_Timestamp('current time is little than last time');
-
-    if ($current_time == $this->last_timestamp) {
-      if ($this->increment >= $max_generate_count)
-        throw new Increment_Count_Overflow('');
+  public function to_string() {
+    $hex='';
+    for ($i=0; $i < strlen($this->binary); $i++) {
+      $hex .= dechex(ord($this->binary[$i]));
     }
-    else {
-      $this->increment = 0; 
-    }
-    $this->increment++;
-    $this->last_timestamp = $current_time;
-    return $this->pack($current_time, $this->increment);
-  }
-
-  public function pack($current_time, $count) {
-    $buf = '';
-    $buf .= pack(self::ULONG_4BYTE_LE, $current_time);
-    $buf .= $this->get_hashed_machine_name();
-    $buf .= pack(self::USHORT_2BYTE_LE, Environment::get_instance()->get_process_id());
-    $buf .= pack(self::USHORT_2BYTE_LE, $count);
-    return $buf;
-  }
-
-  public function unpack($binary) {
-    $result = array();
-    $offset = 0;
-    $data = unpack(self::ULONG_4BYTE_LE, substr($binary, $offset, self::TIMESTAMPE_BYTE));
-    $result['timestamp_segment'] = $data[1];
-    $offset += self::TIMESTAMPE_BYTE;
-
-    $result['machine_id_segment'] = substr($binary, $offset, self::MACHINE_ID_BYTE);
-    $offset += self::MACHINE_ID_BYTE;
-
-    $data = unpack(self::USHORT_2BYTE_LE, substr($binary, $offset, self::PROCESS_ID_BYTE));
-    $result['process_id_segment'] = $data[1];
-    $offset += self::PROCESS_ID_BYTE;
-
-    $data = unpack(self::USHORT_2BYTE_LE, substr($binary, $offset, self::INCREMENT_COUNT_BYTE));
-    $result['increment_count_segment'] = $data[1];
-    return $result;
-  }
-
+    return $hex;
+  } 
 
   /**
    * 3바이트로 해시된 머신값을 돌려준다.
@@ -92,28 +46,15 @@ class ID {
    *
    * @return string 해시된 3바이트 문자열
    */
-  private function get_hashed_machine_name() {
+  protected function get_hashed_machine_name($hash_size) {
     $result = Environment::get_instance()->get_host_name();
-    return substr(md5($result), 0, self::MACHINE_ID_BYTE);
+    return substr(md5($result), 0, $hash_size);
   }
 
-  public function reset() {
-    $this->increment = 0;
-    $this->last_timestamp = 0;
+  protected function get_process_id() {
+    return Environment::get_instance()->get_process_id();
   }
 
-  public function get_current_increment() {
-    return $this->increment;
-  }
-
-  private $increment = 0; 
-  private $last_timestamp = 0;
-
-  public static function get_instance() {
-    static $instance = null;
-    if (null == $instance) {
-      $instance = new ID();
-    }
-    return $instance;
-  }
+  protected $binary;
 }
+

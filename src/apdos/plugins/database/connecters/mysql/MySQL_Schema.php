@@ -30,7 +30,6 @@ class MySQL_Schema extends RDB_Schema {
     if ($if_not_exists)
       $query .= 'IF NOT EXISTS ';
     $query .= $name;
-    $result = true;
     $this->get_connecter(MySQL_Connecter::get_class_name())->query($query);
   }
 

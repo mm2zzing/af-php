@@ -18,7 +18,7 @@ class Test_Case {
   public function tear_down() {
   }
 
-  protected function assert($expression, $msg) {
+  protected function assert($expression, $msg = '') {
     if (!$expression) {
       throw new \Exception('test failed: ' . $msg);
     }

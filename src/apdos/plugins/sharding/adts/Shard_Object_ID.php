@@ -1,8 +1,8 @@
 <?php
 namespace apdos\plugins\sharding\adts;
 
+use apdos\kernel\objectid\ID_Timestamp;
 use apdos\kernel\objectid\ID;
-use apdos\kernel\objectid\Object_ID;
 
 /**
  * @class Shard_Object_ID
@@ -11,43 +11,86 @@ use apdos\kernel\objectid\Object_ID;
  *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte) + Lookup Shard ID(3byte)
  * @authoer Lee, Hyeon-gi
  */
-class Shard_Object_ID extends Object_ID {
+class Shard_Object_ID extends ID {
+  const TIMESTAMPE_BYTE = 4;
+  const MACHINE_ID_BYTE = 3;
+  const PROCESS_ID_BYTE = 2;
+  const INCREMENT_COUNT_BYTE = 2;
   const LOOKUP_SHARD_ID_SIZE = 3;
 
   public function __construct() {
   }
 
-  public function init($lookup_shard_id, $current_time = -1, $max_generate_count = ID::MAX_GENERATE_COUNT_PER_SEC) {
-    $this->lookup_shard_id = $lookup_shard_id;
-    parent::init($current_time, $max_generate_count);
+  public function init($lookup_shard_id, $current_time = -1, $max_generate_count = ID_Timestamp::MAX_GENERATE_COUNT_PER_SEC) {
+    parent::init_by_binary($this->packs($lookup_shard_id, $current_time, $max_generate_count));
   }
 
-  // @override 
-  protected function pack_segments() {
-    $this->binary = ID::get_instance()->generate_id($this->current_time, $this->max_generate_count);
-    $this->binary .= $this->lookup_shard_id->to_string_hash(self::LOOKUP_SHARD_ID_SIZE);
+  protected function packs($lookup_shard_id, $current_time, $max_generate_count) {
+    $timestamp = ID_Timestamp::get_instance()->generate($current_time, $max_generate_count);
+    $binary = '';
+    $binary .= pack(ID::ULONG_4BYTE_LE, $timestamp['gen_timestamp']);
+    $binary .= $this->get_hashed_machine_name(self::MACHINE_ID_BYTE);
+    $binary .= pack(ID::USHORT_2BYTE_LE, $this->get_process_id());
+    $binary .= pack(ID::USHORT_2BYTE_LE, $timestamp['gen_increment']);
+    $binary .= $lookup_shard_id->to_string_hash(self::LOOKUP_SHARD_ID_SIZE);
+    return $binary;
   }
 
-  // @override 
-  public function get_lookup_shard_id_segment() {
-    $this->unpack_segments();
-    return $this->lookup_shard_id_segment;
+  public function get_timestamp() {
+    $this->unpacks();
+    return $this->timestamp;
   }
 
-  protected function unpack_segments() {
+  public function get_machine_id() {
+    $this->unpacks();
+    return $this->machine_id;
+  }
+
+  public function get_process_id() {
+    $this->unpacks();
+    return $this->process_id;
+  }
+
+  public function get_increment_count() {
+    $this->unpacks();
+    return $this->increment_count;
+  }
+
+  public function get_lookup_shard_id() {
+    $this->unpacks();
+    return $this->lookup_shard_id;
+  }
+
+  protected function unpacks() {
     if (!$this->unpacked) {
-      $unpack = ID::get_instance()->unpack($this->binary);
-      $this->timestamp_segment = $unpack['timestamp_segment'];
-      $this->machine_id_segment = $unpack['machine_id_segment'];
-      $this->process_id_segment = $unpack['process_id_segment'];
-      $this->increment_count_segment = $unpack['increment_count_segment'];
-     
-      $offset = strlen($this->binary) - self::LOOKUP_SHARD_ID_SIZE; 
-      $this->lookup_shard_id_segment = substr($this->binary, $offset, self::LOOKUP_SHARD_ID_SIZE);
+      $result = array();
+      $offset = 0;
+      $data = unpack(ID::ULONG_4BYTE_LE, substr($this->binary, $offset, self::TIMESTAMPE_BYTE));
+      $this->timestamp = $data[1];
+      $offset += self::TIMESTAMPE_BYTE;
 
+      $this->machine_id = substr($this->binary, $offset, self::MACHINE_ID_BYTE);
+      $offset += self::MACHINE_ID_BYTE;
+
+      $data = unpack(ID::USHORT_2BYTE_LE, substr($this->binary, $offset, self::PROCESS_ID_BYTE));
+      $this->process_id = $data[1];
+      $offset += self::PROCESS_ID_BYTE;
+
+      $data = unpack(ID::USHORT_2BYTE_LE, substr($this->binary, $offset, self::INCREMENT_COUNT_BYTE));
+      $this->increment_count = $data[1];
+      $offset += self::INCREMENT_COUNT_BYTE;
+
+      $this->lookup_shard_id = substr($this->binary, $offset, self::LOOKUP_SHARD_ID_SIZE);
       $this->unpacked != $this->unpacked;
     }
   }
+
+  private $unpacked = false;
+  private $timestamp;
+  private $machine_id;
+  private $process_id;
+  private $increment_count;
+  private $lookup_shard_id;
 
   /**
    * Shard_Object_ID를 생성한다.
@@ -58,13 +101,10 @@ class Shard_Object_ID extends Object_ID {
    *
    * @return Shard_Object_ID
    */
-  public static function create($lookup_shard_id, $current_time = -1, $max_generate_count = ID::MAX_GENERATE_COUNT_PER_SEC) {
+  public static function create($lookup_shard_id, $current_time = -1, $max_generate_count = ID_Timestamp::MAX_GENERATE_COUNT_PER_SEC) {
     $result = new Shard_Object_ID();
     $result->init($lookup_shard_id, $current_time, $max_generate_count);
     return $result;
   }
-
-  private $lookup_shard_id;
-  private $lookup_shard_id_segment;
 }
 

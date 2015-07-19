@@ -2,6 +2,7 @@
 namespace tests\apdos\plugins\sharding;
 
 use apdos\kernel\objectid\ID;
+use apdos\kernel\objectid\ID_Timestamp;
 use apdos\kernel\objectid\Shard_ID;
 use apdos\plugins\test\Test_Case;
 use apdos\plugins\test\Test_Suite;
@@ -17,9 +18,9 @@ class Sharding_Object_ID_Test extends Test_Case {
     $timestamp = Time::get_instance()->get_timestamp();
     $lookup_shard_id = new Shard_ID("lookup01");
     $id = Shard_Object_ID::create($lookup_shard_id, $timestamp);
-    $this->assert($id->get_timestamp_segment() == $timestamp, "Get unpack timestamp");
+    $this->assert($id->get_timestamp() == $timestamp, "Get unpack timestamp");
     $hash = $lookup_shard_id->to_string_hash(3);
-    $this->assert($id->get_lookup_shard_id_segment() == $hash, "Get unpack lookup shard id");
+    $this->assert($id->get_lookup_shard_id() == $hash, "Get unpack lookup shard id");
   }
 
   public function test_not_duplicated_ids() {
@@ -29,7 +30,7 @@ class Sharding_Object_ID_Test extends Test_Case {
   }
 
   public function set_up() {
-    ID::get_instance()->reset();
+    ID_Timestamp::get_instance()->reset();
   }
 
   public function tear_down() {

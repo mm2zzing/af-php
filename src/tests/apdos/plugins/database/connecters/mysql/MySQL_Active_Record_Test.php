@@ -16,7 +16,7 @@ class MySQL_Active_Record_Test extends Test_Case {
       'title'=>'test_title'
     );
     $result = $this->session->get_connecter()->insert(self::TABLE, $data);
-    $this->assert($result->get_rows_count() == 1, 'Insert result is success');
+    $this->assert($result->get_rows_count() == 0, 'Insert result is success but not has data');
     $query = 'SELECT title FROM ' . self::TABLE . ' WHERE title=\'test_title\'';
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 1, 'Insert count is 1');
@@ -48,7 +48,7 @@ class MySQL_Active_Record_Test extends Test_Case {
       )
     );
     $result = $this->session->get_connecter()->insert_batch(self::TABLE, $data);
-    $this->assert($result->get_row(0) == TRUE, "Insert result is success");
+    $this->assert($result->get_rows_count() == 0, "Insert result is success. but not has data");
     $query = 'SELECT title FROM ' . self::TABLE;
     $result = $this->session->get_connecter()->query($query);
     $this->assert($result->get_rows_count() == 2, 'Insert count is 2');

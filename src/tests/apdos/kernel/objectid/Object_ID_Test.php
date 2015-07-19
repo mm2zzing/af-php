@@ -6,6 +6,7 @@ use apdos\plugins\test\Test_Suite;
 use apdos\kernel\actor\Actor;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\objectid\ID;
+use apdos\kernel\objectid\ID_Timestamp;
 use apdos\kernel\objectid\Object_ID;
 use apdos\kernel\objectid\Shard_ID;
 use apdos\kernel\core\Time;
@@ -22,7 +23,7 @@ class Object_ID_Test extends Test_Case {
   public function test_create_id() {
     $timestamp = Time::get_instance()->get_timestamp();
     $id = Object_ID::create($timestamp);
-    $this->assert($id->get_timestamp_segment() == $timestamp, "Get unpack timestamp");
+    $this->assert($id->get_timestamp() == $timestamp, "Get unpack timestamp");
   }
 
   public function test_not_duplicated_ids() {
@@ -34,13 +35,13 @@ class Object_ID_Test extends Test_Case {
   public function test_reset_increment() {
     $timestamp = Time::get_instance()->get_timestamp();
     $id = Object_ID::create($timestamp);
-    $this->assert(1 == ID::get_instance()->get_current_increment(), 'Inc is 1');
+    $this->assert(1 == ID_Timestamp::get_instance()->get_increment(), 'Inc is 1');
     $id = Object_ID::create($timestamp);
-    $this->assert(2 == ID::get_instance()->get_current_increment(), 'Inc is 2');
+    $this->assert(2 == ID_Timestamp::get_instance()->get_increment(), 'Inc is 2');
 
     $reset_increment_timestamp = $timestamp + 1;
     $id = Object_ID::create($reset_increment_timestamp);
-    $this->assert(1 == ID::get_instance()->get_current_increment(), 'Inc is 1');
+    $this->assert(1 == ID_Timestamp::get_instance()->get_increment(), 'Inc is 1');
   }
 
   public function test_throw_backward_timestamp() {
@@ -78,7 +79,7 @@ class Object_ID_Test extends Test_Case {
   }
 
   public function set_up() {
-    ID::get_instance()->reset();
+    ID_Timestamp::get_instance()->reset();
   }
 
   public function tear_down() {
