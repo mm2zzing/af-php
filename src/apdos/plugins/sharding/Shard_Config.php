@@ -20,6 +20,8 @@ use apdos\plugins\sharding\adts\Table;
 use apdos\plugins\sharding\adts\Null_Table;
 use apdos\plugins\sharding\adts\Shard_Set;
 use apdos\plugins\sharding\adts\Null_Shard_Set;
+use apdos\plugins\sharding\adts\Shard_Object_ID;
+use apdos\plugins\sharding\errors\Sharding_Error;
 
 class Shard_Config extends Component { 
   public function __construct() {
@@ -33,23 +35,54 @@ class Shard_Config extends Component {
    * @param tables array(object) 샤딩 테이블 리스트
    * @param lookup_shards array(object) 룩업 샤드 리스트
    * @param data_shards array(object) 데이터 샤드 리스트
+   *
+   * @throw Sharding_Error
    */
   public function load($tables, $shard_sets, $shards) {
+    $this->load_tables($tables);
+    $this->load_shard_sets($shard_sets); 
+    $this->load_shards($shards); 
+    $this->validate_shards();
+  }
+
+  private function load_tables($tables) {
     foreach ($tables as $table) {
       $dto = new Table_DTO();
       $dto->id = new Table_ID($table->id);
       $dto->shard_set_id = new Shard_Set_ID($table->shard_set_id);
       array_push($this->tables, new Table($dto));
     }
+  }
+
+  private function load_shard_sets($shard_sets) {
     foreach ($shard_sets as $shard_set) {
       $dto = $this->create_shard_set_dto($shard_set);
       array_push($this->shard_sets, new Shard_Set($dto));
     }
+  }
 
+  private function load_shards($shards) {
     foreach ($shards as $shard) {
       $dto = $this->create_shard_dto($shard);
       array_push($this->shards, new Shard($dto));
     }
+  }
+
+  private function validate_shards() {
+    $ids = array();
+    foreach ($this->shards as $shard) {
+      array_push($ids, $shard->get_id()->to_string());
+    }
+    if (count($this->shards) != count(array_unique($ids)))
+      throw new Sharding_Error('Duplicated shard name', Sharding_Error::CONFIG_FAILED);
+
+    $lookup_shard_ids = $this->get_lookup_shard_ids();
+    $ids = array();
+    foreach ($lookup_shard_ids as $shard_id) {
+      array_push($ids, $shard_id->to_string_hash(Shard_Object_ID::LOOKUP_SHARD_ID_BYTE));
+    }
+    if (count($lookup_shard_ids) != count(array_unique($ids)))
+      throw new Sharding_Error('Duplicated lookup shard hash', Sharding_Error::CONFIG_FAILED);
   }
 
   private function create_shard_set_dto($shard_set) {

@@ -13,6 +13,7 @@ use apdos\plugins\sharding\dtos\DB_DTO;
 use apdos\plugins\sharding\dtos\Shard_DTO;
 use apdos\plugins\sharding\errors\Sharding_Error;
 use apdos\plugins\sharding\adts\Shard_Object_ID;
+use apdos\plugins\database\base\rdb\errors\RDB_Error;
 
 class Shard_Router extends Component { 
   public function __construct() {
@@ -122,7 +123,26 @@ class Shard_Router extends Component {
     return new Shard_Result($results);
   }
 
-  public function get_where($table_id, $wheres, $limit = -1, $offset = -1) {
+  public function get_where($table_id, $wheres) {
+    if (isset($wheres['object_id'])) {
+      $object_id = Shard_Object_ID::create_with_hex($wheres['object_id']);
+      unset($wheres['object_id']);
+      $lookup_shard_id = $object_id->get_lookup_shard_id();
+      // @TODO
+      // 해시된 샤드 아이디로 검색
+      // 룩업샤드를 찾은후 -> 어느 데이터샤드에 위치한지 검색한후 쿼리 전송
+    }
+    else {
+      // @TODO
+      // object_id필드가 없으면 테이블의 모든 데이터 샤드에 데이터 전송
+    }
+
+    // @TODO
+    // Router/Session/Schmea모두 new Table new Shard_ID로 입력받지 말고 문자열 
+    // 로 입력받는다. PHP의 array를 래핑할 필요까진 없다고 봐야 한다. key=>value를 넘기는 경우
+    // 에는 더 그렇다.
+    // Shard_ID 객체를 생성하여 뭔가 추가조작을 해서 넘기는게 필요하지 않으므로..상관없음
+    // 이 내용 위키에 정리
   }
 
   private function get_shard_set($table_id) {

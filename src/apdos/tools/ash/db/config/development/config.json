@@ -3,6 +3,7 @@
   "timezone":"Asia/Seoul",
   "log_enables":["emergency", "alert", "critical", "error", "warning", "notice", "info", "debug"],
   "display_errors": true,
+  "active_assert": true,
   "log_handler": {
     "type":"file", 
     "path":"logs"

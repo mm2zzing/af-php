@@ -8,14 +8,12 @@ abstract class ID {
   const USHORT_2BYTE_LE = "v";
 
   /** 
-   * 헥스 스트링을 통한 객체 초기화 *
+   * 헥스 스트링을 통한 객체 초기화 
+   *
    * @hex string 헥스 스트링 데이터
    */
   public function init_by_string($hex) {
-    $this->binary = '';
-    for ($i=0; $i < strlen($hex) - 1; $i += 2) {
-      $this->binary .= chr(hexdec($hex[$i].$hex[$i+1]));
-    }
+    $this->binary = hex2bin($hex);
   }
 
   /**
@@ -28,11 +26,7 @@ abstract class ID {
   }
 
   public function to_string() {
-    $hex='';
-    for ($i=0; $i < strlen($this->binary); $i++) {
-      $hex .= dechex(ord($this->binary[$i]));
-    }
-    return $hex;
+    return bin2hex($this->binary);
   } 
 
   /**
@@ -46,12 +40,12 @@ abstract class ID {
    *
    * @return string 해시된 3바이트 문자열
    */
-  protected function get_hashed_machine_name($hash_size) {
+  protected function create_hashed_machine_name($hash_size) {
     $result = Environment::get_instance()->get_host_name();
     return substr(md5($result), 0, $hash_size);
   }
 
-  protected function get_process_id() {
+  protected function create_process_id() {
     return Environment::get_instance()->get_process_id();
   }
 

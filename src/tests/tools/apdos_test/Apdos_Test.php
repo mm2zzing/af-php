@@ -36,6 +36,7 @@ use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Where_Test
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Update_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Join_Test;
 use tests\apdos\plugins\database\connecters\mysql\MySQL_Active_Record_Escape_Test;
+use tests\apdos\plugins\sharding\Sharding_Config_Test;
 use tests\apdos\plugins\sharding\Sharding_Schema_Test;
 use tests\apdos\plugins\sharding\Sharding_Router_Test;
 use tests\apdos\plugins\sharding\Sharding_Object_ID_Test;
@@ -122,6 +123,7 @@ class Apdos_Test extends Tool {
       $runner->add(MySQL_Active_Record_Join_Test::create_suite());
       $runner->add(MySQL_Active_Record_Escape_Test::create_suite());
       $runner->add(Sharding_Object_ID_Test::create_suite());
+      $runner->add(Sharding_Config_Test::create_suite());
       $runner->add(Sharding_Schema_Test::create_suite());
       $runner->add(Sharding_Router_Test::create_suite());
     }

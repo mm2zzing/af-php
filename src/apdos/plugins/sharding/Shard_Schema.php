@@ -8,7 +8,7 @@ use apdos\plugins\sharding\errors\Sharding_Error;
 use apdos\plugins\sharding\Shard_Config;
 use apdos\kernel\objectid\Shard_ID;
 use apdos\kernel\log\Logger;
-use apdos\plugins\database\rdb\errors\RDB_Error;
+use apdos\plugins\database\base\rdb\errors\RDB_Error;
 
 class Shard_Schema extends Component {
   private $session;
@@ -133,7 +133,6 @@ class Shard_Schema extends Component {
     foreach ($data_shard_ids as $shard_id) {
       try {
         $db_schema = $this->get_session()->get_db_schema($shard_id);
-        $fields = array_merge($data_fields, $this->get_object_id_fields());
         $db_schema->drop_table($table_id->to_string(), $if_exists);
       }
       catch (RDB_Error $e) {

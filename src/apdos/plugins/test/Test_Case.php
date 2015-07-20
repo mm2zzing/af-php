@@ -19,9 +19,28 @@ class Test_Case {
   }
 
   protected function assert($expression, $msg = '') {
-    if (!$expression) {
+    if (!$expression)
       throw new \Exception('test failed: ' . $msg);
-    }
+  }
+
+  protected function assert_true($expression, $msg = '') {
+    if (!$expression)
+      throw new \Exception('test failed: ' . $msg);
+  }
+
+  protected function assert_false($expression, $msg = '') {
+    if ($expression)
+      throw new \Exception('test failed: ' . $msg);
+  }
+
+  protected function assert_equal($expected, $actual, $msg = '') {
+    if ($expected != $actual)
+      throw new \Exception('test failed: ' . $msg);
+  }
+
+  protected function assert_not_equal($expected, $actual, $msg = '') {
+    if ($expected == $actual)
+      throw new \Exception('test failed: ' . $msg);
   }
 
   /**

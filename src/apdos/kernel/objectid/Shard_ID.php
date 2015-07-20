@@ -36,9 +36,12 @@ class Shard_ID {
    * @return string 해시한 문자열
    */
   public function to_string_hash($size) {
-    return substr(md5($this->id), 0, $size);
+    if (strlen($this->hash) != $size)
+      $this->hash = substr(md5($this->id), 0, $size);
+    return $this->hash;
   }
 
   private $id;
+  private $hash = '';
 }
 

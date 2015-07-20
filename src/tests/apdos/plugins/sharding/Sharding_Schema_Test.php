@@ -85,13 +85,13 @@ class Sharding_Schema_Test extends Test_Case {
   public function test_create_lookup_table() {
     $this->shard_schema->create_database();
 
-    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), false));
-    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), false));
+    $this->assert_has_tables(new Shard_ID('lookup01'), array('table_a', 'table_b', 'table_c', 'table_d'), false);
+    $this->assert_has_tables(new Shard_ID('lookup02'), array('table_a', 'table_b', 'table_c', 'table_d'), false);
 
     $result = $this->create_lookup_table();
     $this->assert(true == $result, 'craete lookup table is success');
-    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), true));
-    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), true));
+    $this->assert_has_tables(new Shard_ID('lookup01'), array('table_a', 'table_b', 'table_c', 'table_d'), true);
+    $this->assert_has_tables(new Shard_ID('lookup02'), array('table_a', 'table_b', 'table_c', 'table_d'), true);
   }
 
   public function test_drop_lookup_table() {
@@ -99,13 +99,13 @@ class Sharding_Schema_Test extends Test_Case {
 
     $result = $this->create_lookup_table();
     $this->assert(true == $result, 'craete lookup table is success');
-    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), true));
-    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), true));
+    $this->assert_has_tables(new Shard_ID('lookup01'), array('table_a', 'table_b', 'table_c', 'table_d'), true);
+    $this->assert_has_tables(new Shard_ID('lookup02'), array('table_a', 'table_b', 'table_c', 'table_d'), true);
 
     $result = $this->drop_lookup_table(); 
     $this->assert(true == $result, 'drop lookup table is success');
-    $this->assert_has_tables(new Shard_ID('lookup01', array('table_a', 'table_b', 'table_c', 'table_d'), false));
-    $this->assert_has_tables(new Shard_ID('lookup02', array('table_a', 'table_b', 'table_c', 'table_d'), false));
+    $this->assert_has_tables(new Shard_ID('lookup01'), array('table_a', 'table_b', 'table_c', 'table_d'), false);
+    $this->assert_has_tables(new Shard_ID('lookup02'), array('table_a', 'table_b', 'table_c', 'table_d'), false);
   } 
 
   public function test_create_table() { 

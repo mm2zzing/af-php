@@ -33,8 +33,9 @@ use apdos\kernel\log\Logger;
   /**
    * 시스템 시작에 필요한 정보를 로드
    */
-  public function load($is_display_errors) {
+  public function load($is_display_errors, $is_assert_active) {
     $this->setup_display_erros($is_display_errors); 
+    $this->setup_assertion($is_assert_active);
     $this->register_handlers();
   }
 
@@ -46,9 +47,22 @@ use apdos\kernel\log\Logger;
     error_reporting(E_ALL);
     if ($is_display)
       ini_set('display_errors', 'On');
-   else
+    else
       ini_set('display_errors', 'Off');
   }
+
+  private function setup_assertion($is_active) {
+    if ($is_active)
+      Assert::get_instance()->active(array($this,"on_assert"));
+    else
+      Assert::get_instance()->inactive();
+  }
+
+  public function on_assert($file, $line, $code, $desc=null) {
+    $message = "ASSERT $desc (file: $file, line: $line, code: $code)";
+    Logger::get_instance()->error('ERROR_HANDLER', $message);
+    throw new Core_Error($message);
+  } 
 
   private function register_handlers() {
     set_error_handler(array($this, 'on_error')); 
@@ -75,6 +89,7 @@ use apdos\kernel\log\Logger;
       Logger::get_instance()->notice('ERROR_HANDLER', $message);
       return;
     }
+    // 예외 발생 시킨다. 예외를 잡아서 처리를 계속 하던지 에러 로그를 남기고 종료시킬지 결정
     throw new Core_Error($message, $err_no);
   }
 
@@ -92,8 +107,6 @@ use apdos\kernel\log\Logger;
       Logger::get_instance()->debug('ERROR_HANDLER', 'os stop');
     }
   }
-
-  private $debug_traces = array();
 
   public static function get_instance() {
     static $instance = null;

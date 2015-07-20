@@ -1,6 +1,8 @@
 <?php
 namespace apdos\kernel\objectid;
 
+use apdos\kernel\core\Assert;
+
 /**
  * @class Object_ID
  *
@@ -14,6 +16,7 @@ class Object_ID extends ID {
   const MACHINE_ID_BYTE = 3;
   const PROCESS_ID_BYTE = 2;
   const INCREMENT_COUNT_BYTE = 2;
+  const TOTAL_BYTE = 11;
 
   public function __construct() {
   }
@@ -31,8 +34,8 @@ class Object_ID extends ID {
     $timestamp = ID_Timestamp::get_instance()->generate($current_time, $max_generate_count);
     $binary = '';
     $binary .= pack(ID::ULONG_4BYTE_LE, $timestamp['gen_timestamp']);
-    $binary .= $this->get_hashed_machine_name(self::MACHINE_ID_BYTE);
-    $binary .= pack(ID::USHORT_2BYTE_LE, $this->get_process_id());
+    $binary .= $this->create_hashed_machine_name(self::MACHINE_ID_BYTE);
+    $binary .= pack(ID::USHORT_2BYTE_LE, $this->create_process_id());
     $binary .= pack(ID::USHORT_2BYTE_LE, $timestamp['gen_increment']);
     return $binary;
   }
@@ -64,6 +67,7 @@ class Object_ID extends ID {
    */ 
   private function unpacks() {
     if (!$this->unpacked) {
+      ASSERT('strlen($this->binary) == self::TOTAL_BYTE');
       $result = array();
       $offset = 0;
       $data = unpack(ID::ULONG_4BYTE_LE, substr($this->binary, $offset, self::TIMESTAMPE_BYTE));

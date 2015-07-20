@@ -3,12 +3,13 @@ namespace apdos\plugins\sharding\adts;
 
 use apdos\kernel\objectid\ID_Timestamp;
 use apdos\kernel\objectid\ID;
+use apdos\kernel\core\Assert;
 
 /**
- * @class Shard_Object_ID
- *
- * @brieif 샤드간에 겹치지 않는 유니크 아이디 객체
- *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte) + Lookup Shard ID(3byte)
+ * @class Shard_Object_ID 
+ * 
+ * @brieif 샤드간에 겹치지 않는 유니크 아이디 객체 
+ *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte) + Lookup Shard ID(3byte) 
  * @authoer Lee, Hyeon-gi
  */
 class Shard_Object_ID extends ID {
@@ -16,7 +17,8 @@ class Shard_Object_ID extends ID {
   const MACHINE_ID_BYTE = 3;
   const PROCESS_ID_BYTE = 2;
   const INCREMENT_COUNT_BYTE = 2;
-  const LOOKUP_SHARD_ID_SIZE = 3;
+  const LOOKUP_SHARD_ID_BYTE = 3;
+  const TOTAL_BYTE = 14;
 
   public function __construct() {
   }
@@ -29,10 +31,10 @@ class Shard_Object_ID extends ID {
     $timestamp = ID_Timestamp::get_instance()->generate($current_time, $max_generate_count);
     $binary = '';
     $binary .= pack(ID::ULONG_4BYTE_LE, $timestamp['gen_timestamp']);
-    $binary .= $this->get_hashed_machine_name(self::MACHINE_ID_BYTE);
-    $binary .= pack(ID::USHORT_2BYTE_LE, $this->get_process_id());
+    $binary .= $this->create_hashed_machine_name(self::MACHINE_ID_BYTE);
+    $binary .= pack(ID::USHORT_2BYTE_LE, $this->create_process_id());
     $binary .= pack(ID::USHORT_2BYTE_LE, $timestamp['gen_increment']);
-    $binary .= $lookup_shard_id->to_string_hash(self::LOOKUP_SHARD_ID_SIZE);
+    $binary .= $lookup_shard_id->to_string_hash(self::LOOKUP_SHARD_ID_BYTE);
     return $binary;
   }
 
@@ -63,6 +65,7 @@ class Shard_Object_ID extends ID {
 
   protected function unpacks() {
     if (!$this->unpacked) {
+      ASSERT('strlen($this->binary) == self::TOTAL_BYTE');
       $result = array();
       $offset = 0;
       $data = unpack(ID::ULONG_4BYTE_LE, substr($this->binary, $offset, self::TIMESTAMPE_BYTE));
@@ -79,8 +82,7 @@ class Shard_Object_ID extends ID {
       $data = unpack(ID::USHORT_2BYTE_LE, substr($this->binary, $offset, self::INCREMENT_COUNT_BYTE));
       $this->increment_count = $data[1];
       $offset += self::INCREMENT_COUNT_BYTE;
-
-      $this->lookup_shard_id = substr($this->binary, $offset, self::LOOKUP_SHARD_ID_SIZE);
+      $this->lookup_shard_id = substr($this->binary, $offset, self::LOOKUP_SHARD_ID_BYTE);
       $this->unpacked != $this->unpacked;
     }
   }
@@ -104,6 +106,12 @@ class Shard_Object_ID extends ID {
   public static function create($lookup_shard_id, $current_time = -1, $max_generate_count = ID_Timestamp::MAX_GENERATE_COUNT_PER_SEC) {
     $result = new Shard_Object_ID();
     $result->init($lookup_shard_id, $current_time, $max_generate_count);
+    return $result;
+  }
+
+  public static function create_with_hex($string) {
+    $result = new Shard_Object_ID();
+    $result->init_by_string($string);
     return $result;
   }
 }

@@ -17,7 +17,7 @@ class Shard_Result {
   public function __construct($rdb_results) {
     foreach ($rdb_results as $result) {
       $this->time += $result->get_time();
-      array_merge($this->rows, $result->get_rows());
+      $this->rows = array_merge($this->rows, $result->get_rows());
     }
   }
 
