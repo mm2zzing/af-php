@@ -80,7 +80,7 @@ class Config extends Component {
       if ($i == (count($tokens) - 1)) {
         if (!is_array($current->$name))
           throw new Config_Error("Target path is not array", Config_Error::PUSH_FAILED);
-        array_push($current->$name, $value);
+        array_push($current->$name, Object_Converter::to_object($value));
       }
       else { 
         if (!isset($current->$name))

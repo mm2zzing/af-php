@@ -7,6 +7,7 @@ class Sharding_Error extends Apdos_Error {
   const QUERY_FAILED = 1;
   const CONFIG_FAILED = 2;
   const COMPONENT_FAILED = 3;
+  const SHARD_HASH_DUPLICATED = 4;
 
   public function __construct($message, $code) {
     parent::__construct('Sharding_Error::' . $message, $code);

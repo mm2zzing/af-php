@@ -34,7 +34,7 @@ class Shard_Object_ID extends ID {
     $binary .= $this->create_hashed_machine_name(self::MACHINE_ID_BYTE);
     $binary .= pack(ID::USHORT_2BYTE_LE, $this->create_process_id());
     $binary .= pack(ID::USHORT_2BYTE_LE, $timestamp['gen_increment']);
-    $binary .= $lookup_shard_id->to_string_hash(self::LOOKUP_SHARD_ID_BYTE);
+    $binary .= $lookup_shard_id->to_string_hash();
     return $binary;
   }
 

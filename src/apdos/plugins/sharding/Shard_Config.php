@@ -46,6 +46,7 @@ class Shard_Config extends Component {
   }
 
   private function load_tables($tables) {
+    $this->tables = array();
     foreach ($tables as $table) {
       $dto = new Table_DTO();
       $dto->id = new Table_ID($table->id);
@@ -55,6 +56,7 @@ class Shard_Config extends Component {
   }
 
   private function load_shard_sets($shard_sets) {
+    $this->shard_sets = array();
     foreach ($shard_sets as $shard_set) {
       $dto = $this->create_shard_set_dto($shard_set);
       array_push($this->shard_sets, new Shard_Set($dto));
@@ -62,6 +64,7 @@ class Shard_Config extends Component {
   }
 
   private function load_shards($shards) {
+    $this->shards = array();
     foreach ($shards as $shard) {
       $dto = $this->create_shard_dto($shard);
       array_push($this->shards, new Shard($dto));
@@ -71,18 +74,10 @@ class Shard_Config extends Component {
   private function validate_shards() {
     $ids = array();
     foreach ($this->shards as $shard) {
-      array_push($ids, $shard->get_id()->to_string());
+      array_push($ids, $shard->get_id()->to_string_hash());
     }
     if (count($this->shards) != count(array_unique($ids)))
-      throw new Sharding_Error('Duplicated shard name', Sharding_Error::CONFIG_FAILED);
-
-    $lookup_shard_ids = $this->get_lookup_shard_ids();
-    $ids = array();
-    foreach ($lookup_shard_ids as $shard_id) {
-      array_push($ids, $shard_id->to_string_hash(Shard_Object_ID::LOOKUP_SHARD_ID_BYTE));
-    }
-    if (count($lookup_shard_ids) != count(array_unique($ids)))
-      throw new Sharding_Error('Duplicated lookup shard hash', Sharding_Error::CONFIG_FAILED);
+      throw new Sharding_Error('Duplicated lookup shard hash', Sharding_Error::SHARD_HASH_DUPLICATED);
   }
 
   private function create_shard_set_dto($shard_set) {
@@ -99,7 +94,10 @@ class Shard_Config extends Component {
 
   private function create_shard_dto($shard) {
     $dto = new Shard_DTO();
-    $dto->id = new Shard_ID($shard->id);
+    if (isset($shard->hash))
+      $dto->id = new Shard_ID($shard->id, $shard->hash);
+    else
+      $dto->id = new Shard_ID($shard->id);
     $dto->master = new DB_DTO();
     $this->import_db_dto($dto->master, $shard->master);
     $dto->slave = new DB_DTO();
