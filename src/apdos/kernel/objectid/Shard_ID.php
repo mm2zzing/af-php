@@ -1,6 +1,12 @@
 <?php
 namespace apdos\kernel\objectid;
 
+/**
+ * @class Shard_ID 
+ *
+ * @brief 샤드 머신간의 구별을 위한 ID
+ * @author Lee, Hyeon-gi
+ */
 class Shard_ID extends ID {
   const DEFAULT_HASH_SIZE = 3;
 
@@ -22,7 +28,7 @@ class Shard_ID extends ID {
   }
  
   public function to_string() {
-    return $this->binary;
+    return $this->get_value();
   }
 
   public function to_hash($size = self::DEFAULT_HASH_SIZE) {

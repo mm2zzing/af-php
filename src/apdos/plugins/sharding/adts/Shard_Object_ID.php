@@ -9,7 +9,9 @@ use apdos\kernel\core\Assert;
 /**
  * @class Shard_Object_ID 
  * 
- * @brieif 샤드간에 겹치지 않는 유니크 아이디 객체 
+ * @brieif 샤드된 데이터의 유니크 아이디 클래스 
+ *         머신, 프로세스, 룩업 샤드간 겹치지 않는다.
+ * 
  *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte) + Lookup Shard ID(3byte) 
  * @authoer Lee, Hyeon-gi
  */
@@ -33,11 +35,11 @@ class Shard_Object_ID extends ID {
     $this->binary .= ID::create_hashed_machine_name(self::MACHINE_ID_BYTE);
     $this->binary .= pack(self::USHORT_2BYTE_LE, ID::create_process_id());
     $this->binary .= pack(self::USHORT_2BYTE_LE, $timestamp['gen_increment']);
-    $this->binary .= $lookup_shard_id->to_hash();
+    $this->binary .= $lookup_shard_id->to_hash(Shard_ID::DEFAULT_HASH_SIZE);
   }
 
   public function equal($id) {
-    if ($id->get_type() != $this->get_type())
+    if ($id->get_class_name() != $this->get_class_name())
       return false;
     return $this->to_hash() == $shard_id->to_hash() ? true : false;
   }

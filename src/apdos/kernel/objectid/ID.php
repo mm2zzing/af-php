@@ -4,19 +4,21 @@ namespace apdos\kernel\objectid;
 use apdos\kernel\core\Object;
 use apdos\kernel\env\Environment;
 
+/**
+ * @class ID
+ *
+ * @birief Unique Identifier 처리를 위한 베이스 클래스
+ * @author Lee, Hyeon-gi
+ */
 abstract class ID extends Object {  
   const DEFAULT_HASH_SIZE = 3;
-
-  public function init_by_binary($data) {
-    $this->binary = $data;
-  }
+  
+  abstract public function init_by_string($data);
+  abstract public function to_string(); 
 
   public function get_value() {
     return $this->binary;
   }
-
-  abstract public function init_by_string($data);
-  abstract public function to_string(); 
 
   public function equal($id) {
     return $this->binary == $id->get_value() ? true : false;
@@ -33,10 +35,10 @@ abstract class ID extends Object {
     return substr(md5($this->binary), 0, $size);
   }
 
-  protected $binary;
+  protected $binary = '';
 
   /**
-   * 3바이트로 해시된 머신값을 돌려준다.
+   * 머신간 고유값 생성 메서드
    * 
    * 클라우드 서비스의 hostname은 public ip address기반으로 유니크하게 정해져있이므로
    * 머신 아이디로 사용하기에 충분한다.
@@ -51,6 +53,9 @@ abstract class ID extends Object {
     return substr(md5($result), 0, $hash_size);
   }
 
+  /**
+   * 프로세스간 고유값 생성을 위한 메서드
+   */
   static public function create_process_id() {
     return Environment::get_instance()->get_process_id();
   }

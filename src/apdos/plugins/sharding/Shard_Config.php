@@ -85,7 +85,7 @@ class Shard_Config extends Component {
   private function validate_shards() {
     $ids = array();
     foreach ($this->shards as $shard)
-      array_push($ids, $shard->get_id()->to_hash());
+      array_push($ids, $shard->get_id()->to_hash(Shard_ID::DEFAULT_HASH_SIZE));
     if (count($this->shards) != count(array_unique($ids)))
       throw new Shard_Error('Duplicated shard hash', Shard_Error::SHARD_HASH_DUPLICATED);
   }

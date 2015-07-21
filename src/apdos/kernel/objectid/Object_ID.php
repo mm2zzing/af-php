@@ -6,7 +6,8 @@ use apdos\kernel\core\Assert;
 /**
  * @class Object_ID
  *
- * @brieif 머신, 프로세스간 겹치지 않는 유니크 아이디 객체
+ * @brieif 샤드된 데이터의 유니크 아이디 클래스
+ *         머신, 프로세스간 겹치지 않는 유니크 아이디 객체
  *
  *         Timestamp(4byte) + Machine ID(3byte) + Process ID(2byte) + Increment count(2byte)
  * @authoer Lee, Hyeon-gi
