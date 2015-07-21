@@ -11,7 +11,7 @@ use apdos\plugins\database\connecters\mysql\MySQL_Schema;
 use apdos\plugins\database\connecters\mysql\MySQL_Util;
 use apdos\plugins\sharding\dtos\DB_DTO;
 use apdos\plugins\sharding\dtos\Shard_DTO;
-use apdos\plugins\sharding\errors\Sharding_Error;
+use apdos\plugins\sharding\errors\Shard_Error;
 
 class Shard_Session extends Component { 
   public function __construct() {
@@ -42,7 +42,7 @@ class Shard_Session extends Component {
   private function build_shard_db($shard_id) {
     $shard = $this->get_config()->get_shard($shard_id);
     if ($shard->is_null())
-      throw new Sharding_Error('shard dto is null. shard is ' . $shard_id->get_value(), Sharding_Error::CONFIG_FAILED);
+      throw new Shard_Error('shard dto is null. shard is ' . $shard_id->get_value(), Shard_Error::CONFIG_FAILED);
 
     $master_name = $this->get_db_session_name($shard_id, true); 
     if ($this->get_property($master_name)->is_null()) {
@@ -82,7 +82,7 @@ class Shard_Session extends Component {
   private function get_config() {
     $component = $this->get_component(Shard_Config::get_class_name());
     if ($component->is_null())
-      throw new Sharding_Error("Shard_Config is null", Sharding_Error::COMPONENT_FAILED);
+      throw new Shard_Error("Shard_Config is null", Shard_Error::COMPONENT_FAILED);
     return $component;
   }
 

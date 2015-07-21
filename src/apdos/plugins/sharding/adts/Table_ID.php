@@ -1,31 +1,31 @@
 <?php
 namespace apdos\plugins\sharding\adts;
 
-class Table_ID {
+use apdos\kernel\objectid\ID;
+
+class Table_ID extends ID {
+  public function __construct() {
+  }
+
   /** 
-   * constructor
    * 
    * @param id_string string 아이디값
    */
-  public function __construct($id) {
-    $this->id = $id;
-  }
-
-  public function get_value() {
-    return $this->id;
+  public function init_by_string($id) {
+    $this->binary = $id;
   }
 
   public function to_string() {
-    return $this->id;
-  }
-
-  public function equal($other) {
-    return $other->get_value() == $this->id ? true : false;
+    return $this->binary;
   }
 
   public function is_null() {
     return false;
   }
 
-  private $id;
+  static public function create($id_string) {
+    $id = new Table_ID();
+    $id->init_by_string($id_string);
+    return $id;
+  }
 }

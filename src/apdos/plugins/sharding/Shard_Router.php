@@ -11,7 +11,7 @@ use apdos\plugins\database\connecters\mysql\MySQL_Schema;
 use apdos\plugins\database\connecters\mysql\MySQL_Util;
 use apdos\plugins\sharding\dtos\DB_DTO;
 use apdos\plugins\sharding\dtos\Shard_DTO;
-use apdos\plugins\sharding\errors\Sharding_Error;
+use apdos\plugins\sharding\errors\Shard_Error;
 use apdos\plugins\sharding\adts\Shard_Object_ID;
 use apdos\plugins\database\base\rdb\errors\RDB_Error;
 
@@ -29,7 +29,7 @@ class Shard_Router extends Component {
         $connecter->select_database($shard->get_slave()->db_name);
       }
       catch (RDB_Error $e) {
-        throw new Sharding_Error($e->getMessage(), Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($e->getMessage(), Shard_Error::QUERY_FAILED);
       }
     }
   }
@@ -39,7 +39,7 @@ class Shard_Router extends Component {
    *
    * @param table_id Table_ID 테이블 아이디
    *
-   * @throw Sharding_Error
+   * @throw Shard_Error
    */
   public function has_table($table_id) {
     $shard_ids = $this->get_shard_set($table_id)->get_data_shard_ids();
@@ -50,7 +50,7 @@ class Shard_Router extends Component {
           return false;
       }
       catch (RDB_Error $e) {
-        throw new Sharding_Error($e->getMessage(), Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($e->getMessage(), Shard_Error::QUERY_FAILED);
       }
     }
     return true;
@@ -59,7 +59,7 @@ class Shard_Router extends Component {
   /**
    * 룩업 테이블 정보를 가지고 있는지 조회
    *
-   * @throw Sharding_Error
+   * @throw Shard_Error
    */
   public function has_lookup_table() {
     foreach ($this->get_config()->get_tables() as $table) {
@@ -72,7 +72,7 @@ class Shard_Router extends Component {
             return false;
         }
         catch (RDB_Error $e) {
-          throw new Sharding_Error($e->getMessage(), Sharding_Error::QUERY_FAILED);
+          throw new Shard_Error($e->getMessage(), Shard_Error::QUERY_FAILED);
         }
       }
     }
@@ -85,7 +85,7 @@ class Shard_Router extends Component {
    * @param table_id Table_ID 테이블 아이디
    * @param data array(key=>value) 추가할 데이터셋
    *
-   * @throw Sharding_Error
+   * @throw Shard_Error
    */
   public function insert($table_id, $data) {
     $shard_set = $this->get_shard_set($table_id);
@@ -98,7 +98,7 @@ class Shard_Router extends Component {
     }
     catch (RDB_Error $e) {
       $message = 'Insert shard id is ' . $insert_shard_id->to_string() . ': ' . $e->getMessage();
-      throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+      throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
     }
   }
 
@@ -117,7 +117,7 @@ class Shard_Router extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Get failed. shard_id is ' . $shard_id->to_string() . ': ' . $e->getMessage();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
     return new Shard_Result($results);
@@ -148,22 +148,22 @@ class Shard_Router extends Component {
   private function get_shard_set($table_id) {
     $shard_set = $this->get_config()->get_table_shard_set($table_id);
     if ($shard_set->is_null())
-      throw new Sharding_Error('Shard set is null. table id is ' . $table_id->to_string(), 
-                               Sharding_Error::CONFIG_FAILED);
+      throw new Shard_Error('Shard set is null. table id is ' . $table_id->to_string(), 
+                               Shard_Error::CONFIG_FAILED);
     return $shard_set;
   }
   
   private function get_config() {
     $component = $this->get_component(Shard_Config::get_class_name());
     if ($component->is_null())
-      throw new Sharding_Error("Shard_Config is null", Sharding_Error::COMPONENT_FAILED);
+      throw new Shard_Error("Shard_Config is null", Shard_Error::COMPONENT_FAILED);
     return $component;
   }
 
   private function get_session() {
     $component = $this->get_component(Shard_Session::get_class_name());
     if ($component->is_null())
-      throw new Sharding_Error("Shard_Session is null", Sharding_Error::COMPONENT_FAILED);
+      throw new Shard_Error("Shard_Session is null", Shard_Error::COMPONENT_FAILED);
     return $component;
   }
 }

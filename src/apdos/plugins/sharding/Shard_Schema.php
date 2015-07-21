@@ -4,7 +4,7 @@ namespace apdos\plugins\sharding;
 use apdos\kernel\core\Kernel;
 use apdos\kernel\actor\Component;
 use apdos\plugins\sharding\Shard_Router;
-use apdos\plugins\sharding\errors\Sharding_Error;
+use apdos\plugins\sharding\errors\Shard_Error;
 use apdos\plugins\sharding\Shard_Config;
 use apdos\kernel\objectid\Shard_ID;
 use apdos\kernel\log\Logger;
@@ -27,7 +27,7 @@ class Shard_Schema extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Create database failed. shard id ' . $shard->get_id()->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
   }
@@ -51,7 +51,7 @@ class Shard_Schema extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Drop database failed. shard id ' . $shard->get_id()->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
   }
@@ -67,7 +67,7 @@ class Shard_Schema extends Component {
         }
         catch (RDB_Error $e) {
           $message = 'Create lookup table failed. shard id ' . $shard_id_str;
-          throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+          throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
         }
       }
     }
@@ -84,7 +84,7 @@ class Shard_Schema extends Component {
         }
         catch (RDB_Error $e) {
           $message = 'Drop lookup table failed. shard id ' . $shard_id_str;
-          throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+          throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
 
         }
       }
@@ -97,7 +97,7 @@ class Shard_Schema extends Component {
    * @param table_id Table_ID 샤딩 테이블 아이디
    * @param data_fields array(key=>array(key=>value)) 데이터 샤드 테이블의 필드 속성
    *
-   * @throw Sharding_Error 요청을 한 테이블 아이디 / 샤드 셋 정보가 설정에 존재하지 않는 경우 예외 발생
+   * @throw Shard_Error 요청을 한 테이블 아이디 / 샤드 셋 정보가 설정에 존재하지 않는 경우 예외 발생
    */
   public function create_table($table_id, $data_fields) {
     $data_shard_ids = $this->get_config()->get_table_shard_set($table_id)->get_data_shard_ids();
@@ -109,7 +109,7 @@ class Shard_Schema extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Create data table failed. shard id ' . $shard_id->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
   }
@@ -125,7 +125,7 @@ class Shard_Schema extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Delete lookup row failed. shard id ' . $shard_id->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
 
@@ -137,7 +137,7 @@ class Shard_Schema extends Component {
       }
       catch (RDB_Error $e) {
         $message = 'Drop data table failed. shard id ' . $shard_id->to_string();
-        throw new Sharding_Error($message, Sharding_Error::QUERY_FAILED);
+        throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
     return true;
@@ -176,14 +176,14 @@ class Shard_Schema extends Component {
   private function get_session() {
     $result = $this->get_component(Shard_Session::get_class_name());
     if ($result->is_null())
-      throw new Sharding_Error("Shard_Session is null", Sharding_Error::COMPONENT_FAILED);
+      throw new Shard_Error("Shard_Session is null", Shard_Error::COMPONENT_FAILED);
     return $result;
   }
 
   private function get_config() {
     $result = $this->get_component(Shard_Config::get_class_name());
     if ($result->is_null())
-      throw new Sharding_Error("Shard_Config is null", Sharding_Error::COMPONENT_FAILED);
+      throw new Shard_Error("Shard_Config is null", Shard_Error::COMPONENT_FAILED);
     return $result;
   }
 }

@@ -66,42 +66,45 @@ class Sharding_Router_Test extends Test_Case {
     $this->shard_schema->create_lookup_table();
     $this->assert_true($this->shard_router->has_lookup_table());
     $this->assert_true($this->shard_router->has_lookup_table());
-    $this->assert_false($this->shard_router->has_table(new Table_ID('table_a')));
-    $this->assert_false($this->shard_router->has_table(new Table_ID('table_b')));
+    $this->assert_false($this->shard_router->has_table(Table_ID::create('table_a')));
+    $this->assert_false($this->shard_router->has_table(Table_ID::create('table_b')));
 
-    $this->shard_schema->create_table(new Table_ID('table_a'), $this->get_data_fields());
-    $this->shard_schema->create_table(new Table_ID('table_b'), $this->get_data_fields());
-    $this->assert_true($this->shard_router->has_table(new Table_ID('table_a')));
-    $this->assert_true($this->shard_router->has_table(new Table_ID('table_b')));
+    $this->shard_schema->create_table(Table_ID::create('table_a'), $this->get_data_fields());
+    $this->shard_schema->create_table(Table_ID::create('table_b'), $this->get_data_fields());
+    $this->assert_true($this->shard_router->has_table(Table_ID::create('table_a')));
+    $this->assert_true($this->shard_router->has_table(Table_ID::create('table_b')));
   }
 
   public function test_insert() {
     $this->preapre_data_schema();
-    $this->assert_equal(0, $this->shard_session->get_db_connecter(new Shard_ID('table_a01'))->count('table_a'), 'table_a count is 0');
-    $this->assert_equal(0, $this->shard_session->get_db_connecter(new Shard_ID('table_a02'))->count('table_a'), 'table_a count is 0');
-    $this->assert_equal(0, $this->shard_session->get_db_connecter(new Shard_ID('table_b01'))->count('table_b'), 'table_a count is 0');
+    $this->assert_equal(0, $this->shard_session->get_db_connecter(Shard_ID::create('data01'))->count('table_a'), 
+                        'table_a count is 0');
+    $this->assert_equal(0, $this->shard_session->get_db_connecter(Shard_ID::create('data02'))->count('table_a'), 
+                        'table_a count is 0');
+    $this->assert_equal(0, $this->shard_session->get_db_connecter(Shard_ID::create('data03'))->count('table_b'), 
+                        'table_a count is 0');
 
     $data = array('field1'=>'foo', 'field2'=>'bar');
-    $this->shard_router->insert(new Table_ID('table_a'), $data);
-    $this->assert_equal(1, $this->get_table_row_count(new Table_ID('table_a')), 'row count is 1');
-    $this->assert_equal(0, $this->get_table_row_count(new Table_ID('table_b')), 'row count is 0');
-    $this->assert_object_ids(array(new Table_ID('table_a'), new Table_ID('table_b')));
+    $this->shard_router->insert(Table_ID::create('table_a'), $data);
+    $this->assert_equal(1, $this->get_table_row_count(Table_ID::create('table_a')), 'row count is 1');
+    $this->assert_equal(0, $this->get_table_row_count(Table_ID::create('table_b')), 'row count is 0');
+    $this->assert_object_ids(array(Table_ID::create('table_a'), Table_ID::create('table_b')));
 
-    $this->shard_router->insert(new Table_ID('table_b'), $data);
-    $this->assert_equal(1, $this->get_table_row_count(new Table_ID('table_a')), 'row count is 1');
-    $this->assert_equal(1, $this->get_table_row_count(new Table_ID('table_b')), 'row count is 1');
-    $this->assert_object_ids(array(new Table_ID('table_a'), new Table_ID('table_b')));
+    $this->shard_router->insert(Table_ID::create('table_b'), $data);
+    $this->assert_equal(1, $this->get_table_row_count(Table_ID::create('table_a')), 'row count is 1');
+    $this->assert_equal(1, $this->get_table_row_count(Table_ID::create('table_b')), 'row count is 1');
+    $this->assert_object_ids(array(Table_ID::create('table_a'), Table_ID::create('table_b')));
 
-    $this->shard_router->insert(new Table_ID('table_b'), $data);
-    $this->assert_equal(1, $this->get_table_row_count(new Table_ID('table_a')), 'row count is 1');
-    $this->assert_equal(2, $this->get_table_row_count(new Table_ID('table_b')), 'row count is 2');
-    $this->assert_object_ids(array(new Table_ID('table_a'), new Table_ID('table_b')));
+    $this->shard_router->insert(Table_ID::create('table_b'), $data);
+    $this->assert_equal(1, $this->get_table_row_count(Table_ID::create('table_a')), 'row count is 1');
+    $this->assert_equal(2, $this->get_table_row_count(Table_ID::create('table_b')), 'row count is 2');
+    $this->assert_object_ids(array(Table_ID::create('table_a'), Table_ID::create('table_b')));
   }
 
   private function preapre_data_schema() {
     $this->shard_schema->create_lookup_table();
-    $this->shard_schema->create_table(new Table_ID('table_a'), $this->get_data_fields());
-    $this->shard_schema->create_table(new Table_ID('table_b'), $this->get_data_fields());
+    $this->shard_schema->create_table(Table_ID::create('table_a'), $this->get_data_fields());
+    $this->shard_schema->create_table(Table_ID::create('table_b'), $this->get_data_fields());
   }
 
   private function get_table_row_count($table_id) {
@@ -141,29 +144,29 @@ class Sharding_Router_Test extends Test_Case {
   public function test_get() {
     $this->preapre_data_schema();
     $data = array('field1'=>'foo1', 'field2'=>'bar1');
-    $this->shard_router->insert(new Table_ID('table_a'), $data);
-    $this->shard_router->insert(new Table_ID('table_a'), $data);
+    $this->shard_router->insert(Table_ID::create('table_a'), $data);
+    $this->shard_router->insert(Table_ID::create('table_a'), $data);
     $data = array('field1'=>'foo2', 'field2'=>'bar2');
-    $this->shard_router->insert(new Table_ID('table_b'), $data);
+    $this->shard_router->insert(Table_ID::create('table_b'), $data);
 
-    $result = $this->shard_router->get(new Table_ID('table_a'));
+    $result = $this->shard_router->get(Table_ID::create('table_a'));
     $this->assert($result->get_rows_count() == 2, 'table_a has 2 data');
   }
 
   public function test_get_where() {
     $this->preapre_data_schema();
     $data = array('field1'=>'foo1', 'field2'=>'bar1');
-    $this->shard_router->insert(new Table_ID('table_a'), $data);
-    $this->shard_router->insert(new Table_ID('table_a'), $data);
+    $this->shard_router->insert(Table_ID::create('table_a'), $data);
+    $this->shard_router->insert(Table_ID::create('table_a'), $data);
     $data = array('field1'=>'foo2', 'field2'=>'bar2');
-    $this->shard_router->insert(new Table_ID('table_b'), $data);
+    $this->shard_router->insert(Table_ID::create('table_b'), $data);
 
-    $get_result = $this->shard_router->get(new Table_ID('table_a'));
+    $get_result = $this->shard_router->get(Table_ID::create('table_a'));
     $shard_object_ids = array();
     foreach ($get_result->get_rows() as $row)
       array_push($shard_object_ids, $row['object_id']);
 
-    $get_where_result = $this->shard_router->get_where(new Table_ID('table_a'), array('object_id'=>$row['object_id']));
+    $get_where_result = $this->shard_router->get_where(Table_ID::create('table_a'), array('object_id'=>$row['object_id']));
     $this->assert(count($get_where_result) == 1, 'result count is 1');
     $this->assert($get_where_result->get_row(0, 'object_id') == $row['object_id']);
   }

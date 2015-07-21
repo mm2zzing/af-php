@@ -21,7 +21,7 @@ use apdos\plugins\sharding\adts\Null_Table;
 use apdos\plugins\sharding\adts\Shard_Set;
 use apdos\plugins\sharding\adts\Null_Shard_Set;
 use apdos\plugins\sharding\adts\Shard_Object_ID;
-use apdos\plugins\sharding\errors\Sharding_Error;
+use apdos\plugins\sharding\errors\Shard_Error;
 
 class Shard_Config extends Component { 
   public function __construct() {
@@ -36,23 +36,23 @@ class Shard_Config extends Component {
    * @param lookup_shards array(object) 룩업 샤드 리스트
    * @param data_shards array(object) 데이터 샤드 리스트
    *
-   * @throw Sharding_Error
+   * @throw Shard_Error
    */
   public function load($tables, $shard_sets, $shards) {
     $this->load_tables($tables);
     $this->load_shard_sets($shard_sets); 
     $this->load_shards($shards); 
-    $this->validate_shards();
   }
 
   private function load_tables($tables) {
     $this->tables = array();
     foreach ($tables as $table) {
       $dto = new Table_DTO();
-      $dto->id = new Table_ID($table->id);
-      $dto->shard_set_id = new Shard_Set_ID($table->shard_set_id);
+      $dto->id = Table_ID::create($table->id);
+      $dto->shard_set_id = Shard_Set_ID::create($table->shard_set_id);
       array_push($this->tables, new Table($dto));
     }
+    $this->validate_tables();
   }
 
   private function load_shard_sets($shard_sets) {
@@ -61,6 +61,7 @@ class Shard_Config extends Component {
       $dto = $this->create_shard_set_dto($shard_set);
       array_push($this->shard_sets, new Shard_Set($dto));
     }
+    $this->validate_shard_sets();
   }
 
   private function load_shards($shards) {
@@ -69,25 +70,42 @@ class Shard_Config extends Component {
       $dto = $this->create_shard_dto($shard);
       array_push($this->shards, new Shard($dto));
     }
+    $this->validate_shards();
   }
+
+  private function validate_tables() {
+    $ids = array();
+    foreach ($this->tables as $table)
+      array_push($ids, $table->get_id()->to_string());
+    if (count($this->tables) != count(array_unique($ids)))
+      throw new Shard_Error('Duplicated table id', Shard_Error::TABLE_ID_DUPLICATED);
+  }
+
 
   private function validate_shards() {
     $ids = array();
-    foreach ($this->shards as $shard) {
-      array_push($ids, $shard->get_id()->to_string_hash());
-    }
+    foreach ($this->shards as $shard)
+      array_push($ids, $shard->get_id()->to_hash());
     if (count($this->shards) != count(array_unique($ids)))
-      throw new Sharding_Error('Duplicated lookup shard hash', Sharding_Error::SHARD_HASH_DUPLICATED);
+      throw new Shard_Error('Duplicated shard hash', Shard_Error::SHARD_HASH_DUPLICATED);
   }
 
+  private function validate_shard_sets() {
+    $ids = array();
+    foreach ($this->shard_sets as $shard_set)
+      array_push($ids, $shard_set->get_id()->to_string());
+    if (count($this->shard_sets) != count(array_unique($ids)))
+      throw new Shard_Error('Duplicated shard_set id', Shard_Error::SHARD_SET_ID_DUPLICATED);
+  }
+ 
   private function create_shard_set_dto($shard_set) {
     $dto = new Shard_Set_DTO();
-    $dto->id = new Shard_Set_ID($shard_set->id);
+    $dto->id = Shard_Set_ID::create($shard_set->id);
     foreach ($shard_set->lookup_shard_ids as $id) {
-      array_push($dto->lookup_shard_ids, new Shard_ID($id));
+      array_push($dto->lookup_shard_ids, Shard_ID::create($id));
     }
     foreach ($shard_set->data_shard_ids as $id) {
-      array_push($dto->data_shard_ids, new Shard_ID($id));
+      array_push($dto->data_shard_ids, Shard_ID::create($id));
     }
     return $dto;
   }
@@ -95,9 +113,9 @@ class Shard_Config extends Component {
   private function create_shard_dto($shard) {
     $dto = new Shard_DTO();
     if (isset($shard->hash))
-      $dto->id = new Shard_ID($shard->id, $shard->hash);
+      $dto->id = Shard_ID::create($shard->id, $shard->hash);
     else
-      $dto->id = new Shard_ID($shard->id);
+      $dto->id = Shard_ID::create($shard->id);
     $dto->master = new DB_DTO();
     $this->import_db_dto($dto->master, $shard->master);
     $dto->slave = new DB_DTO();
@@ -209,7 +227,7 @@ class Shard_Config extends Component {
     $ids = array_unique($ids);
     $shard_ids = array();
     foreach ($ids as $id) {
-      array_push($shard_ids, new Shard_ID($id));
+      array_push($shard_ids, Shard_ID::create($id));
     }
     return $shard_ids;
   }

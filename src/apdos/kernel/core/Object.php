@@ -14,6 +14,10 @@ class Object {
     $this->constructor->run();
   }
 
+  public function get_type() {
+    return get_class_name($this);
+  }
+
   /**
    * 네임스페이스를 포함 클래스명을 조회합니다. PHP >= 5.3
    *

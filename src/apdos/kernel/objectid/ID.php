@@ -1,33 +1,39 @@
 <?php
 namespace apdos\kernel\objectid;
 
+use apdos\kernel\core\Object;
 use apdos\kernel\env\Environment;
 
-abstract class ID {
-  const ULONG_4BYTE_LE = "V";
-  const USHORT_2BYTE_LE = "v";
+abstract class ID extends Object {  
+  const DEFAULT_HASH_SIZE = 3;
 
-  /** 
-   * 헥스 스트링을 통한 객체 초기화 
-   *
-   * @hex string 헥스 스트링 데이터
-   */
-  public function init_by_string($hex) {
-    $this->binary = hex2bin($hex);
-  }
-
-  /**
-   * 바이너리 데이터를 통한 객체 초기화
-   *
-   * @data string 바이너리 데이터
-   */
   public function init_by_binary($data) {
     $this->binary = $data;
   }
 
-  public function to_string() {
-    return bin2hex($this->binary);
-  } 
+  public function get_value() {
+    return $this->binary;
+  }
+
+  abstract public function init_by_string($data);
+  abstract public function to_string(); 
+
+  public function equal($id) {
+    return $this->binary == $id->get_value() ? true : false;
+  }
+
+  /**
+   * 문자열 타입으로 해시한 값을 되돌려준다.
+   *
+   * @param size string 해시 사이즈
+   *
+   * @return string 해시한 문자열
+   */
+  public function to_hash($size = self::DEFAULT_HASH_SIZE) {
+    return substr(md5($this->binary), 0, $size);
+  }
+
+  protected $binary;
 
   /**
    * 3바이트로 해시된 머신값을 돌려준다.
@@ -40,15 +46,13 @@ abstract class ID {
    *
    * @return string 해시된 3바이트 문자열
    */
-  protected function create_hashed_machine_name($hash_size) {
+  static public function create_hashed_machine_name($hash_size) {
     $result = Environment::get_instance()->get_host_name();
     return substr(md5($result), 0, $hash_size);
   }
 
-  protected function create_process_id() {
+  static public function create_process_id() {
     return Environment::get_instance()->get_process_id();
   }
-
-  protected $binary;
 }
 

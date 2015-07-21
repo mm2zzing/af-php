@@ -16,10 +16,10 @@ class Sharding_Object_ID_Test extends Test_Case {
 
   public function test_create_id() {
     $timestamp = Time::get_instance()->get_timestamp();
-    $lookup_shard_id = new Shard_ID("lookup01");
+    $lookup_shard_id = Shard_ID::create("lookup01");
     $id = Shard_Object_ID::create($lookup_shard_id, $timestamp);
     $this->assert($id->get_timestamp() == $timestamp, "Get unpack timestamp");
-    $hash = $lookup_shard_id->to_string_hash(3);
+    $hash = $lookup_shard_id->to_hash();
     $this->assert($id->get_lookup_shard_id() == $hash, "Get unpack lookup shard id");
   }
 
@@ -38,7 +38,7 @@ class Sharding_Object_ID_Test extends Test_Case {
 
   private function generate_ids($count, $current_time = -1) {
     $ids = array();
-    $lookup_shard_id = new Shard_ID("lookup01");
+    $lookup_shard_id = Shard_ID::create("lookup01");
     for ($i = 0; $i < $count; $i++) {
       $id = Shard_Object_ID::create($lookup_shard_id, $current_time, $this->get_max_generate_count());
       array_push($ids, $id->to_string());

@@ -7,7 +7,7 @@ use apdos\kernel\actor\Actor;
 use apdos\kernel\core\Kernel;
 use apdos\plugins\sharding\Shard_Config;
 use apdos\tools\ash\Tool_Config;
-use apdos\plugins\sharding\errors\Sharding_Error;
+use apdos\plugins\sharding\errors\Shard_Error;
 
 class Sharding_Config_Test extends Test_Case {
   public function __construct($method_name) {
@@ -29,15 +29,28 @@ class Sharding_Config_Test extends Test_Case {
     $this->assert_true($this->load_configs());
   }
 
-  public function test_duplicated_shard_hash_failed() {
+  public function test_duplicated_table() {
     $this->assert_true($this->load_configs());
-    Tool_Config::get_instance()->push('test_sharding.shards', $this->get_lookup_shard_data()); 
 
+    Tool_Config::get_instance()->push('test_sharding.tables', $this->get_duplicated_id_table_data());
     $this->assert_false($this->load_configs());
-    $this->assert_equal(Sharding_Error::SHARD_HASH_DUPLICATED, $this->get_last_error_code());
+    $this->assert_equal(Shard_Error::TABLE_ID_DUPLICATED, $this->get_last_error_code());
   }
 
-  private function get_lookup_shard_data() {
+  private function get_duplicated_id_table_data() {
+    $tables = Tool_Config::get_instance()->get('test_sharding.tables');
+    return $tables[0];
+  }
+
+  public function test_duplicated_shard_hash() {
+    $this->assert_true($this->load_configs());
+
+    Tool_Config::get_instance()->push('test_sharding.shards', $this->get_duplicated_hash_shard_data()); 
+    $this->assert_false($this->load_configs());
+    $this->assert_equal(Shard_Error::SHARD_HASH_DUPLICATED, $this->get_last_error_code());
+  }
+
+  private function get_duplicated_hash_shard_data() {
     return array(
       "id"=>"lookup-duplicated-test",
       "hash"=>"4dc",
@@ -64,16 +77,25 @@ class Sharding_Config_Test extends Test_Case {
     ); 
   }
 
-  public function test_reload_lookup_shards() {
+  public function test_duplicated_shard_set() {
+    $this->assert_true($this->load_configs());
+
+    Tool_Config::get_instance()->push('test_sharding.shard_sets', $this->get_duplicated_id_shard_set_data());
+    $this->assert_false($this->load_configs());
+    $this->assert_equal(Shard_Error::SHARD_SET_ID_DUPLICATED, $this->get_last_error_code());
+  }
+
+  private function get_duplicated_id_shard_set_data() {
+    $sets = Tool_Config::get_instance()->get('test_sharding.shard_sets');
+    return $sets[0];
   }
 
   private function load_configs() {
     try {
       $this->shard_config->load($this->get_shard_tables(), $this->get_shard_sets(), $this->get_shards());
     }
-    catch (Sharding_Error $e) {
+    catch (Shard_Error $e) {
       $this->last_error_code = $e->get_code();
-      echo $e->get_message();
       return false;
     }
     return true;
@@ -102,8 +124,9 @@ class Sharding_Config_Test extends Test_Case {
   public static function create_suite() {
     $suite = new Test_Suite('Sharding_Config_Test');
     $suite->add(new Sharding_Config_Test('test_load_lookup_shards'));
-    $suite->add(new Sharding_Config_Test('test_duplicated_shard_hash_failed'));
-    $suite->add(new Sharding_Config_Test('test_reload_lookup_shards'));
+    $suite->add(new Sharding_Config_Test('test_duplicated_table'));
+    $suite->add(new Sharding_Config_Test('test_duplicated_shard_hash'));
+    $suite->add(new Sharding_Config_Test('test_duplicated_shard_set'));
     return $suite;
   }
 }
