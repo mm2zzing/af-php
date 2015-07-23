@@ -126,6 +126,8 @@ class Shard_Router extends Component {
           $db_connecter->limit($this->limit_per_shard, $this->offset_per_shard);
         if (count($this->select_fields))
           $db_connecter->select($this->select_fields);
+        if (strlen($this->select_function))
+          $db_connecter->{$this->select_function}($this->select_function_field);
         $result = $db_connecter->get($table_id->to_string());
         array_push($results, $result);
       }
@@ -135,8 +137,13 @@ class Shard_Router extends Component {
         throw new Shard_Error($message, Shard_Error::QUERY_FAILED);
       }
     }
+    $shard_result;
+    if (strlen($this->select_function))
+      $shard_result = new Shard_Select_Result($this->select_function, $this->select_function_field, $results);
+    else
+      $shard_result = new Shard_Result($results);
     $this->reset_query();
-    return new Shard_Result($results);
+    return $shard_result;
   }
 
   public function get_where($table_id, $wheres) {
@@ -150,8 +157,13 @@ class Shard_Router extends Component {
         array_push($results, $this->get_where_from_shard($shard_id, $table_id, $wheres));
       }
     }
+    $shard_result;
+    if (strlen($this->select_function))
+      $shard_result = new Shard_Select_Result($this->select_function, $this->select_function_field, $results);
+    else
+      $shard_result = new Shard_Result($results);
     $this->reset_query();
-    return new Shard_Result($results);
+    return $shard_result;
   }
 
   private function get_data_shard_id($table_id, $object_id_str) {
@@ -179,6 +191,8 @@ class Shard_Router extends Component {
         $db_connecter->limit($this->limit_per_shard, $this->offset_per_shard);
       if (count($this->select_fields))
         $db_connecter->select($this->select_fields);
+      if (strlen($this->select_function))
+        $db_connecter->{$this->select_function}($this->select_function_field);
       return $db_connecter->get_where($table_id->to_string(), $wheres);
     }
     catch (RDB_Error $e) {
@@ -324,6 +338,18 @@ class Shard_Router extends Component {
     return $this;
   }
 
+  public function select_max($field_name) {
+    $this->select_function = 'select_max';
+    $this->select_function_field = $field_name;
+    return $this;
+  }
+
+  public function select_min($field_name) {
+    $this->select_function = 'select_min';
+    $this->select_function_field = $field_name;
+    return $this;
+  }
+
   public function reset_query() {
     $this->limit_per_shard = -1;
     $this->offset_per_shard = -1;
@@ -331,6 +357,8 @@ class Shard_Router extends Component {
     $this->shard_limit_count = -1;
     $this->shard_limit_offset = -1;
     $this->shard_limit_is_random = false;
+    $this->select_function = '';
+    $this->select_function_field = '';
   }
 
   private function get_target_shard_ids($table_id) {
@@ -349,6 +377,8 @@ class Shard_Router extends Component {
   private $shard_limit_count = -1;
   private $shard_limit_offset = -1;
   private $shard_limit_is_random = false;
+  private $select_function = '';
+  private $select_function_field = '';
   
   private function get_config() {
     $component = $this->get_component(Shard_Config::get_class_name());

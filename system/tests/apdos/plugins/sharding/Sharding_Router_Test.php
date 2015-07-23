@@ -112,6 +112,7 @@ class Sharding_Router_Test extends Test_Case {
     $this->shard_schema->create_lookup_table();
     $this->shard_schema->create_table(Table_ID::create('table_a'), $this->get_data_fields());
     $this->shard_schema->create_table(Table_ID::create('table_b'), $this->get_data_fields());
+    $this->shard_schema->create_table(Table_ID::create('table_c'), $this->get_data_fields2());
   }
 
   private function get_table_row_count($table_id) {
@@ -313,6 +314,26 @@ class Sharding_Router_Test extends Test_Case {
         'default'=>''
       )
     );
+  }
+  
+  private function get_data_fields2() {
+    return array(
+      'field1'=>array(
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
+        'default'=>''
+      ),
+      'field2'=>array(
+        'type'=>'VARCHAR(100)',
+        'null'=>FALSE,
+        'default'=>''
+      ),
+      'count'=>array(
+        'type'=>'INT(11)',
+        'null'=>FALSE,
+        'default'=>0
+      )
+    );
   } 
 
   public function test_limit() {
@@ -390,6 +411,28 @@ class Sharding_Router_Test extends Test_Case {
     $this->assert_true($condition, "Rows count is 0~3");
   }
 
+  public function test_max() {
+    $this->preapre_data_schema();
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>400));
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>1000));
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>100));
+
+    $result = $this->shard_router->select_max('count')->get(Table_ID::create('table_c'));
+    $this->assert_equal(1, $result->get_rows_count(), 'Rows is 1');
+    $this->assert_equal(1000, $result->get_row(0, 'count'), 'Count max is 1000');
+  }
+
+  public function test_min() {
+    $this->preapre_data_schema();
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>400));
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>1000));
+    $this->shard_router->insert(Table_ID::create('table_c'), array('field1'=>'foo1', 'field2'=>'bar1', 'count'=>100));
+
+    $result = $this->shard_router->select_min('count')->get(Table_ID::create('table_c'));
+    $this->assert_equal(1, $result->get_rows_count(), 'Rows is 1');
+    $this->assert_equal(100, $result->get_row(0, 'count'), 'Count min is 100');
+  }
+
   private $shard_session; 
   private $shard_router;
   private $shard_schema;
@@ -408,6 +451,8 @@ class Sharding_Router_Test extends Test_Case {
     $suite->add(new Sharding_Router_Test('test_delete'));
     $suite->add(new Sharding_Router_Test('test_count'));
     $suite->add(new Sharding_Router_Test('test_filter_shard'));
+    $suite->add(new Sharding_Router_Test('test_max'));
+    $suite->add(new Sharding_Router_Test('test_min'));
     return $suite;
   }
 }
