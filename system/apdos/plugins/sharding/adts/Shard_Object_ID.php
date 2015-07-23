@@ -77,6 +77,11 @@ class Shard_Object_ID extends ID {
     return $this->increment_count;
   }
 
+  /**
+   * 해시된 룩업 샤드 아이디를 조회
+   *
+   * @return string 해시된 샤드 아이디
+   */
   public function get_lookup_shard_id() {
     $this->unpacks();
     return $this->lookup_shard_id;
@@ -130,7 +135,7 @@ class Shard_Object_ID extends ID {
 
   public static function create_by_string($hex_string) {
     $result = new Shard_Object_ID();
-    $result->init_by_string($string);
+    $result->init_by_string($hex_string);
     return $result;
   }
 }

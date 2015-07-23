@@ -10,6 +10,7 @@ class Shard_Error extends Apdos_Error {
   const SHARD_HASH_DUPLICATED = 4;
   const TABLE_ID_DUPLICATED = 5;
   const SHARD_SET_ID_DUPLICATED = 5;
+  const LOOKUP_DATA_IS_NULL = 6;
 
   public function __construct($message, $code) {
     parent::__construct('Shard_Error::' . $message, $code);

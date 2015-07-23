@@ -186,7 +186,6 @@ class MySQL_Active_Record_Escape_Test extends Test_Case {
     $suite->add(new MySQL_Active_Record_Escape_Test('test_update_escape_case1'));
     $suite->add(new MySQL_Active_Record_Escape_Test('test_update_escape_case2'));
     $suite->add(new MySQL_Active_Record_Escape_Test('test_like_escape'));
-    //$suite->add(new MySQL_Active_Record_Escape_Test('test_multiple_query_injection'));
     return $suite;
   }
 

@@ -31,7 +31,7 @@ class Shard_Result {
 
   public function get_row($index, $row_key = '') {
     if ($index >= count($this->rows))
-      return array();
+      return $row_key == '' ? array() : '';
     else {
       return $row_key == '' ? $this->rows[$index] : $this->rows[$index][$row_key];
     }

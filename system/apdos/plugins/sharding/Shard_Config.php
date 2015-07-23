@@ -150,6 +150,21 @@ class Shard_Config extends Component {
   }
 
   /**
+   * 해시된 샤드 문자열을 이용하여 샤드 정보를 조회한다.
+   *
+   * @param shard_id_hash string shard_id_has 해시된 샤드 아이디a
+   *
+   * @returne Shard
+   */
+  public function get_shard_by_hash($shard_id_hash) {
+    foreach ($this->shards as $shard) {
+      if ($shard->get_id()->to_hash() == $shard_id_hash)
+        return $shard;
+    }
+    return new Null_Shard();
+  }
+
+  /**
    * 샤드 셋 정보를 조회한다.
    *
    * @param shard_id Shard_ID 샤드아이디
