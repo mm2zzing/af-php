@@ -9,6 +9,7 @@ use apdos\plugins\sharding\Shard_Config;
 use apdos\kernel\objectid\Shard_ID;
 use apdos\kernel\log\Logger;
 use apdos\plugins\database\base\rdb\errors\RDB_Error;
+use apdos\plugins\sharding\adts\Table_ID;
 
 class Shard_Schema extends Component {
   private $session;
@@ -100,7 +101,8 @@ class Shard_Schema extends Component {
    * @throw Shard_Error 요청을 한 테이블 아이디 / 샤드 셋 정보가 설정에 존재하지 않는 경우 예외 발생
    */
   public function create_table($table_id, $data_fields) {
-    $data_shard_ids = $this->get_config()->get_table_shard_set($table_id)->get_data_shard_ids();
+    $table_id = Table_ID::create($table_id);
+    $data_shard_ids = $this->get_config()->get_table_shard_set($table_id->to_string())->get_data_shard_ids();
     foreach ($data_shard_ids as $shard_id) {
       try {
         $db_schema = $this->get_session()->get_db_schema($shard_id);
@@ -115,7 +117,8 @@ class Shard_Schema extends Component {
   }
 
   public function drop_table($table_id, $if_exists = true) {
-    $shard_set = $this->get_config()->get_table_shard_set($table_id);
+    $table_id = Table_ID::create($table_id);
+    $shard_set = $this->get_config()->get_table_shard_set($table_id->to_string());
 
     $lookup_shard_ids = $shard_set->get_lookup_shard_ids();
     foreach ($lookup_shard_ids as $shard_id) {

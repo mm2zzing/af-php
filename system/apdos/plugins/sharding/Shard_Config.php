@@ -190,11 +190,12 @@ class Shard_Config extends Component {
   /**
    * 테이을 정보를 조회한다.
    *
-   * @param table_id Table_ID 테이블 아이디
+   * @param table_id string 테이블 아이디
    *
    * @rturn Table
    */
   public function get_table($table_id) {
+    $table_id = Table_ID::create($table_id);
     foreach ($this->tables as $table) {
       if ($table->get_id()->equal($table_id))
         return $table;
@@ -248,7 +249,8 @@ class Shard_Config extends Component {
   }
 
   public function get_table_shard_set($table_id) {
-    $table = $this->get_table($table_id);
+    $table_id = Table_ID::create($table_id);
+    $table = $this->get_table($table_id->to_string());
     return $this->get_shard_set($table->get_shard_set_id());
   }
 }

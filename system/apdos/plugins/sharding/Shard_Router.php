@@ -13,6 +13,7 @@ use apdos\plugins\sharding\dtos\DB_DTO;
 use apdos\plugins\sharding\dtos\Shard_DTO;
 use apdos\plugins\sharding\errors\Shard_Error;
 use apdos\plugins\sharding\adts\Shard_Object_ID;
+use apdos\plugins\sharding\adts\Table_ID;
 use apdos\plugins\database\base\rdb\errors\RDB_Error;
 use apdos\kernel\objectid\Shard_ID;
 
@@ -43,6 +44,7 @@ class Shard_Router extends Component {
    * @throw Shard_Error
    */
   public function has_table($table_id) {
+    $table_id = Table_ID::create($table_id);
     $shard_ids = $this->get_shard_set($table_id)->get_data_shard_ids();
     foreach ($shard_ids as $id) {
       try {
@@ -90,6 +92,7 @@ class Shard_Router extends Component {
    * @throw Shard_Error
    */
   public function insert($table_id, $data) {
+    $table_id = Table_ID::create($table_id);
     $shard_set = $this->get_shard_set($table_id);
     $lookup_shard_id = $this->select_shard($shard_set->get_lookup_shard_ids());
     $data_shard_id = $this->select_shard($shard_set->get_data_shard_ids());
@@ -118,6 +121,7 @@ class Shard_Router extends Component {
   }
 
   public function get($table_id, $master = true) {
+    $table_id = Table_ID::create($table_id);
     $results = array();
     foreach ($this->get_target_shard_ids($table_id) as $shard_id) {
       try {
@@ -147,6 +151,7 @@ class Shard_Router extends Component {
   }
 
   public function get_where($table_id, $wheres) {
+    $table_id = Table_ID::create($table_id);
     if (isset($wheres['object_id'])) {
       $data_shard_id = $this->get_data_shard_id($table_id, $wheres['object_id']);
       $results = array($this->get_where_from_shard($data_shard_id, $table_id, $wheres));
@@ -203,7 +208,7 @@ class Shard_Router extends Component {
   }
 
   private function get_shard_set($table_id) {
-    $shard_set = $this->get_config()->get_table_shard_set($table_id);
+    $shard_set = $this->get_config()->get_table_shard_set($table_id->to_string());
     if ($shard_set->is_null())
       throw new Shard_Error('Shard set is null. table id is ' . $table_id->to_string(), 
                                Shard_Error::CONFIG_FAILED);
@@ -211,6 +216,7 @@ class Shard_Router extends Component {
   }
 
   public function update($table_id, $values) {
+    $table_id = Table_ID::create($table_id);
     $results = array();
     foreach ($this->get_target_shard_ids($table_id) as $shard_id) {
       try {
@@ -225,6 +231,7 @@ class Shard_Router extends Component {
   }
 
   public function update_where($table_id, $values, $wheres) {
+    $table_id = Table_ID::create($table_id);
     $results = array();
     if (isset($wheres['object_id'])) {
       $data_shard_id = $this->get_data_shard_id($table_id, $wheres['object_id']);
@@ -252,6 +259,7 @@ class Shard_Router extends Component {
   }
 
   public function delete_all($table_id) {
+    $table_id = Table_ID::create($table_id);
     $results = array();
     foreach ($this->get_target_shard_ids($table_id) as $shard_id) {
       try {
@@ -267,6 +275,7 @@ class Shard_Router extends Component {
   }
 
   public function delete($table_id, $wheres) {
+    $table_id = Table_ID::create($table_id);
     $results = array();
     if (isset($wheres['object_id'])) {
       $data_shard_id = $this->get_data_shard_id($table_id, $wheres['object_id']);
@@ -291,6 +300,7 @@ class Shard_Router extends Component {
   }
 
   public function count($table_id) {
+    $table_id = Table_ID::create($table_id);
     $count = 0;
     foreach ($this->get_target_shard_ids($table_id) as $shard_id) {
       try {
