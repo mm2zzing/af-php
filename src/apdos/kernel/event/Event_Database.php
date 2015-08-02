@@ -13,7 +13,7 @@ class Event_Database {
   public function __construct() {
     // @TODO REMOVE
     $this->add_event('Proxy_Event', 'apdos\kernel\actor\events\Proxy_Event');
-    $this->add_event('Dummy_Event', 'tests\apdos\kernel\event\Dummy_Event');
+    $this->add_event('Dummy_Event', 'apdos\tests\kernel\event\Dummy_Event');
     $this->add_event('Req_Get_User', 'apdos\plugins\auth\presenters\events\events\Req_Get_User');
     $this->add_event('Res_Get_User', 'apdos\plugins\auth\presenters\events\events\Res_Get_User');
     $this->add_event('Req_Register_Device', 'apdos\plugins\auth\presenters\events\events\Req_Register_Device');
