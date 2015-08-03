@@ -1,5 +1,5 @@
 <?php
-namespace af\tools\apdos_services_test;
+namespace af\tools\af_services_test;
 
 use af\kernel\core\Kernel;
 use af\tools\ash\Tool;
@@ -11,14 +11,14 @@ use af\tools\ash\console\Command_Line;
 use af\tools\ash\console\error\Command_Line_Error;
 
 /**
- * @class Apdos_Services_Test
+ * @class Af_Services_Test
  *
- * @brief apdos 모듈 테스트 실행 프로그램
+ * @brief af 모듈 테스트 실행 프로그램
  * @author Lee Hyeon-gi
  */
-class Apdos_Services_Test extends Tool {
-  const NAME = "apdos-services-test";
-  const DESCRIPTION = "APD/OS-PHP unittest runner";
+class Af_Services_Test extends Tool {
+  const NAME = "af-services-test";
+  const DESCRIPTION = "ActorFramework-PHP unittest runner";
   const VERSION = '0.0.1';
 
   public function __construct() {

@@ -1,5 +1,5 @@
 <?php
-namespace af\tools\apdos_test;
+namespace af\tools\af_test;
 
 use af\kernel\core\Kernel;
 use af\tools\ash\Tool;
@@ -42,14 +42,14 @@ use af\tests\plugins\sharding\Sharding_Router_Test;
 use af\tests\plugins\sharding\Sharding_Object_ID_Test;
 
 /**
- * @class Apdos_Test
+ * @class Af_Test
  *
- * @brief apdos 모듈 테스트 실행 프로그램
+ * @brief af 모듈 테스트 실행 프로그램
  * @author Lee Hyeon-gi
  */
-class Apdos_Test extends Tool {
-  const NAME = "apdos-test";
-  const DESCRIPTION = "APD/OS-PHP unittest runner";
+class Af_Test extends Tool {
+  const NAME = "af-test";
+  const DESCRIPTION = "ActorFramework/PHP unittest runner";
   const VERSION = '0.0.1';
 
   public function __construct() {
