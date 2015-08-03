@@ -1,7 +1,7 @@
 {
-  "name":"apdos-php",
+  "name":"af-php",
   "version":"0.0.1",
-  "description":"apdos php version",
+  "description":"Actor Framework/PHP version",
   "keywords": [
     "apdos"
   ],
