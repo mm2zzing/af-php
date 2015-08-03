@@ -19,6 +19,8 @@
     "psr-4": {
       "apdos\\":"src/apdos", 
       "apdos\\tests\\":"tests/src/apdos/tests", 
-      "apdos\\examples\\":"examples/src/apdos/eaxmples"}
+      "apdos\\tools\\":"tests/src/apdos/tools", 
+      "apdos\\examples\\":"examples/src/apdos/eaxmples"
+    }
   }
 }
