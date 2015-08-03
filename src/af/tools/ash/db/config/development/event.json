@@ -1,0 +1,14 @@
+{
+    "names": [
+        {
+            "name": "Proxy_Event",
+            "class": "af\\kernel\\actor\\events\\Proxy_Event",
+            "desc": "REDF 통신에 사용하는 이벤트 객체"
+        },
+        {
+            "name": "Shell_Command",
+            "class": "af\\tools\\ash\\events\\Shell_Command",
+            "desc": "쉘을 통한 명령 처리시에 사용하는 이벤트 객체"
+        }
+    ]
+}

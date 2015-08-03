@@ -3,7 +3,7 @@
   "version":"0.0.1",
   "description":"Actor Framework/PHP version",
   "keywords": [
-    "apdos"
+    "af"
   ],
   "homepage":"",
   "require": {
@@ -17,10 +17,10 @@
   ],
   "autoload": {
     "psr-4": {
-      "apdos\\":"src/apdos", 
-      "apdos\\tests\\":"tests/src/apdos/tests", 
-      "apdos\\tools\\":"tests/src/apdos/tools", 
-      "apdos\\examples\\":"examples/src/apdos/eaxmples"
+      "af\\":"src/af", 
+      "af\\tests\\":"tests/src/af/tests", 
+      "af\\tools\\":"tests/src/af/tools", 
+      "af\\examples\\":"examples/src/af/eaxmples"
     }
   }
 }
