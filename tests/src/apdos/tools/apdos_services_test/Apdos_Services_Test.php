@@ -1,5 +1,5 @@
 <?php
-namespace apdos\tests\tools\apdos_services_test;
+namespace apdos\tools\apdos_services_test;
 
 use apdos\kernel\core\Kernel;
 use apdos\tools\ash\Tool;
