@@ -13,6 +13,7 @@
   ],
   "homepage":"",
   "require": {
+    "aol-php":"master",
     "psr/log":"1.0.0",
     "pear/console_commandline":"dev-trunk"
   },
