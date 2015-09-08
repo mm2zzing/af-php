@@ -1,6 +1,8 @@
 <?php
 namespace af\kernel\event;
 
+use af\kernel\event\dto\Event_DTO;
+
 /**
  * @class Event_Database
  *
@@ -11,14 +13,6 @@ class Event_Database {
   private $class_names = array();
 
   public function __construct() {
-    // @TODO REMOVE
-    $this->add_event('Proxy_Event', 'af\kernel\actor\events\Proxy_Event');
-    $this->add_event('Dummy_Event', 'af\tests\kernel\event\Dummy_Event');
-    $this->add_event('Req_Get_User', 'af\plugins\auth\presenters\events\events\Req_Get_User');
-    $this->add_event('Res_Get_User', 'af\plugins\auth\presenters\events\events\Res_Get_User');
-    $this->add_event('Req_Register_Device', 'af\plugins\auth\presenters\events\events\Req_Register_Device');
-    $this->add_event('Res_Register_Device', 'af\plugins\auth\presenters\events\events\Res_Register_Device');
-    $this->add_event('Shell_Command', 'af\tools\ash\events\Shell_Command');
   }
 
   /**
@@ -27,10 +21,12 @@ class Event_Database {
    * @param events array(array()) 이벤트 객체 정보들
    */
   public function load($events) {
-    // @TODO
-    // config/event.json에 정의되어 있는 이벤트 객체 정보를 로드한다. 이벤트 설정 파일을 쉽게 만들 수 있는 툴을 제공한다.
-    // 모든 php 소스를 뒤져서 Event 객체를 상속받은 객체를 조회 ? 아니면 이벤트 정의 툴을 만들면 해당툴이 이벤트 클래스와 event.json 
-    // 파일을 생성한다. 그리고 apdos-php와 통신해서 자동으로 해당 내용을 반영한다.
+    foreach ($events as $event) {
+      $dto = new Event_DTO();
+      $dto->name = $event->name;
+      $dto->class = $event->class;
+      $this->add_event($dto->name, $dto->class);
+    }
   }
 
   /**

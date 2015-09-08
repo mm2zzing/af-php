@@ -14,6 +14,7 @@ use af\plugins\config\errors\Config_Error;
  *        Config에서 관리하는 설정 파일은 읽기만 가능하다.
  *
  *        @TODO Config와 Etc 설정파일에서 json 처리 코드 리펙토링 필요
+ *              aol-php의 config모듈을 사용하도록 변경
  * @authro Lee, Hyeon-gi
  */
 class Config extends Component {

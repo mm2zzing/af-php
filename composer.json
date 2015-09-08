@@ -2,11 +2,19 @@
   "name":"af-php",
   "version":"0.0.1",
   "description":"Actor Framework/PHP version",
+  "repositories": [
+    {
+      "type":"git",
+      "url":"https://github.com/maayalee/aol-php.git"
+    }
+  ],
   "keywords": [
     "af"
   ],
   "homepage":"",
   "require": {
+    "psr/log":"1.0.0",
+    "pear/console_commandline":"dev-trunk"
   },
   "license":"MIT",
   "authors":[
