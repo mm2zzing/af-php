@@ -3,8 +3,11 @@ namespace af\tests\kernel\core;
 
 use af\plugins\test\Test_Case;
 use af\plugins\test\Test_Suite;
-use af\kernel\core\object_converter;
+use aol\core\Object_Converter;
 
+/**
+ * @TODO aol-php로 유닛테스트 이동
+ */
 class Object_Converter_Test extends Test_Case {
   public function test_object_to_array() {
     $object = new \stdClass();

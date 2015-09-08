@@ -5,7 +5,7 @@ use af\kernel\actor\component;
 use af\plugins\prereg\dto\Prereg_User_DTO;
 use af\plugins\prereg\accessors\Prereg_User;
 use af\plugins\prereg\errors\Prereg_Error;
-use af\kernel\core\Object_Converter;
+use aol\core\Object_Converter;
 
 class Prereg extends Component {
   private $storage;

@@ -13,6 +13,7 @@ use af\plugins\auth\presenters\events\req_login;
 use af\plugins\auth\presenters\events\res_login;
 use af\plugins\auth\presenters\events\req_get_user;
 use af\plugins\auth\presenters\events\res_get_user;
+use aol\core\Object_Converter;
 
 /**
  * @class Auth_Controller

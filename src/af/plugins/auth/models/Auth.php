@@ -10,7 +10,7 @@ use af\plugins\auth\errors\Auth_Id_Is_None;
 use af\plugins\auth\errors\Auth_Is_Unregistered;
 use af\plugins\auth\errors\Auth_Password_Is_Wrong;
 use af\plugins\auth\errors\Auth_Uuid_Is_None;
-use af\kernel\core\Object_Converter;
+use aol\core\Object_Converter;
 
 /**
  * @class Auth

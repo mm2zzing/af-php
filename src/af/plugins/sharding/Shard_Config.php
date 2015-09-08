@@ -112,8 +112,9 @@ class Shard_Config extends Component {
 
   private function create_shard_dto($shard) {
     $dto = new Shard_DTO();
-    if (isset($shard->hash))
+    if (isset($shard->hash)) {
       $dto->id = Shard_ID::create($shard->id, $shard->hash);
+    }
     else
       $dto->id = Shard_ID::create($shard->id);
     $dto->master = new DB_DTO();

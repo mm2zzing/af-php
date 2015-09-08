@@ -4,6 +4,9 @@ namespace af\plugins\test;
 use af\kernel\log\Logger;
 use af\plugins\test\mock\Mock_Object_Generator;
 
+/**
+ * @TODO aol-php로 test 플러그인 이동
+ */
 class Test_Case {
   private $test_method_name;
   private $result;

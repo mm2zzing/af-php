@@ -44,7 +44,6 @@ class Sharding_Config_Test extends Test_Case {
 
   public function test_duplicated_shard_hash() {
     $this->assert_true($this->load_configs());
-
     Tool_Config::get_instance()->push('test_sharding.shards', $this->get_duplicated_hash_shard_data()); 
     $this->assert_false($this->load_configs());
     $this->assert_equal(Shard_Error::SHARD_HASH_DUPLICATED, $this->get_last_error_code());

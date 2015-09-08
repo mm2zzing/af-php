@@ -2,7 +2,7 @@
 namespace af\kernel\event;
 
 use af\kernel\core\Object;
-use af\kernel\core\Object_Converter;
+use aol\core\Object_Converter;
 
 class Event extends Object{
   protected $name;
