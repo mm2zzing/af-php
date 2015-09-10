@@ -8,6 +8,7 @@ use af\kernel\actor\events\Actor_Event;
 use af\kernel\actor\property\Root_Property;
 use af\kernel\actor\property\Null_Property;
 use af\kernel\actor\property\events\Property_Event;
+use af\kernel\actor\property\errors\Property_Error;
 
 /**
  * @class Component
@@ -21,9 +22,6 @@ use af\kernel\actor\property\events\Property_Event;
  * @author Lee, Hyeon-gi
  */
 class Component extends Event_Dispatcher {
-  private $parent_actor;
-  private $properties = array();
-
   public function __construct() {
   }
 
@@ -91,10 +89,19 @@ class Component extends Event_Dispatcher {
     return new Null_Property($name);
   }
 
+  public function get_property_value($name) {
+    if (isset($this->properties[$name]))
+      return $this->properties[$name]->get_value();
+    throw new Property_Error('property is none. name is ' . $name, Property_Error::PROPERTY_IS_EMPTY);
+  }
+
   public function release() {
     $event = new Component_Event(array(Component_Event::$DESTROY));
     $this->dispatch_event($event);
   }
+
+  private $parent_actor;
+  private $properties = array();
 
   public static function create($component_class, $path) {
     $actor = Kernel::get_instance()->new_object('af\\kernel\\actor\\Actor', $path);

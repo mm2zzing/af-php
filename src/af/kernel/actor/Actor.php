@@ -6,8 +6,11 @@ use af\kernel\actor\Component;
 use af\kernel\actor\events\Component_Event;
 use af\kernel\actor\events\Actor_Event;
 use af\kernel\actor\Null_Component;
+use af\kernel\core\Kernel;
 
 class Actor extends Root_Node {
+  const RANDOM_NAME_SIZE = 5;
+
   private $components = array();
 
   /**
@@ -82,6 +85,13 @@ class Actor extends Root_Node {
     foreach ($this->components as $component)
       $component->update_event();
     parent::update_event(); 
+  }
 
+  public static function create($path = '') {
+    if ('' == $path) {
+      $actor_id = substr(md5(uniqid(rand())), 0, self::RANDOM_NAME_SIZE);
+      $path = '/tmp/' . $actor_id;
+    }
+    return Kernel::get_instance()->new_object('af\\kernel\\actor\\Actor', $path);
   }
 }

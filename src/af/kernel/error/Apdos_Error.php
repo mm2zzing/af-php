@@ -1,6 +1,10 @@
 <?php
 namespace af\kernel\error;
 
+/**
+ *
+ * @TODO Rename Apdos to Af
+ */
 class Apdos_Error extends \Exception {
   public function __construct($msg, $code = -1) {
     parent::__construct($msg, $code);

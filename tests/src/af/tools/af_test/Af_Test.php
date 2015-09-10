@@ -40,6 +40,7 @@ use af\tests\plugins\sharding\Sharding_Config_Test;
 use af\tests\plugins\sharding\Sharding_Schema_Test;
 use af\tests\plugins\sharding\Sharding_Router_Test;
 use af\tests\plugins\sharding\Sharding_Object_ID_Test;
+use af\tests\plugins\sctrl\Schema_Control_Test;
 
 /**
  * @class Af_Test
@@ -126,6 +127,7 @@ class Af_Test extends Tool {
       $runner->add(Sharding_Config_Test::create_suite());
       $runner->add(Sharding_Schema_Test::create_suite());
       $runner->add(Sharding_Router_Test::create_suite());
+      $runner->add(Schema_Control_Test::create_suite());
     }
 
     if ($this->cli->has_option('dmongodb')) {
