@@ -14,8 +14,6 @@ use af\plugins\cache\handlers\Null_Cache_Handler;
 class Cache extends Component {
   const CACHE_FOREVER_TIME = 999999999;
 
-  private $handler;
-
   public function __construct() {
     $this->handler = new Null_Cache_Handler();
   }
@@ -49,6 +47,8 @@ class Cache extends Component {
   public function clear_all() {
     $this->handler->clear_all();
   }
+
+  private $handler;
 
   public static function get_instance() {
     static $instance = null;
